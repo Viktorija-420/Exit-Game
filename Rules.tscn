@@ -1,0 +1,89 @@
+[gd_scene load_steps=7 format=3 uid="uid://bqck50ag1kimw"]
+
+[ext_resource type="Script" uid="uid://bmoxr6d7vqpg8" path="res://menu.gd" id="1_ag8e4"]
+[ext_resource type="Texture2D" uid="uid://bustj4x2edmbt" path="res://Assets/RulesBG.png" id="1_fcngl"]
+[ext_resource type="FontFile" uid="uid://dir8slwrv7g00" path="res://Assets/OldeTome.ttf" id="2_ag8e4"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_tu520"]
+bg_color = Color(0, 0, 0, 0.8156863)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_eojom"]
+bg_color = Color(0.99607843, 0.85490197, 0.34901962, 1)
+corner_radius_top_left = 90
+corner_radius_bottom_left = 90
+corner_detail = 1
+shadow_color = Color(0, 0, 0, 1)
+shadow_size = 10
+shadow_offset = Vector2(6, 6)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_h8jhf"]
+bg_color = Color(0.83608353, 0.6908568, 0.038750645, 1)
+corner_radius_top_left = 90
+corner_radius_bottom_left = 90
+corner_detail = 1
+shadow_color = Color(0, 0, 0, 1)
+shadow_size = 10
+shadow_offset = Vector2(6, 6)
+
+[node name="Rules" type="Node2D"]
+
+[node name="Menu" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+script = ExtResource("1_ag8e4")
+
+[node name="Background" type="TextureRect" parent="Menu"]
+layout_mode = 0
+offset_left = -9.0
+offset_top = -9.0
+offset_right = 1160.0
+offset_bottom = 689.0
+texture = ExtResource("1_fcngl")
+expand_mode = 1
+
+[node name="Panel" type="Panel" parent="Menu"]
+layout_mode = 0
+offset_left = 149.0
+offset_top = 113.0
+offset_right = 1049.0
+offset_bottom = 538.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_tu520")
+
+[node name="Title" type="Label" parent="Menu/Panel"]
+layout_mode = 0
+offset_left = 366.0
+offset_top = 18.0
+offset_right = 551.0
+offset_bottom = 95.0
+theme_override_fonts/font = ExtResource("2_ag8e4")
+theme_override_font_sizes/font_size = 80
+text = "Rules"
+
+[node name="RuleText" type="Label" parent="Menu/Panel"]
+layout_mode = 0
+offset_left = 40.0
+offset_top = 133.0
+offset_right = 871.0
+offset_bottom = 409.0
+theme_override_fonts/font = ExtResource("2_ag8e4")
+theme_override_font_sizes/font_size = 48
+text = "Reach the exit door to complete each level.
+Avoid obstacles – touching them costs one life.
+If you lose all lives, the game is over.
+Each level becomes more difficult.
+Complete all levels to win the game."
+
+[node name="Back" type="Button" parent="Menu/Panel"]
+layout_mode = 0
+offset_left = -126.0
+offset_top = -91.0
+offset_right = -11.0
+offset_bottom = -44.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("2_ag8e4")
+theme_override_font_sizes/font_size = 40
+theme_override_styles/normal = SubResource("StyleBoxFlat_eojom")
+theme_override_styles/hover = SubResource("StyleBoxFlat_h8jhf")
+text = "  Back"

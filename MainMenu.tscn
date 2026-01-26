@@ -1,0 +1,157 @@
+[gd_scene load_steps=7 format=3 uid="uid://v4qdy2qaghr0"]
+
+[ext_resource type="Texture2D" uid="uid://6b1708wl4lrs" path="res://Assets/bg.png" id="1_i26rj"]
+[ext_resource type="FontFile" uid="uid://dir8slwrv7g00" path="res://Assets/OldeTome.ttf" id="3_iwfq2"]
+
+[sub_resource type="GDScript" id="GDScript_h7a2f"]
+script/source = "extends Node2D
+
+@onready var play_button: Button = $Menu/MenuButtons/PlayButton
+@onready var rules_button: Button = $Menu/MenuButtons/RulesButton
+@onready var settings_button: Button = $Menu/MenuButtons/SettingsButton
+@onready var quit_button: Button = $Menu/MenuButtons/QuitButton
+
+func _ready() -> void:
+	play_button.pressed.connect(_on_play_pressed)
+	rules_button.pressed.connect(_on_rules_pressed)
+	settings_button.pressed.connect(_on_settings_pressed)
+	quit_button.pressed.connect(_on_quit_pressed)
+
+func _on_play_pressed() -> void:
+	get_tree().change_scene_to_file(\"res://Level_01.tscn\")
+
+func _on_rules_pressed() -> void:
+	get_tree().change_scene_to_file(\"res://Rules.tscn\")
+
+func _on_settings_pressed() -> void:
+	get_tree().change_scene_to_file(\"res://Settings.tscn\")
+
+func _on_quit_pressed() -> void:
+	get_tree().quit()
+"
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_eiy7p"]
+bg_color = Color(0.19215687, 0.043137256, 0.07058824, 1)
+corner_radius_top_left = 50
+corner_radius_top_right = 50
+corner_radius_bottom_right = 50
+corner_radius_bottom_left = 50
+expand_margin_left = 5.0
+expand_margin_top = 5.0
+expand_margin_right = 5.0
+expand_margin_bottom = 5.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_qoqlk"]
+bg_color = Color(0.19215687, 0.043137256, 0.07058824, 1)
+border_width_bottom = 10
+border_blend = true
+corner_radius_top_left = 50
+corner_radius_top_right = 50
+corner_radius_bottom_right = 50
+corner_radius_bottom_left = 50
+expand_margin_left = 15.0
+expand_margin_top = 5.0
+expand_margin_right = 15.0
+expand_margin_bottom = 5.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_h7a2f"]
+bg_color = Color(0.19215687, 0.043137256, 0.07058824, 1)
+border_width_bottom = 10
+border_color = Color(0.7496799, 0.29399917, 0.37149957, 1)
+border_blend = true
+corner_radius_top_left = 50
+corner_radius_top_right = 50
+corner_radius_bottom_right = 50
+corner_radius_bottom_left = 50
+expand_margin_left = 15.0
+expand_margin_top = 5.0
+expand_margin_right = 15.0
+expand_margin_bottom = 5.0
+
+[node name="MainMenu" type="Node2D"]
+script = SubResource("GDScript_h7a2f")
+
+[node name="Menu" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Background" type="TextureRect" parent="Menu"]
+modulate = Color(0.6378432, 0.6378432, 0.63784313, 1)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -4.0
+offset_top = -3.0
+offset_right = 1157.0
+offset_bottom = 682.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("1_i26rj")
+expand_mode = 1
+
+[node name="Title" type="Label" parent="Menu"]
+layout_mode = 0
+offset_left = 346.0
+offset_top = 92.0
+offset_right = 777.0
+offset_bottom = 189.0
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("3_iwfq2")
+theme_override_font_sizes/font_size = 100
+text = "Final exit"
+horizontal_alignment = 1
+autowrap_mode = 2
+
+[node name="MenuButtons" type="VBoxContainer" parent="Menu"]
+layout_mode = 0
+offset_left = 445.0
+offset_top = 250.0
+offset_right = 689.0
+offset_bottom = 570.0
+theme_override_constants/separation = 30
+
+[node name="PlayButton" type="Button" parent="Menu/MenuButtons"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("3_iwfq2")
+theme_override_font_sizes/font_size = 30
+theme_override_styles/normal = SubResource("StyleBoxFlat_eiy7p")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_qoqlk")
+theme_override_styles/hover = SubResource("StyleBoxFlat_h7a2f")
+text = "Play"
+icon_alignment = 1
+
+[node name="RulesButton" type="Button" parent="Menu/MenuButtons"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("3_iwfq2")
+theme_override_font_sizes/font_size = 30
+theme_override_styles/normal = SubResource("StyleBoxFlat_eiy7p")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_qoqlk")
+theme_override_styles/hover = SubResource("StyleBoxFlat_h7a2f")
+text = "Rules"
+icon_alignment = 1
+
+[node name="SettingsButton" type="Button" parent="Menu/MenuButtons"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("3_iwfq2")
+theme_override_font_sizes/font_size = 30
+theme_override_styles/normal = SubResource("StyleBoxFlat_eiy7p")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_qoqlk")
+theme_override_styles/hover = SubResource("StyleBoxFlat_h7a2f")
+text = "Settings"
+icon_alignment = 1
+
+[node name="QuitButton" type="Button" parent="Menu/MenuButtons"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("3_iwfq2")
+theme_override_font_sizes/font_size = 30
+theme_override_styles/normal = SubResource("StyleBoxFlat_eiy7p")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_qoqlk")
+theme_override_styles/hover = SubResource("StyleBoxFlat_h7a2f")
+text = "Quit
+"
+icon_alignment = 1
