@@ -31,7 +31,7 @@ func _on_quit_pressed() -> void:
 "
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_eiy7p"]
-bg_color = Color(0.19215687, 0.043137256, 0.07058824, 1)
+bg_color = Color(0.99607843, 0.85490197, 0.34901962, 1)
 corner_radius_top_left = 50
 corner_radius_top_right = 50
 corner_radius_bottom_right = 50
@@ -40,25 +40,21 @@ expand_margin_left = 5.0
 expand_margin_top = 5.0
 expand_margin_right = 5.0
 expand_margin_bottom = 5.0
+shadow_color = Color(0, 0, 0, 1)
+shadow_size = 2
+shadow_offset = Vector2(10, 10)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_qoqlk"]
-bg_color = Color(0.19215687, 0.043137256, 0.07058824, 1)
-border_width_bottom = 10
-border_blend = true
+bg_color = Color(0.6, 0.6, 0.6, 0)
+border_color = Color(0.8, 0.8, 0.8, 0)
 corner_radius_top_left = 50
 corner_radius_top_right = 50
 corner_radius_bottom_right = 50
 corner_radius_bottom_left = 50
-expand_margin_left = 15.0
-expand_margin_top = 5.0
-expand_margin_right = 15.0
-expand_margin_bottom = 5.0
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_h7a2f"]
-bg_color = Color(0.19215687, 0.043137256, 0.07058824, 1)
-border_width_bottom = 10
-border_color = Color(0.7496799, 0.29399917, 0.37149957, 1)
-border_blend = true
+bg_color = Color(0.8352941, 0.6901961, 0.039215688, 1)
+border_color = Color(0.8, 0.8, 0.8, 0)
 corner_radius_top_left = 50
 corner_radius_top_right = 50
 corner_radius_bottom_right = 50
@@ -67,6 +63,8 @@ expand_margin_left = 15.0
 expand_margin_top = 5.0
 expand_margin_right = 15.0
 expand_margin_bottom = 5.0
+shadow_size = 2
+shadow_offset = Vector2(10, 10)
 
 [node name="MainMenu" type="Node2D"]
 script = SubResource("GDScript_h7a2f")
@@ -117,6 +115,7 @@ theme_override_constants/separation = 30
 
 [node name="PlayButton" type="Button" parent="Menu/MenuButtons"]
 layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_fonts/font = ExtResource("3_iwfq2")
 theme_override_font_sizes/font_size = 30
 theme_override_styles/normal = SubResource("StyleBoxFlat_eiy7p")
@@ -127,6 +126,7 @@ icon_alignment = 1
 
 [node name="RulesButton" type="Button" parent="Menu/MenuButtons"]
 layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_fonts/font = ExtResource("3_iwfq2")
 theme_override_font_sizes/font_size = 30
 theme_override_styles/normal = SubResource("StyleBoxFlat_eiy7p")
@@ -137,6 +137,7 @@ icon_alignment = 1
 
 [node name="SettingsButton" type="Button" parent="Menu/MenuButtons"]
 layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_fonts/font = ExtResource("3_iwfq2")
 theme_override_font_sizes/font_size = 30
 theme_override_styles/normal = SubResource("StyleBoxFlat_eiy7p")
@@ -147,6 +148,7 @@ icon_alignment = 1
 
 [node name="QuitButton" type="Button" parent="Menu/MenuButtons"]
 layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_fonts/font = ExtResource("3_iwfq2")
 theme_override_font_sizes/font_size = 30
 theme_override_styles/normal = SubResource("StyleBoxFlat_eiy7p")

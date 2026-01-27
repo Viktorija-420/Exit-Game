@@ -1,3 +1,99 @@
-[gd_scene format=3 uid="uid://ef45daveb7mf"]
+[gd_scene load_steps=12 format=3 uid="uid://ef45daveb7mf"]
+
+[ext_resource type="Script" uid="uid://dpiemskwt7yt2" path="res://player.gd" id="1_n6sch"]
+[ext_resource type="Texture2D" uid="uid://c6de8lmakkakk" path="res://Assets/knightStandIdle1.png" id="2_ruxot"]
+[ext_resource type="Script" uid="uid://c5nb8ctl1gn3" path="res://door.gd" id="3_qqa7j"]
+[ext_resource type="Texture2D" uid="uid://60t8agd5r3d" path="res://Assets/doorIdle.png" id="4_5pep1"]
+[ext_resource type="Script" uid="uid://carul3u1od46m" path="res://spike_1.gd" id="5_hym0u"]
+[ext_resource type="Texture2D" uid="uid://cynuxlvx8l1w6" path="res://Assets/dangerIdle.png" id="6_x4h3w"]
+[ext_resource type="Script" uid="uid://bjiaeadbwvdeh" path="res://ui.gd" id="7_x4h3w"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_x4h3w"]
+size = Vector2(1148, 11)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_qqa7j"]
+size = Vector2(95, 137)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_hym0u"]
+size = Vector2(150, 151)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_chua2"]
+size = Vector2(107.5, 33)
 
 [node name="Level01" type="Node2D"]
+position = Vector2(583, 321)
+
+[node name="ColorRect" type="ColorRect" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.06666667, 0, 0, 1)
+metadata/_edit_use_anchors_ = true
+
+[node name="Ground" type="StaticBody2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Ground"]
+position = Vector2(-4, 283)
+shape = SubResource("RectangleShape2D_x4h3w")
+
+[node name="Player" type="CharacterBody2D" parent="."]
+script = ExtResource("1_n6sch")
+
+[node name="Sprite2D" type="Sprite2D" parent="Player"]
+position = Vector2(-514, 191)
+texture = ExtResource("2_ruxot")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Player"]
+position = Vector2(-511, 195)
+shape = SubResource("RectangleShape2D_qqa7j")
+
+[node name="Door" type="Area2D" parent="."]
+script = ExtResource("3_qqa7j")
+
+[node name="Sprite2D" type="Sprite2D" parent="Door"]
+position = Vector2(499.5, 197.24997)
+scale = Vector2(2.5689654, 2.420635)
+texture = ExtResource("4_5pep1")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Door"]
+position = Vector2(497.5, 198.25)
+shape = SubResource("RectangleShape2D_hym0u")
+
+[node name="Hazards" type="Node2D" parent="."]
+
+[node name="Spike1" type="Area2D" parent="Hazards"]
+script = ExtResource("5_hym0u")
+
+[node name="Sprite2D" type="Sprite2D" parent="Hazards/Spike1"]
+position = Vector2(2, 246.00002)
+scale = Vector2(0.08764938, 0.07091094)
+texture = ExtResource("6_x4h3w")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Hazards/Spike1"]
+position = Vector2(1, 247)
+shape = SubResource("RectangleShape2D_chua2")
+
+[node name="Spike2" type="Node2D" parent="Hazards"]
+
+[node name="Sprite2D" type="Sprite2D" parent="Hazards/Spike2"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Hazards/Spike2"]
+
+[node name="Camera2D" type="Camera2D" parent="."]
+
+[node name="UI" type="CanvasLayer" parent="."]
+script = ExtResource("7_x4h3w")
+
+[node name="Lives" type="Label" parent="UI"]
+anchors_preset = -1
+anchor_right = 0.13975695
+anchor_bottom = 0.06790123
+offset_left = 404.0
+offset_top = 7.0
+offset_right = 444.0
+offset_bottom = 30.0
+theme_override_font_sizes/font_size = 40
+text = "Lives: 3"
+metadata/_edit_use_anchors_ = true
