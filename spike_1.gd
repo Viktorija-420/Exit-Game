@@ -9,10 +9,11 @@ func _on_body_entered(body: Node2D) -> void:
 
 	Global.lives -= 1
 
-	# Atgriež spēlētāju uz startu
-	if body.has_method("reset_to_start"):
+	# play hurt animation + fall + reset
+	if body.has_method("hurt_and_reset"):
+		body.hurt_and_reset(global_position.x)
+	elif body.has_method("reset_to_start"):
 		body.reset_to_start()
 
-	# Ja nav dzīvību -> GameOver
 	if Global.lives <= 0:
 		get_tree().change_scene_to_file("res://MainMenu.tscn")

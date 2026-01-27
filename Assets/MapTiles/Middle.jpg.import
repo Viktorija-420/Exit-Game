@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://c6de8lmakkakk"
-path="res://.godot/imported/knightStandIdle1.png-ed51c7a26126a1a5cb0ffc6564dc022e.ctex"
+uid="uid://bdycnoiosxumo"
+path="res://.godot/imported/Middle.jpg-fd9493062054e6d7ac9da9d9065038d4.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/knightStandIdle1.png"
-dest_files=["res://.godot/imported/knightStandIdle1.png-ed51c7a26126a1a5cb0ffc6564dc022e.ctex"]
+source_file="res://Assets/MapTiles/Middle.jpg"
+dest_files=["res://.godot/imported/Middle.jpg-fd9493062054e6d7ac9da9d9065038d4.ctex"]
 
 [params]
 
