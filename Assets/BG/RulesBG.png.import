@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cynuxlvx8l1w6"
-path="res://.godot/imported/dangerIdle.png-be7294c1330457662409b1677f5201db.ctex"
+uid="uid://bustj4x2edmbt"
+path="res://.godot/imported/RulesBG.png-a880ca0f45eebda609e82c279a87c7a1.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/dangerIdle.png"
-dest_files=["res://.godot/imported/dangerIdle.png-be7294c1330457662409b1677f5201db.ctex"]
+source_file="res://Assets/BG/RulesBG.png"
+dest_files=["res://.godot/imported/RulesBG.png-a880ca0f45eebda609e82c279a87c7a1.ctex"]
 
 [params]
 

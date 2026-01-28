@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bustj4x2edmbt"
-path="res://.godot/imported/RulesBG.png-c2dd74ea349a34e0bf3a3c394fa77868.ctex"
+uid="uid://ccs6n2sg2ccfq"
+path="res://.godot/imported/Back.jpg-f98a1991d96e06493909e3fda7db66cb.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/RulesBG.png"
-dest_files=["res://.godot/imported/RulesBG.png-c2dd74ea349a34e0bf3a3c394fa77868.ctex"]
+source_file="res://Assets/MapTiles/Back.jpg"
+dest_files=["res://.godot/imported/Back.jpg-f98a1991d96e06493909e3fda7db66cb.ctex"]
 
 [params]
 

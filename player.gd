@@ -1,5 +1,6 @@
-# Player.gd (attach to Player = CharacterBody2D)
 extends CharacterBody2D
+
+@onready var fade: ColorRect = get_node_or_null("Fade") as ColorRect
 
 @export var speed: float = 200.0
 @export var jump_force: float = -400.0
@@ -11,7 +12,6 @@ extends CharacterBody2D
 @export var hurt_fall_time: float = 0.80
 @export var hurt_knockup: float = -220.0
 @export var hurt_push_x: float = 120.0
-# @export var hurt_push_y: float = -120.0
 
 @onready var anim: AnimatedSprite2D = $Anim
 
@@ -21,11 +21,22 @@ var _normal_scale: Vector2
 var _hurt: bool = false
 var _hurt_timer: float = 0.0
 
+var _fade_tween: Tween
+
+@export_multiline var text: String = ""
+
 func _ready() -> void:
 	start_pos = global_position
 	_normal_scale = anim.scale if anim else Vector2.ONE
 	if anim:
 		anim.play("idle")
+
+	if fade:
+		fade.set_anchors_preset(Control.PRESET_FULL_RECT)
+		fade.z_index = 999
+		fade.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		fade.visible = false
+		fade.modulate.a = 0.0
 
 func _physics_process(delta: float) -> void:
 	if not is_on_floor():
@@ -41,7 +52,6 @@ func _physics_process(delta: float) -> void:
 			_finish_hurt_and_reset()
 		return
 
-	# ---- normal controls ----
 	var dir := Input.get_action_strength("Right") - Input.get_action_strength("Left")
 	velocity.x = dir * speed
 
@@ -50,7 +60,6 @@ func _physics_process(delta: float) -> void:
 
 	move_and_slide()
 
-	# ---- normal animation ----
 	if anim:
 		if not is_on_floor():
 			pass
@@ -62,7 +71,6 @@ func _physics_process(delta: float) -> void:
 			if anim.animation != "idle":
 				anim.play("idle")
 
-# touch spike
 func hurt_and_reset(from_x: float = 0.0) -> void:
 	if _hurt:
 		return
@@ -70,21 +78,38 @@ func hurt_and_reset(from_x: float = 0.0) -> void:
 	_hurt = true
 	_hurt_timer = hurt_fall_time
 
-	# small knockback + pop up
+	# small knockback
 	var dir_x := 1.0
 	if from_x != 0.0:
 		dir_x = sign(global_position.x - from_x)
-		if dir_x == 0: dir_x = 1.0
+		if dir_x == 0:
+			dir_x = 1.0
 
 	velocity.x = dir_x * hurt_push_x
 	velocity.y = hurt_knockup
 
-	# play hurt anim if exists
 	if anim and anim.sprite_frames and anim.sprite_frames.has_animation("hurt"):
 		anim.play("hurt")
 
-	# throb effect (scale up/down quickly)
+	# throb + small fade flash (optional)
 	_start_throb()
+	_fade_flash(0.15)
+
+func _fade_flash(time: float = 0.15) -> void:
+	if not fade:
+		return
+
+	if _fade_tween:
+		_fade_tween.kill()
+
+	fade.visible = true
+	fade.modulate.a = 0.6
+
+	_fade_tween = create_tween()
+	_fade_tween.tween_property(fade, "modulate:a", 0.0, time)
+	_fade_tween.finished.connect(func():
+		fade.visible = false
+	)
 
 func _start_throb() -> void:
 	if not anim:
@@ -110,3 +135,11 @@ func reset_to_start() -> void:
 	if anim:
 		anim.scale = _normal_scale
 		anim.play("idle")
+
+func _on_key_body_entered(body: Node2D) -> void:
+	if body.name == "Player":
+		Global.text_box = text
+
+func _on_key_body_exited(body: Node2D) -> void:
+	if body.name == "Player" and Global.text_box == text:
+		Global.text_box = ""

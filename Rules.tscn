@@ -1,7 +1,7 @@
 [gd_scene load_steps=7 format=3 uid="uid://bqck50ag1kimw"]
 
 [ext_resource type="Script" uid="uid://bmoxr6d7vqpg8" path="res://menu.gd" id="1_ag8e4"]
-[ext_resource type="Texture2D" uid="uid://bustj4x2edmbt" path="res://Assets/RulesBG.png" id="1_fcngl"]
+[ext_resource type="Texture2D" uid="uid://bustj4x2edmbt" path="res://Assets/BG/RulesBG.png" id="1_fcngl"]
 [ext_resource type="FontFile" uid="uid://dir8slwrv7g00" path="res://Assets/OldeTome.ttf" id="2_ag8e4"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_tu520"]

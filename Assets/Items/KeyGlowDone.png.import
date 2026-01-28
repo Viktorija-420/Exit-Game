@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://6b1708wl4lrs"
-path="res://.godot/imported/bg.png-374ccea9ef348278661ed94eb855752d.ctex"
+uid="uid://bxujeviyvn2a1"
+path="res://.godot/imported/KeyGlowDone.png-d9d18298da99bf95991b3362185dfbdf.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/bg.png"
-dest_files=["res://.godot/imported/bg.png-374ccea9ef348278661ed94eb855752d.ctex"]
+source_file="res://Assets/Items/KeyGlowDone.png"
+dest_files=["res://.godot/imported/KeyGlowDone.png-d9d18298da99bf95991b3362185dfbdf.ctex"]
 
 [params]
 

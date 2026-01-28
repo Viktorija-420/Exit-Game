@@ -293,7 +293,7 @@ scale = Vector2(0.055136006, 0.04397394)
 sprite_frames = SubResource("SpriteFrames_c4q5u")
 animation = &"KeyGlow"
 autoplay = "KeyGlow"
-frame_progress = 0.75619215
+frame_progress = 0.7553509
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Key"]
 position = Vector2(-365, 142)

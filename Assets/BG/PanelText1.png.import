@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cddj7fo4oj8fc"
-path="res://.godot/imported/FreeFairyTaleUI.png-038b005039b787b639ba4b1915e7f456.ctex"
+uid="uid://dxggq56ek00ct"
+path="res://.godot/imported/PanelText1.png-4b41c89f85a181ef75cbd9f6dfb0b7e8.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/FreeFairyTaleUI.png"
-dest_files=["res://.godot/imported/FreeFairyTaleUI.png-038b005039b787b639ba4b1915e7f456.ctex"]
+source_file="res://Assets/BG/PanelText1.png"
+dest_files=["res://.godot/imported/PanelText1.png-4b41c89f85a181ef75cbd9f6dfb0b7e8.ctex"]
 
 [params]
 

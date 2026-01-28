@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bnm6crxnchb2u"
-path="res://.godot/imported/MediavelFree.png-0f24d3b86da7c4f6ec38c24cbd1c9f5e.ctex"
+uid="uid://b467aun0salor"
+path="res://.godot/imported/heartEmpty.png-663f7cf0bfd8b28b903ea015db39c7f4.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/MediavelFree.png"
-dest_files=["res://.godot/imported/MediavelFree.png-0f24d3b86da7c4f6ec38c24cbd1c9f5e.ctex"]
+source_file="res://Assets/Player/heartEmpty.png"
+dest_files=["res://.godot/imported/heartEmpty.png-663f7cf0bfd8b28b903ea015db39c7f4.ctex"]
 
 [params]
 

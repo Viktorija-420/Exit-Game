@@ -1,6 +1,6 @@
 [gd_scene load_steps=7 format=3 uid="uid://v4qdy2qaghr0"]
 
-[ext_resource type="Texture2D" uid="uid://6b1708wl4lrs" path="res://Assets/bg.png" id="1_i26rj"]
+[ext_resource type="Texture2D" uid="uid://6b1708wl4lrs" path="res://Assets/BG/bg.png" id="1_i26rj"]
 [ext_resource type="FontFile" uid="uid://dir8slwrv7g00" path="res://Assets/OldeTome.ttf" id="3_iwfq2"]
 
 [sub_resource type="GDScript" id="GDScript_h7a2f"]

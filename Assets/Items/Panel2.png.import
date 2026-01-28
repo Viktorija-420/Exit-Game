@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://60t8agd5r3d"
-path="res://.godot/imported/doorIdle.png-6ae89b7a7586d1da97c6d152f55802e6.ctex"
+uid="uid://c4iamdlysm3j1"
+path="res://.godot/imported/Panel2.png-3d722c7c84d589d6ef0fc0810279c54f.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/doorIdle.png"
-dest_files=["res://.godot/imported/doorIdle.png-6ae89b7a7586d1da97c6d152f55802e6.ctex"]
+source_file="res://Assets/Items/Panel2.png"
+dest_files=["res://.godot/imported/Panel2.png-3d722c7c84d589d6ef0fc0810279c54f.ctex"]
 
 [params]
 
