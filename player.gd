@@ -38,6 +38,9 @@ func _ready() -> void:
 		fade.visible = false
 		fade.modulate.a = 0.0
 
+func is_hurt() -> bool:
+	return _hurt
+
 func _physics_process(delta: float) -> void:
 	if not is_on_floor():
 		velocity.y += gravity * delta
@@ -91,7 +94,6 @@ func hurt_and_reset(from_x: float = 0.0) -> void:
 	if anim and anim.sprite_frames and anim.sprite_frames.has_animation("hurt"):
 		anim.play("hurt")
 
-	# throb + small fade flash (optional)
 	_start_throb()
 	_fade_flash(0.15)
 
@@ -107,7 +109,7 @@ func _fade_flash(time: float = 0.15) -> void:
 
 	_fade_tween = create_tween()
 	_fade_tween.tween_property(fade, "modulate:a", 0.0, time)
-	_fade_tween.finished.connect(func():
+	_fade_tween.finished.connect(func() -> void:
 		fade.visible = false
 	)
 
@@ -115,7 +117,7 @@ func _start_throb() -> void:
 	if not anim:
 		return
 
-	var tween := create_tween()
+	var tween: Tween = create_tween()
 	tween.set_trans(Tween.TRANS_SINE)
 	tween.set_ease(Tween.EASE_OUT)
 

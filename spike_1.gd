@@ -7,9 +7,14 @@ func _on_body_entered(body: Node2D) -> void:
 	if body.name != "Player":
 		return
 
-	Global.lives -= 1
+	# stop double-trigger while still overlapping
+	if body.has_method("is_hurt") and body.is_hurt():
+		return
 
-	# play hurt animation + fall + reset
+	# lose exactly 1 heart (and UI updates via signal)
+	Global.lose_life(1)
+
+	# hurt + reset
 	if body.has_method("hurt_and_reset"):
 		body.hurt_and_reset(global_position.x)
 	elif body.has_method("reset_to_start"):
