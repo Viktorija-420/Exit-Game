@@ -14,15 +14,12 @@ var has_key: bool = false:
 		has_key = value
 		key_changed.emit(has_key)
 
-
 func _ready() -> void:
 	reset_run()
-
 
 func lose_life(amount: int = 1) -> void:
 	lives = max(lives - amount, 0)
 	lives_changed.emit(lives)
-
 
 func reset_run() -> void:
 	lives = max_lives

@@ -18,6 +18,10 @@ func _ready() -> void:
 	quit_button.pressed.connect(_on_quit_pressed)
 
 func _on_play_pressed() -> void:
+	# ✅ RESET LIVES WHEN STARTING A NEW GAME
+	Global.reset_run()
+
+	# then go to the first level
 	get_tree().change_scene_to_file(\"res://Level_01.tscn\")
 
 func _on_rules_pressed() -> void:

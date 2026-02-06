@@ -20,5 +20,6 @@ func _on_body_entered(body: Node2D) -> void:
 	elif body.has_method("reset_to_start"):
 		body.reset_to_start()
 
+	# IMPORTANT: change scene deferred (safer inside signals/physics)
 	if Global.lives <= 0:
-		get_tree().change_scene_to_file("res://MainMenu.tscn")
+		get_tree().call_deferred("change_scene_to_file", "res://MainMenu.tscn")
