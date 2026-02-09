@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://vmmu01vosnk"
-path="res://.godot/imported/tiles2wall.jpg-64e034ecc7b5c6641a26b3ea228000c4.ctex"
+uid="uid://btsikyu3s0o82"
+path="res://.godot/imported/testEnemy.png-65ecd1401f55bcf9ac86d362728a0929.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/MapTiles/tiles2wall.jpg"
-dest_files=["res://.godot/imported/tiles2wall.jpg-64e034ecc7b5c6641a26b3ea228000c4.ctex"]
+source_file="res://Assets/Player/Enemy/testEnemy.png"
+dest_files=["res://.godot/imported/testEnemy.png-65ecd1401f55bcf9ac86d362728a0929.ctex"]
 
 [params]
 

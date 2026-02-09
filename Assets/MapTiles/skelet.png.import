@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bdycnoiosxumo"
-path="res://.godot/imported/Middle.jpg-fd9493062054e6d7ac9da9d9065038d4.ctex"
+uid="uid://qlgv6x0qsgl6"
+path="res://.godot/imported/skelet.png-06105dbddd3db712431a30a6dd2128c3.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/MapTiles/Middle.jpg"
-dest_files=["res://.godot/imported/Middle.jpg-fd9493062054e6d7ac9da9d9065038d4.ctex"]
+source_file="res://Assets/MapTiles/skelet.png"
+dest_files=["res://.godot/imported/skelet.png-06105dbddd3db712431a30a6dd2128c3.ctex"]
 
 [params]
 

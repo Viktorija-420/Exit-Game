@@ -25,6 +25,15 @@ var _fade_tween: Tween
 
 @export_multiline var text: String = ""
 
+# -------------------- SHOOTING (ADDED) --------------------
+@export var arrow_scene: PackedScene
+@export var shoot_cooldown: float = 0.20
+@export var shoot_action: StringName = &"Shoot"
+@onready var arrow_spawn: Node2D = $ArrowSpawn
+
+var _shoot_timer: float = 0.0
+# ----------------------------------------------------------
+
 func _ready() -> void:
 	start_pos = global_position
 	_normal_scale = anim.scale if anim else Vector2.ONE
@@ -42,6 +51,14 @@ func is_hurt() -> bool:
 	return _hurt
 
 func _physics_process(delta: float) -> void:
+	# -------------------- SHOOTING (ADDED) --------------------
+	if _shoot_timer > 0.0:
+		_shoot_timer -= delta
+
+	if Input.is_action_just_pressed(shoot_action) and _shoot_timer <= 0.0 and not _hurt:
+		_shoot_arrow()
+		_shoot_timer = shoot_cooldown
+
 	if not is_on_floor():
 		velocity.y += gravity * delta
 
@@ -145,3 +162,29 @@ func _on_key_body_entered(body: Node2D) -> void:
 func _on_key_body_exited(body: Node2D) -> void:
 	if body.name == "Player" and Global.text_box == text:
 		Global.text_box = ""
+
+# arrow shoot
+func _shoot_arrow() -> void:
+	if arrow_scene == null:
+		push_error("Player: arrow_scene not assigned!")
+		return
+
+	if arrow_spawn == null:
+		push_error("Player: ArrowSpawn not found!")
+		return
+
+	var arrow := arrow_scene.instantiate()
+	get_tree().current_scene.add_child(arrow)
+
+	# Spawn position
+	arrow.global_position = arrow_spawn.global_position
+
+	# Calculate direction toward mouse
+	var mouse_pos: Vector2 = get_global_mouse_position()
+	var dir: Vector2 = (mouse_pos - arrow_spawn.global_position).normalized()
+
+	# Set arrow direction (your arrow script must have `var direction`)
+	arrow.direction = dir
+
+	# Rotate arrow to face movement direction
+	arrow.rotation = dir.angle()

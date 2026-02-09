@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://c07khoncucvay"
-path="res://.godot/imported/Corner1.jpg-d17e9561887fabdfb0bb78c315e56e8c.ctex"
+uid="uid://cmxej4wwwmj3c"
+path="res://.godot/imported/Dungeon D_cora2.png-f1f0c0f03d2d30cc4b534241d02e4557.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/MapTiles/Corner1.jpg"
-dest_files=["res://.godot/imported/Corner1.jpg-d17e9561887fabdfb0bb78c315e56e8c.ctex"]
+source_file="res://Assets/MapTiles/Dungeon D_cora2.png"
+dest_files=["res://.godot/imported/Dungeon D_cora2.png-f1f0c0f03d2d30cc4b534241d02e4557.ctex"]
 
 [params]
 

@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://b7vho786bd7gc"
-path="res://.godot/imported/Corner2.jpg-4764bcb117df63e475c4680b93ee5b44.ctex"
+uid="uid://r3o2fjoj8rlt"
+path="res://.godot/imported/Spike.png-d64dd9d70197a2617ce9309a2a7d1754.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/MapTiles/Corner2.jpg"
-dest_files=["res://.godot/imported/Corner2.jpg-4764bcb117df63e475c4680b93ee5b44.ctex"]
+source_file="res://Assets/Items/Spike.png"
+dest_files=["res://.godot/imported/Spike.png-d64dd9d70197a2617ce9309a2a7d1754.ctex"]
 
 [params]
 

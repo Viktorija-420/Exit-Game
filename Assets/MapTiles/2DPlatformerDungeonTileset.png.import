@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://ccs6n2sg2ccfq"
-path="res://.godot/imported/Back.jpg-f98a1991d96e06493909e3fda7db66cb.ctex"
+uid="uid://c4ltwlph3ml87"
+path="res://.godot/imported/2DPlatformerDungeonTileset.png-255aa71b599c14276ba0ea0d9fc99ccb.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/MapTiles/Back.jpg"
-dest_files=["res://.godot/imported/Back.jpg-f98a1991d96e06493909e3fda7db66cb.ctex"]
+source_file="res://Assets/MapTiles/2DPlatformerDungeonTileset.png"
+dest_files=["res://.godot/imported/2DPlatformerDungeonTileset.png-255aa71b599c14276ba0ea0d9fc99ccb.ctex"]
 
 [params]
 
