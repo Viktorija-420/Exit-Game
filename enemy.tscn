@@ -1,7 +1,8 @@
-[gd_scene load_steps=5 format=3 uid="uid://cvmqthsogd2xy"]
+[gd_scene load_steps=6 format=3 uid="uid://cvmqthsogd2xy"]
 
 [ext_resource type="Script" uid="uid://cg176lwqccdwf" path="res://enemy.gd" id="1_4gyqm"]
 [ext_resource type="Texture2D" uid="uid://btsikyu3s0o82" path="res://Assets/Player/Enemy/testEnemy.png" id="1_7k104"]
+[ext_resource type="Texture2D" uid="uid://e7ht6r1t1ucn" path="res://Assets/Player/heartFull.png" id="3_qi2p4"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_4gyqm"]
 size = Vector2(40, 39)
@@ -25,5 +26,22 @@ shape = SubResource("RectangleShape2D_4gyqm")
 [node name="CollisionShape2D" type="CollisionShape2D" parent="HurtArea"]
 position = Vector2(0.5, 0.5)
 shape = SubResource("RectangleShape2D_qi2p4")
+
+[node name="Hearts" type="Node2D" parent="."]
+
+[node name="Heart1" type="Sprite2D" parent="Hearts"]
+position = Vector2(-15, -27)
+scale = Vector2(0.08, 0.08)
+texture = ExtResource("3_qi2p4")
+
+[node name="Heart2" type="Sprite2D" parent="Hearts"]
+position = Vector2(7.6293945e-06, -27.000004)
+scale = Vector2(0.08, 0.08)
+texture = ExtResource("3_qi2p4")
+
+[node name="Heart3" type="Sprite2D" parent="Hearts"]
+position = Vector2(14.000008, -27)
+scale = Vector2(0.08, 0.08)
+texture = ExtResource("3_qi2p4")
 
 [connection signal="body_entered" from="HurtArea" to="." method="_on_hurt_area_body_entered"]

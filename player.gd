@@ -95,6 +95,9 @@ func hurt_and_reset(from_x: float = 0.0) -> void:
 	if _hurt:
 		return
 
+	# ✅ ONE DAMAGE SOURCE: player handles losing life
+	Global.lose_life(1)
+
 	_hurt = true
 	_hurt_timer = hurt_fall_time
 
@@ -176,15 +179,10 @@ func _shoot_arrow() -> void:
 	var arrow := arrow_scene.instantiate()
 	get_tree().current_scene.add_child(arrow)
 
-	# Spawn position
 	arrow.global_position = arrow_spawn.global_position
 
-	# Calculate direction toward mouse
 	var mouse_pos: Vector2 = get_global_mouse_position()
 	var dir: Vector2 = (mouse_pos - arrow_spawn.global_position).normalized()
 
-	# Set arrow direction (your arrow script must have `var direction`)
 	arrow.direction = dir
-
-	# Rotate arrow to face movement direction
 	arrow.rotation = dir.angle()
