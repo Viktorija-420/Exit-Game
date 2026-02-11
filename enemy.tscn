@@ -8,7 +8,7 @@
 size = Vector2(40, 39)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_qi2p4"]
-size = Vector2(39, 39)
+size = Vector2(42.5, 41.5)
 
 [node name="Enemy" type="CharacterBody2D"]
 script = ExtResource("1_4gyqm")
@@ -24,7 +24,7 @@ shape = SubResource("RectangleShape2D_4gyqm")
 [node name="HurtArea" type="Area2D" parent="."]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="HurtArea"]
-position = Vector2(0.5, 0.5)
+position = Vector2(-0.25, 0.25)
 shape = SubResource("RectangleShape2D_qi2p4")
 
 [node name="Hearts" type="Node2D" parent="."]

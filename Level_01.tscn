@@ -1,24 +1,17 @@
-[gd_scene load_steps=41 format=3 uid="uid://ef45daveb7mf"]
+[gd_scene load_steps=32 format=3 uid="uid://ef45daveb7mf"]
 
 [ext_resource type="Texture2D" uid="uid://3odl545e1xpn" path="res://Assets/MapTiles/dungeon.png" id="1_2vvun"]
-[ext_resource type="Script" uid="uid://dpiemskwt7yt2" path="res://player.gd" id="1_n6sch"]
 [ext_resource type="Texture2D" uid="uid://c4ltwlph3ml87" path="res://Assets/MapTiles/2DPlatformerDungeonTileset.png" id="2_2vvun"]
-[ext_resource type="Texture2D" uid="uid://c6de8lmakkakk" path="res://Assets/Player/knightStandIdle1.png" id="2_ruxot"]
 [ext_resource type="Texture2D" uid="uid://cmxej4wwwmj3c" path="res://Assets/MapTiles/Dungeon D_cora2.png" id="3_6kxtg"]
 [ext_resource type="Script" uid="uid://c5nb8ctl1gn3" path="res://door.gd" id="3_qqa7j"]
-[ext_resource type="Texture2D" uid="uid://cabiujuh5rshh" path="res://Assets/Player/KnightHurt1.png" id="3_trksy"]
-[ext_resource type="Texture2D" uid="uid://cq5r6x5b3qhre" path="res://Assets/Player/knightHurt2.png" id="4_1f2cj"]
 [ext_resource type="Texture2D" uid="uid://60t8agd5r3d" path="res://Assets/Player/doorIdle.png" id="4_5pep1"]
-[ext_resource type="Texture2D" uid="uid://dyxu2b77q14y1" path="res://Assets/Player/knightStandIdle2.png" id="4_ahj24"]
 [ext_resource type="Texture2D" uid="uid://qlgv6x0qsgl6" path="res://Assets/MapTiles/skelet.png" id="4_c4q5u"]
-[ext_resource type="Texture2D" uid="uid://5yh25ilhmofl" path="res://Assets/Player/knightRightRun1.png" id="4_kvphc"]
-[ext_resource type="Texture2D" uid="uid://drfmsl7u8telb" path="res://Assets/Player/knightRightRun2.png" id="5_ahj24"]
 [ext_resource type="Script" uid="uid://carul3u1od46m" path="res://spike_1.gd" id="5_hym0u"]
 [ext_resource type="Script" uid="uid://bjiaeadbwvdeh" path="res://ui.gd" id="7_x4h3w"]
+[ext_resource type="PackedScene" uid="uid://bni1x4r8t3keq" path="res://player.tscn" id="10_wyb3m"]
 [ext_resource type="Texture2D" uid="uid://yocrtunwedb7" path="res://Assets/Player/door1.png" id="15_2riie"]
 [ext_resource type="Texture2D" uid="uid://dcey8ctubf6w5" path="res://Assets/Player/door2.png" id="16_wyb3m"]
 [ext_resource type="Texture2D" uid="uid://8dq61xtywlbk" path="res://Assets/Player/door3.png" id="17_4hqec"]
-[ext_resource type="PackedScene" uid="uid://dv64rancm2vy1" path="res://arrow.tscn" id="17_c4q5u"]
 [ext_resource type="Script" uid="uid://bloflvsrgb3d3" path="res://key.gd" id="18_6kxtg"]
 [ext_resource type="PackedScene" uid="uid://cvmqthsogd2xy" path="res://enemy.tscn" id="18_kcaqr"]
 [ext_resource type="Texture2D" uid="uid://r3o2fjoj8rlt" path="res://Assets/Items/Spike.png" id="21_6kxtg"]
@@ -384,45 +377,6 @@ animations = [{
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_hym0u"]
 size = Vector2(32, 68.5)
 
-[sub_resource type="SpriteFrames" id="SpriteFrames_teea1"]
-animations = [{
-"frames": [{
-"duration": 1.0,
-"texture": ExtResource("3_trksy")
-}, {
-"duration": 1.0,
-"texture": ExtResource("4_1f2cj")
-}],
-"loop": true,
-"name": &"hurt",
-"speed": 5.0
-}, {
-"frames": [{
-"duration": 4.0,
-"texture": ExtResource("2_ruxot")
-}, {
-"duration": 4.0,
-"texture": ExtResource("4_ahj24")
-}],
-"loop": true,
-"name": &"idle",
-"speed": 8.0
-}, {
-"frames": [{
-"duration": 2.0,
-"texture": ExtResource("4_kvphc")
-}, {
-"duration": 2.0,
-"texture": ExtResource("5_ahj24")
-}],
-"loop": true,
-"name": &"walk",
-"speed": 8.0
-}]
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_qqa7j"]
-size = Vector2(45, 75.25)
-
 [sub_resource type="SpriteFrames" id="SpriteFrames_c4q5u"]
 animations = [{
 "frames": [{
@@ -479,30 +433,10 @@ animation = &"Closed"
 position = Vector2(766, 177)
 shape = SubResource("RectangleShape2D_hym0u")
 
-[node name="Player" type="CharacterBody2D" parent="." groups=["player"]]
-script = ExtResource("1_n6sch")
-hurt_push_x = -120.0
-arrow_scene = ExtResource("17_c4q5u")
-
-[node name="Anim" type="AnimatedSprite2D" parent="Player"]
-position = Vector2(-416, 177)
-scale = Vector2(0.5, 0.5527577)
-sprite_frames = SubResource("SpriteFrames_teea1")
-animation = &"idle"
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Player"]
-position = Vector2(-416, 177)
-shape = SubResource("RectangleShape2D_qqa7j")
-
-[node name="Camera2D" type="Camera2D" parent="Player"]
-position = Vector2(-291, 63)
-zoom = Vector2(1.555, 1.555)
-
-[node name="ArrowSpawn" type="Marker2D" parent="Player"]
-position = Vector2(-416, 177)
+[node name="Player" parent="." instance=ExtResource("10_wyb3m")]
 
 [node name="Enemy" parent="." instance=ExtResource("18_kcaqr")]
-position = Vector2(452.99997, 129)
+position = Vector2(461.99997, 184)
 
 [node name="Key" type="Area2D" parent="."]
 script = ExtResource("18_6kxtg")
@@ -633,6 +567,3 @@ offset_bottom = 620.0
 theme_override_fonts/font = ExtResource("21_wyb3m")
 theme_override_font_sizes/font_size = 35
 text = "Collect the item with E"
-
-[connection signal="body_entered" from="Key" to="Player" method="_on_key_body_entered"]
-[connection signal="body_exited" from="Key" to="Player" method="_on_key_body_exited"]

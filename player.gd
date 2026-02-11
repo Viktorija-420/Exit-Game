@@ -25,14 +25,14 @@ var _fade_tween: Tween
 
 @export_multiline var text: String = ""
 
-# -------------------- SHOOTING (ADDED) --------------------
+# -------------------- SHOOTING --------------------
 @export var arrow_scene: PackedScene
 @export var shoot_cooldown: float = 0.20
 @export var shoot_action: StringName = &"Shoot"
 @onready var arrow_spawn: Node2D = $ArrowSpawn
 
 var _shoot_timer: float = 0.0
-# ----------------------------------------------------------
+# --------------------------------------------------
 
 func _ready() -> void:
 	start_pos = global_position
@@ -51,13 +51,14 @@ func is_hurt() -> bool:
 	return _hurt
 
 func _physics_process(delta: float) -> void:
-	# -------------------- SHOOTING (ADDED) --------------------
+	# -------------------- SHOOTING --------------------
 	if _shoot_timer > 0.0:
 		_shoot_timer -= delta
 
 	if Input.is_action_just_pressed(shoot_action) and _shoot_timer <= 0.0 and not _hurt:
 		_shoot_arrow()
 		_shoot_timer = shoot_cooldown
+	# --------------------------------------------------
 
 	if not is_on_floor():
 		velocity.y += gravity * delta
@@ -66,10 +67,11 @@ func _physics_process(delta: float) -> void:
 		_hurt_timer -= delta
 		move_and_slide()
 
+		# ✅ when hurt ends, stop hurt state but DO NOT reset position
 		if _hurt_timer <= 0.0 and is_on_floor():
-			_finish_hurt_and_reset()
+			_finish_hurt()
 		elif _hurt_timer <= -0.25:
-			_finish_hurt_and_reset()
+			_finish_hurt()
 		return
 
 	var dir := Input.get_action_strength("Right") - Input.get_action_strength("Left")
@@ -147,10 +149,14 @@ func _start_throb() -> void:
 	tween.tween_property(anim, "scale", _normal_scale * hurt_throb_scale, hurt_throb_time)
 	tween.tween_property(anim, "scale", _normal_scale, hurt_throb_time)
 
-func _finish_hurt_and_reset() -> void:
+# ✅ renamed and changed: no reset
+func _finish_hurt() -> void:
 	_hurt = false
-	reset_to_start()
+	if anim:
+		anim.scale = _normal_scale
+		anim.play("idle")
 
+# kept in case other scripts call it, but it won't be used by hurt anymore
 func reset_to_start() -> void:
 	global_position = start_pos
 	velocity = Vector2.ZERO

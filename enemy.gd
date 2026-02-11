@@ -94,8 +94,20 @@ func _on_hurt_area_body_entered(body: Node2D) -> void:
 		print("Player already hurt, ignoring")
 		return
 
+	# ✅ Preferred path: keep your existing functionality
+	# Player handles losing exactly 1 heart inside hurt_and_reset()
 	if body.has_method("hurt_and_reset"):
 		print("Calling player.hurt_and_reset()")
 		body.hurt_and_reset(global_position.x)
-	else:
-		print("Player has no hurt_and_reset method??")
+		return
+
+	# ✅ Fallback: if player doesn't have hurt_and_reset, still take 1 heart
+	print("Player has no hurt_and_reset, using fallback 1-heart damage")
+
+	Global.lose_life(1)
+
+	if body.has_method("reset_to_start"):
+		body.reset_to_start()
+
+	if Global.lives <= 0:
+		get_tree().call_deferred("change_scene_to_file", "res://MainMenu.tscn")
