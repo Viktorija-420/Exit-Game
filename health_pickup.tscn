@@ -1,0 +1,18 @@
+[gd_scene load_steps=4 format=3 uid="uid://drse07k85mvc8"]
+
+[ext_resource type="Texture2D" uid="uid://d3fos0sh1mmyh" path="res://Assets/Player/PlayerAssets/postion.png" id="1_01648"]
+[ext_resource type="Script" uid="uid://brbox4ueiay3e" path="res://health_pickup.gd" id="1_awyve"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_awyve"]
+size = Vector2(4, 6)
+
+[node name="HealthPickup" type="Area2D"]
+script = ExtResource("1_awyve")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(0, 1.5258789e-05)
+scale = Vector2(0.01, 0.01)
+texture = ExtResource("1_01648")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_awyve")

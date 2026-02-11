@@ -17,14 +17,16 @@ func _ready() -> void:
 	hearts = [
 		_must_get_heart("HeartsHolder/Hearts/heart1"),
 		_must_get_heart("HeartsHolder/Hearts/heart2"),
-		_must_get_heart("HeartsHolder/Hearts/heart3")
+		_must_get_heart("HeartsHolder/Hearts/heart3"),
+		_must_get_heart("HeartsHolder/Hearts/heart4") # ✅ NEW
 	]
 
 	# We only use these to COPY their textures
 	var empty_hearts: Array[TextureRect] = [
 		_must_get_heart("HeartsHolder/HeartsEmpty/heart1"),
 		_must_get_heart("HeartsHolder/HeartsEmpty/heart2"),
-		_must_get_heart("HeartsHolder/HeartsEmpty/heart3")
+		_must_get_heart("HeartsHolder/HeartsEmpty/heart3"),
+		_must_get_heart("HeartsHolder/HeartsEmpty/heart4") # ✅ NEW
 	]
 
 	# Cache textures
@@ -57,13 +59,21 @@ func _ready() -> void:
 		fade.visible = false
 
 func _on_lives_changed(lives_value: int) -> void:
-	var maxl: int = int(min(Global.max_lives, hearts.size()))
+	# ✅ allow UI up to however many heart nodes you actually placed (4)
+	var ui_capacity: int = hearts.size()
+
+	# ✅ show up to Global.max_lives, but never beyond UI capacity
+	var maxl: int = int(clamp(Global.max_lives, 0, ui_capacity))
 	var lives: int = int(clamp(lives_value, 0, maxl))
 
-	# Swap textures instead of toggling separate nodes
+	# Update visible hearts (full/empty)
 	for i in range(maxl):
 		hearts[i].texture = full_textures[i] if i < lives else empty_textures[i]
 		hearts[i].visible = true
+
+	# Hide extra heart slots (ex: if max_lives is 3, hide heart4)
+	for i in range(maxl, ui_capacity):
+		hearts[i].visible = false
 
 	game_over_label.visible = (lives <= 0)
 

@@ -1,4 +1,4 @@
-[gd_scene load_steps=32 format=3 uid="uid://ef45daveb7mf"]
+[gd_scene load_steps=33 format=3 uid="uid://ef45daveb7mf"]
 
 [ext_resource type="Texture2D" uid="uid://3odl545e1xpn" path="res://Assets/MapTiles/dungeon.png" id="1_2vvun"]
 [ext_resource type="Texture2D" uid="uid://c4ltwlph3ml87" path="res://Assets/MapTiles/2DPlatformerDungeonTileset.png" id="2_2vvun"]
@@ -9,6 +9,7 @@
 [ext_resource type="Script" uid="uid://carul3u1od46m" path="res://spike_1.gd" id="5_hym0u"]
 [ext_resource type="Script" uid="uid://bjiaeadbwvdeh" path="res://ui.gd" id="7_x4h3w"]
 [ext_resource type="PackedScene" uid="uid://bni1x4r8t3keq" path="res://player.tscn" id="10_wyb3m"]
+[ext_resource type="PackedScene" uid="uid://drse07k85mvc8" path="res://health_pickup.tscn" id="12_4hqec"]
 [ext_resource type="Texture2D" uid="uid://yocrtunwedb7" path="res://Assets/Player/door1.png" id="15_2riie"]
 [ext_resource type="Texture2D" uid="uid://dcey8ctubf6w5" path="res://Assets/Player/door2.png" id="16_wyb3m"]
 [ext_resource type="Texture2D" uid="uid://8dq61xtywlbk" path="res://Assets/Player/door3.png" id="17_4hqec"]
@@ -16,8 +17,8 @@
 [ext_resource type="PackedScene" uid="uid://cvmqthsogd2xy" path="res://enemy.tscn" id="18_kcaqr"]
 [ext_resource type="Texture2D" uid="uid://r3o2fjoj8rlt" path="res://Assets/Items/Spike.png" id="21_6kxtg"]
 [ext_resource type="FontFile" uid="uid://dir8slwrv7g00" path="res://Assets/OldeTome.ttf" id="21_wyb3m"]
-[ext_resource type="Texture2D" uid="uid://e7ht6r1t1ucn" path="res://Assets/Player/heartFull.png" id="22_4hqec"]
-[ext_resource type="Texture2D" uid="uid://b467aun0salor" path="res://Assets/Player/heartEmpty.png" id="23_2gcrv"]
+[ext_resource type="Texture2D" uid="uid://e7ht6r1t1ucn" path="res://Assets/Player/PlayerAssets/heartFull.png" id="22_4hqec"]
+[ext_resource type="Texture2D" uid="uid://b467aun0salor" path="res://Assets/Player/PlayerAssets/heartEmpty.png" id="23_2gcrv"]
 [ext_resource type="Texture2D" uid="uid://cx55i0o4w8ku1" path="res://Assets/Items/KeyIdle.png" id="24_nft2v"]
 [ext_resource type="Texture2D" uid="uid://bxujeviyvn2a1" path="res://Assets/Items/KeyGlowDone.png" id="25_6kxtg"]
 [ext_resource type="Texture2D" uid="uid://dxggq56ek00ct" path="res://Assets/BG/PanelText1.png" id="27_c4q5u"]
@@ -438,6 +439,10 @@ shape = SubResource("RectangleShape2D_hym0u")
 [node name="Enemy" parent="." instance=ExtResource("18_kcaqr")]
 position = Vector2(461.99997, 184)
 
+[node name="HealthPickup" parent="." instance=ExtResource("12_4hqec")]
+position = Vector2(139, 129)
+scale = Vector2(5, 5)
+
 [node name="Key" type="Area2D" parent="."]
 script = ExtResource("18_6kxtg")
 collect_label_path = NodePath("../UI/Collect")
@@ -532,6 +537,10 @@ texture = ExtResource("23_2gcrv")
 layout_mode = 2
 texture = ExtResource("23_2gcrv")
 
+[node name="heart4" type="TextureRect" parent="UI/HeartsHolder/HeartsEmpty"]
+layout_mode = 2
+texture = ExtResource("23_2gcrv")
+
 [node name="Hearts" type="HBoxContainer" parent="UI/HeartsHolder"]
 layout_mode = 0
 offset_left = 129.0
@@ -549,6 +558,10 @@ layout_mode = 2
 texture = ExtResource("22_4hqec")
 
 [node name="heart3" type="TextureRect" parent="UI/HeartsHolder/Hearts"]
+layout_mode = 2
+texture = ExtResource("22_4hqec")
+
+[node name="heart4" type="TextureRect" parent="UI/HeartsHolder/Hearts"]
 layout_mode = 2
 texture = ExtResource("22_4hqec")
 
