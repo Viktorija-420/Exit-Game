@@ -1,38 +1,9 @@
-[gd_scene load_steps=7 format=3 uid="uid://v4qdy2qaghr0"]
+[gd_scene load_steps=8 format=3 uid="uid://v4qdy2qaghr0"]
 
+[ext_resource type="Script" uid="uid://bmoxr6d7vqpg8" path="res://menu.gd" id="1_h7a2f"]
 [ext_resource type="Texture2D" uid="uid://6b1708wl4lrs" path="res://Assets/BG/bg.png" id="1_i26rj"]
+[ext_resource type="Script" uid="uid://cx5bekdlfj5b0" path="res://main_menu.gd" id="1_qoqlk"]
 [ext_resource type="FontFile" uid="uid://dir8slwrv7g00" path="res://Assets/OldeTome.ttf" id="3_iwfq2"]
-
-[sub_resource type="GDScript" id="GDScript_h7a2f"]
-script/source = "extends Node2D
-
-@onready var play_button: Button = $Menu/MenuButtons/PlayButton
-@onready var rules_button: Button = $Menu/MenuButtons/RulesButton
-@onready var settings_button: Button = $Menu/MenuButtons/SettingsButton
-@onready var quit_button: Button = $Menu/MenuButtons/QuitButton
-
-func _ready() -> void:
-	play_button.pressed.connect(_on_play_pressed)
-	rules_button.pressed.connect(_on_rules_pressed)
-	settings_button.pressed.connect(_on_settings_pressed)
-	quit_button.pressed.connect(_on_quit_pressed)
-
-func _on_play_pressed() -> void:
-	# ✅ RESET LIVES WHEN STARTING A NEW GAME
-	Global.reset_run()
-
-	# then go to the first level
-	get_tree().change_scene_to_file(\"res://Level_01.tscn\")
-
-func _on_rules_pressed() -> void:
-	get_tree().change_scene_to_file(\"res://Rules.tscn\")
-
-func _on_settings_pressed() -> void:
-	get_tree().change_scene_to_file(\"res://Settings.tscn\")
-
-func _on_quit_pressed() -> void:
-	get_tree().quit()
-"
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_eiy7p"]
 bg_color = Color(0.99607843, 0.85490197, 0.34901962, 1)
@@ -71,7 +42,7 @@ corner_radius_bottom_right = 50
 corner_radius_bottom_left = 50
 
 [node name="MainMenu" type="Node2D"]
-script = SubResource("GDScript_h7a2f")
+script = ExtResource("1_qoqlk")
 
 [node name="Menu" type="Control" parent="."]
 layout_mode = 3
@@ -80,6 +51,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+script = ExtResource("1_h7a2f")
 
 [node name="Background" type="TextureRect" parent="Menu"]
 modulate = Color(0.6378432, 0.6378432, 0.63784313, 1)

@@ -1,0 +1,235 @@
+[gd_scene load_steps=22 format=3 uid="uid://d31bn50tffcc2"]
+
+[ext_resource type="Script" uid="uid://bjiaeadbwvdeh" path="res://ui.gd" id="1_ibotj"]
+[ext_resource type="FontFile" uid="uid://dir8slwrv7g00" path="res://Assets/OldeTome.ttf" id="2_n5ude"]
+[ext_resource type="Texture2D" uid="uid://b467aun0salor" path="res://Assets/Player/PlayerAssets/heartEmpty.png" id="3_y4yjw"]
+[ext_resource type="Texture2D" uid="uid://e7ht6r1t1ucn" path="res://Assets/Player/PlayerAssets/heartFull.png" id="4_waa4j"]
+[ext_resource type="Texture2D" uid="uid://dxggq56ek00ct" path="res://Assets/BG/PanelText1.png" id="5_ok7cu"]
+[ext_resource type="Texture2D" uid="uid://be1qomykvm8h0" path="res://Assets/BG/mainPanel.png" id="6_ok7cu"]
+[ext_resource type="Texture2D" uid="uid://dq3afx0hqgg2g" path="res://Assets/BG/normalButtonUI.jpg" id="7_irxef"]
+[ext_resource type="Texture2D" uid="uid://dty0yfthuqhe4" path="res://Assets/BG/prressedButtonUI.jpg" id="8_e2l4f"]
+[ext_resource type="Texture2D" uid="uid://daavc0j5svjki" path="res://Assets/BG/hoverButtonUI.jpg" id="9_n5rqp"]
+
+[sub_resource type="Gradient" id="Gradient_e2l4f"]
+offsets = PackedFloat32Array(0, 0.56962025, 1)
+colors = PackedColorArray(0.36078432, 0, 0, 1, 0.64805937, 0.22739053, 0.28071228, 1, 0.6499141, 0.30339843, 0.384161, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_n5rqp"]
+gradient = SubResource("Gradient_e2l4f")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_gs482"]
+texture = ExtResource("6_ok7cu")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_cxd00"]
+texture = ExtResource("7_irxef")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_etlur"]
+texture = ExtResource("8_e2l4f")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_7rqds"]
+texture = ExtResource("9_n5rqp")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_nvb2n"]
+texture = ExtResource("7_irxef")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_os5c7"]
+texture = ExtResource("8_e2l4f")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_b2p7n"]
+texture = ExtResource("9_n5rqp")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_vkygq"]
+texture = ExtResource("7_irxef")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_sosvr"]
+texture = ExtResource("8_e2l4f")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_ndy3v"]
+texture = ExtResource("9_n5rqp")
+
+[node name="UI" type="CanvasLayer"]
+process_mode = 3
+script = ExtResource("1_ibotj")
+
+[node name="Lives" type="Label" parent="."]
+anchors_preset = -1
+anchor_right = 0.056423612
+anchor_bottom = 0.024691353
+offset_left = 48.0
+offset_top = 60.0
+offset_right = 88.0
+offset_bottom = 83.0
+theme_override_fonts/font = ExtResource("2_n5ude")
+theme_override_font_sizes/font_size = 40
+text = "Lives: "
+metadata/_edit_use_anchors_ = true
+
+[node name="GameOverLabel" type="Label" parent="."]
+offset_left = 710.00006
+offset_top = 12.0
+offset_right = 978.0592
+offset_bottom = 35.0
+scale = Vector2(1.6526206, 5.7151217)
+
+[node name="Label" type="Label" parent="."]
+offset_left = 40.0
+offset_top = 12.0
+offset_right = 267.0
+offset_bottom = 51.0
+theme_override_fonts/font = ExtResource("2_n5ude")
+theme_override_font_sizes/font_size = 40
+text = "Arrow charge:"
+
+[node name="ChargeBar" type="TextureProgressBar" parent="."]
+offset_left = 278.0
+offset_top = 26.0
+offset_right = 503.0
+offset_bottom = 35.0
+max_value = 1.0
+step = 0.01
+nine_patch_stretch = true
+stretch_margin_left = 225
+texture_progress = SubResource("GradientTexture1D_n5rqp")
+
+[node name="HeartsHolder" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_left = 35.0
+offset_top = 47.0
+offset_right = 75.0
+offset_bottom = 87.0
+
+[node name="HeartsEmpty" type="HBoxContainer" parent="HeartsHolder"]
+layout_mode = 0
+offset_left = 129.0
+offset_top = 12.0
+offset_right = 530.2489
+offset_bottom = 217.36418
+scale = Vector2(0.28187215, 0.17529833)
+
+[node name="heart1" type="TextureRect" parent="HeartsHolder/HeartsEmpty"]
+layout_mode = 2
+texture = ExtResource("3_y4yjw")
+
+[node name="heart2" type="TextureRect" parent="HeartsHolder/HeartsEmpty"]
+layout_mode = 2
+texture = ExtResource("3_y4yjw")
+
+[node name="heart3" type="TextureRect" parent="HeartsHolder/HeartsEmpty"]
+layout_mode = 2
+texture = ExtResource("3_y4yjw")
+
+[node name="heart4" type="TextureRect" parent="HeartsHolder/HeartsEmpty"]
+layout_mode = 2
+texture = ExtResource("3_y4yjw")
+
+[node name="Hearts" type="HBoxContainer" parent="HeartsHolder"]
+layout_mode = 0
+offset_left = 129.0
+offset_top = 12.0
+offset_right = 530.2489
+offset_bottom = 217.36418
+scale = Vector2(0.28187215, 0.17529833)
+
+[node name="heart1" type="TextureRect" parent="HeartsHolder/Hearts"]
+layout_mode = 2
+texture = ExtResource("4_waa4j")
+
+[node name="heart2" type="TextureRect" parent="HeartsHolder/Hearts"]
+layout_mode = 2
+texture = ExtResource("4_waa4j")
+
+[node name="heart3" type="TextureRect" parent="HeartsHolder/Hearts"]
+layout_mode = 2
+texture = ExtResource("4_waa4j")
+
+[node name="heart4" type="TextureRect" parent="HeartsHolder/Hearts"]
+layout_mode = 2
+texture = ExtResource("4_waa4j")
+
+[node name="Collect" type="Area2D" parent="."]
+
+[node name="Sprite2D" type="Sprite2D" parent="Collect"]
+position = Vector2(213.5, 589.75)
+scale = Vector2(0.9298642, 0.7903226)
+texture = ExtResource("5_ok7cu")
+
+[node name="Label" type="Label" parent="Collect"]
+offset_left = 48.0
+offset_top = 581.0
+offset_right = 402.0
+offset_bottom = 620.0
+theme_override_fonts/font = ExtResource("2_n5ude")
+theme_override_font_sizes/font_size = 35
+text = "Collect the item with E"
+
+[node name="PauseButton" type="Button" parent="."]
+offset_left = 1048.0
+offset_top = 12.0
+offset_right = 1130.0
+offset_bottom = 60.0
+text = "Pause"
+
+[node name="PauseMenu" type="Control" parent="."]
+visible = false
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="Panel" type="Panel" parent="PauseMenu"]
+layout_mode = 0
+offset_left = 247.0
+offset_top = 88.0
+offset_right = 959.0
+offset_bottom = 533.0
+theme_override_styles/panel = SubResource("StyleBoxTexture_gs482")
+
+[node name="Label" type="Label" parent="PauseMenu/Panel"]
+layout_mode = 0
+offset_left = 163.0
+offset_right = 540.0
+offset_bottom = 68.0
+theme_override_font_sizes/font_size = 40
+text = "Paused"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="MainMenuButton" type="Button" parent="PauseMenu/Panel"]
+layout_mode = 0
+offset_left = 251.0
+offset_top = 147.0
+offset_right = 429.0
+offset_bottom = 203.0
+theme_override_styles/normal = SubResource("StyleBoxTexture_cxd00")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_etlur")
+theme_override_styles/hover = SubResource("StyleBoxTexture_7rqds")
+text = "Maiin Menu"
+
+[node name="SettingButton" type="Button" parent="PauseMenu/Panel"]
+layout_mode = 0
+offset_left = 251.0
+offset_top = 220.0
+offset_right = 429.0
+offset_bottom = 277.0
+theme_override_styles/normal = SubResource("StyleBoxTexture_nvb2n")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_os5c7")
+theme_override_styles/hover = SubResource("StyleBoxTexture_b2p7n")
+text = "Settings"
+
+[node name="RulesButton" type="Button" parent="PauseMenu/Panel"]
+layout_mode = 0
+offset_left = 251.0
+offset_top = 299.0
+offset_right = 429.0
+offset_bottom = 356.0
+theme_override_styles/normal = SubResource("StyleBoxTexture_vkygq")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_sosvr")
+theme_override_styles/hover = SubResource("StyleBoxTexture_ndy3v")
+text = "Rules"
+
+[node name="ResumeButton" type="Button" parent="PauseMenu/Panel"]
+visible = false
+layout_mode = 0
+offset_right = 187.0
+offset_bottom = 55.0

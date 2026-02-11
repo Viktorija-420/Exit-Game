@@ -1,8 +1,10 @@
-[gd_scene load_steps=7 format=3 uid="uid://bqck50ag1kimw"]
+[gd_scene load_steps=9 format=3 uid="uid://bqck50ag1kimw"]
 
 [ext_resource type="Script" uid="uid://bmoxr6d7vqpg8" path="res://menu.gd" id="1_ag8e4"]
 [ext_resource type="Texture2D" uid="uid://bustj4x2edmbt" path="res://Assets/BG/RulesBG.png" id="1_fcngl"]
+[ext_resource type="Script" uid="uid://da1w631r0jhk5" path="res://rules.gd" id="1_tu520"]
 [ext_resource type="FontFile" uid="uid://dir8slwrv7g00" path="res://Assets/OldeTome.ttf" id="2_ag8e4"]
+[ext_resource type="PackedScene" uid="uid://v4qdy2qaghr0" path="res://MainMenu.tscn" id="2_eojom"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_tu520"]
 bg_color = Color(0, 0, 0, 0.8156863)
@@ -26,6 +28,8 @@ shadow_size = 10
 shadow_offset = Vector2(6, 6)
 
 [node name="Rules" type="Node2D"]
+script = ExtResource("1_tu520")
+back_scene = ExtResource("2_eojom")
 
 [node name="Menu" type="Control" parent="."]
 layout_mode = 3

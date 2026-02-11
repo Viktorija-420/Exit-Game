@@ -1,4 +1,4 @@
-[gd_scene load_steps=33 format=3 uid="uid://ef45daveb7mf"]
+[gd_scene load_steps=29 format=3 uid="uid://ef45daveb7mf"]
 
 [ext_resource type="Texture2D" uid="uid://3odl545e1xpn" path="res://Assets/MapTiles/dungeon.png" id="1_2vvun"]
 [ext_resource type="Texture2D" uid="uid://c4ltwlph3ml87" path="res://Assets/MapTiles/2DPlatformerDungeonTileset.png" id="2_2vvun"]
@@ -7,7 +7,6 @@
 [ext_resource type="Texture2D" uid="uid://60t8agd5r3d" path="res://Assets/Player/doorIdle.png" id="4_5pep1"]
 [ext_resource type="Texture2D" uid="uid://qlgv6x0qsgl6" path="res://Assets/MapTiles/skelet.png" id="4_c4q5u"]
 [ext_resource type="Script" uid="uid://carul3u1od46m" path="res://spike_1.gd" id="5_hym0u"]
-[ext_resource type="Script" uid="uid://bjiaeadbwvdeh" path="res://ui.gd" id="7_x4h3w"]
 [ext_resource type="PackedScene" uid="uid://bni1x4r8t3keq" path="res://player.tscn" id="10_wyb3m"]
 [ext_resource type="PackedScene" uid="uid://drse07k85mvc8" path="res://health_pickup.tscn" id="12_4hqec"]
 [ext_resource type="Texture2D" uid="uid://yocrtunwedb7" path="res://Assets/Player/door1.png" id="15_2riie"]
@@ -15,13 +14,10 @@
 [ext_resource type="Texture2D" uid="uid://8dq61xtywlbk" path="res://Assets/Player/door3.png" id="17_4hqec"]
 [ext_resource type="Script" uid="uid://bloflvsrgb3d3" path="res://key.gd" id="18_6kxtg"]
 [ext_resource type="PackedScene" uid="uid://cvmqthsogd2xy" path="res://enemy.tscn" id="18_kcaqr"]
+[ext_resource type="PackedScene" uid="uid://d31bn50tffcc2" path="res://ui.tscn" id="18_ygfr6"]
 [ext_resource type="Texture2D" uid="uid://r3o2fjoj8rlt" path="res://Assets/Items/Spike.png" id="21_6kxtg"]
-[ext_resource type="FontFile" uid="uid://dir8slwrv7g00" path="res://Assets/OldeTome.ttf" id="21_wyb3m"]
-[ext_resource type="Texture2D" uid="uid://e7ht6r1t1ucn" path="res://Assets/Player/PlayerAssets/heartFull.png" id="22_4hqec"]
-[ext_resource type="Texture2D" uid="uid://b467aun0salor" path="res://Assets/Player/PlayerAssets/heartEmpty.png" id="23_2gcrv"]
 [ext_resource type="Texture2D" uid="uid://cx55i0o4w8ku1" path="res://Assets/Items/KeyIdle.png" id="24_nft2v"]
 [ext_resource type="Texture2D" uid="uid://bxujeviyvn2a1" path="res://Assets/Items/KeyGlowDone.png" id="25_6kxtg"]
-[ext_resource type="Texture2D" uid="uid://dxggq56ek00ct" path="res://Assets/BG/PanelText1.png" id="27_c4q5u"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_nft2v"]
 texture = ExtResource("1_2vvun")
@@ -479,104 +475,6 @@ shape = SubResource("RectangleShape2D_chua2")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Hazards/Spike2"]
 
-[node name="UI" type="CanvasLayer" parent="."]
-script = ExtResource("7_x4h3w")
-
-[node name="Lives" type="Label" parent="UI"]
-anchors_preset = -1
-anchor_right = 0.056423612
-anchor_bottom = 0.024691353
-offset_left = 22.0
-offset_top = 12.0
-offset_right = 62.0
-offset_bottom = 35.000004
-theme_override_fonts/font = ExtResource("21_wyb3m")
-theme_override_font_sizes/font_size = 40
-text = "Lives: "
-metadata/_edit_use_anchors_ = true
-
-[node name="Fade" type="ColorRect" parent="UI"]
-visible = false
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-color = Color(0, 0, 0, 1)
-
-[node name="GameOverLabel" type="Label" parent="UI"]
-offset_left = 582.99994
-offset_top = 12.0
-offset_right = 622.99994
-offset_bottom = 35.0
-scale = Vector2(1.6526206, 5.7151217)
-
-[node name="HeartsHolder" type="Control" parent="UI"]
-layout_mode = 3
-anchors_preset = 0
-offset_right = 40.0
-offset_bottom = 40.0
-
-[node name="HeartsEmpty" type="HBoxContainer" parent="UI/HeartsHolder"]
-layout_mode = 0
-offset_left = 129.0
-offset_top = 12.0
-offset_right = 530.2489
-offset_bottom = 217.36418
-scale = Vector2(0.28187215, 0.17529833)
-
-[node name="heart1" type="TextureRect" parent="UI/HeartsHolder/HeartsEmpty"]
-layout_mode = 2
-texture = ExtResource("23_2gcrv")
-
-[node name="heart2" type="TextureRect" parent="UI/HeartsHolder/HeartsEmpty"]
-layout_mode = 2
-texture = ExtResource("23_2gcrv")
-
-[node name="heart3" type="TextureRect" parent="UI/HeartsHolder/HeartsEmpty"]
-layout_mode = 2
-texture = ExtResource("23_2gcrv")
-
-[node name="heart4" type="TextureRect" parent="UI/HeartsHolder/HeartsEmpty"]
-layout_mode = 2
-texture = ExtResource("23_2gcrv")
-
-[node name="Hearts" type="HBoxContainer" parent="UI/HeartsHolder"]
-layout_mode = 0
-offset_left = 129.0
-offset_top = 12.0
-offset_right = 530.2489
-offset_bottom = 217.36418
-scale = Vector2(0.28187215, 0.17529833)
-
-[node name="heart1" type="TextureRect" parent="UI/HeartsHolder/Hearts"]
-layout_mode = 2
-texture = ExtResource("22_4hqec")
-
-[node name="heart2" type="TextureRect" parent="UI/HeartsHolder/Hearts"]
-layout_mode = 2
-texture = ExtResource("22_4hqec")
-
-[node name="heart3" type="TextureRect" parent="UI/HeartsHolder/Hearts"]
-layout_mode = 2
-texture = ExtResource("22_4hqec")
-
-[node name="heart4" type="TextureRect" parent="UI/HeartsHolder/Hearts"]
-layout_mode = 2
-texture = ExtResource("22_4hqec")
-
-[node name="Collect" type="Area2D" parent="UI"]
-
-[node name="Sprite2D" type="Sprite2D" parent="UI/Collect"]
-position = Vector2(213.5, 589.75)
-scale = Vector2(0.9298642, 0.7903226)
-texture = ExtResource("27_c4q5u")
-
-[node name="Label" type="Label" parent="UI/Collect"]
-offset_left = 48.0
-offset_top = 581.0
-offset_right = 402.0
-offset_bottom = 620.0
-theme_override_fonts/font = ExtResource("21_wyb3m")
-theme_override_font_sizes/font_size = 35
-text = "Collect the item with E"
+[node name="UI" parent="." instance=ExtResource("18_ygfr6")]
+fade_in_on_start = false
+charge_fill_speed = 1.5
