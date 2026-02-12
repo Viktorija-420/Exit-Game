@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://c6de8lmakkakk"
-path="res://.godot/imported/knightStandIdle1.png-68be59f462144526f9d375a5586c5c55.ctex"
+uid="uid://cabiujuh5rshh"
+path="res://.godot/imported/KnightHurt1.png-4f6cb6253164ec22e826d24827ffa032.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/Player/knightStandIdle1.png"
-dest_files=["res://.godot/imported/knightStandIdle1.png-68be59f462144526f9d375a5586c5c55.ctex"]
+source_file="res://Assets/Players/PlayerAssets/KnightHurt1.png"
+dest_files=["res://.godot/imported/KnightHurt1.png-4f6cb6253164ec22e826d24827ffa032.ctex"]
 
 [params]
 

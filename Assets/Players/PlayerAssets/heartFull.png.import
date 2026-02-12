@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://drfmsl7u8telb"
-path="res://.godot/imported/knightRightRun2.png-487ea89fda5c014d268b0fe18d4898aa.ctex"
+uid="uid://e7ht6r1t1ucn"
+path="res://.godot/imported/heartFull.png-a2966ea3cd8a94ecdf028aafeaef07b9.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/Player/knightRightRun2.png"
-dest_files=["res://.godot/imported/knightRightRun2.png-487ea89fda5c014d268b0fe18d4898aa.ctex"]
+source_file="res://Assets/Players/PlayerAssets/heartFull.png"
+dest_files=["res://.godot/imported/heartFull.png-a2966ea3cd8a94ecdf028aafeaef07b9.ctex"]
 
 [params]
 

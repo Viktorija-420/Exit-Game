@@ -2,12 +2,12 @@
 
 [ext_resource type="Script" uid="uid://dpiemskwt7yt2" path="res://player.gd" id="1_dw050"]
 [ext_resource type="PackedScene" uid="uid://dv64rancm2vy1" path="res://arrow.tscn" id="2_b26j0"]
-[ext_resource type="Texture2D" uid="uid://cabiujuh5rshh" path="res://Assets/Player/KnightHurt1.png" id="3_n7ghd"]
-[ext_resource type="Texture2D" uid="uid://cq5r6x5b3qhre" path="res://Assets/Player/knightHurt2.png" id="4_nvl01"]
-[ext_resource type="Texture2D" uid="uid://c6de8lmakkakk" path="res://Assets/Player/knightStandIdle1.png" id="5_ivps1"]
-[ext_resource type="Texture2D" uid="uid://dyxu2b77q14y1" path="res://Assets/Player/knightStandIdle2.png" id="6_urp6f"]
-[ext_resource type="Texture2D" uid="uid://5yh25ilhmofl" path="res://Assets/Player/knightRightRun1.png" id="7_bwjto"]
-[ext_resource type="Texture2D" uid="uid://drfmsl7u8telb" path="res://Assets/Player/knightRightRun2.png" id="8_606se"]
+[ext_resource type="Texture2D" uid="uid://cabiujuh5rshh" path="res://Assets/Players/PlayerAssets/KnightHurt1.png" id="3_n7ghd"]
+[ext_resource type="Texture2D" uid="uid://cq5r6x5b3qhre" path="res://Assets/Players/PlayerAssets/knightHurt2.png" id="4_nvl01"]
+[ext_resource type="Texture2D" uid="uid://c6de8lmakkakk" path="res://Assets/Players/PlayerAssets/knightStandIdle1.png" id="5_ivps1"]
+[ext_resource type="Texture2D" uid="uid://dyxu2b77q14y1" path="res://Assets/Players/PlayerAssets/knightStandIdle2.png" id="6_urp6f"]
+[ext_resource type="Texture2D" uid="uid://5yh25ilhmofl" path="res://Assets/Players/PlayerAssets/knightRightRun1.png" id="7_bwjto"]
+[ext_resource type="Texture2D" uid="uid://drfmsl7u8telb" path="res://Assets/Players/PlayerAssets/knightRightRun2.png" id="8_606se"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_teea1"]
 animations = [{

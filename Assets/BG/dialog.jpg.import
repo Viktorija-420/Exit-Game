@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cynuxlvx8l1w6"
-path="res://.godot/imported/dangerIdle.png-6e6a5881b93c997e4361cef42d25671f.ctex"
+uid="uid://bsujxqjq0pbyt"
+path="res://.godot/imported/dialog.jpg-8e2268fde3177f6b21bcda721be1ff88.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/Items/dangerIdle.png"
-dest_files=["res://.godot/imported/dangerIdle.png-6e6a5881b93c997e4361cef42d25671f.ctex"]
+source_file="res://Assets/BG/dialog.jpg"
+dest_files=["res://.godot/imported/dialog.jpg-8e2268fde3177f6b21bcda721be1ff88.ctex"]
 
 [params]
 

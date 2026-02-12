@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://d3fos0sh1mmyh"
-path="res://.godot/imported/postion.png-5c3cbe91db8f00697fb5802fb111ae79.ctex"
+uid="uid://dyxu2b77q14y1"
+path="res://.godot/imported/knightStandIdle2.png-e0463dfe9ee512c50050621959091584.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/Player/PlayerAssets/postion.png"
-dest_files=["res://.godot/imported/postion.png-5c3cbe91db8f00697fb5802fb111ae79.ctex"]
+source_file="res://Assets/Players/PlayerAssets/knightStandIdle2.png"
+dest_files=["res://.godot/imported/knightStandIdle2.png-e0463dfe9ee512c50050621959091584.ctex"]
 
 [params]
 

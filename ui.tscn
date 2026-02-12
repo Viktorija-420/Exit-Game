@@ -2,8 +2,8 @@
 
 [ext_resource type="Script" uid="uid://bjiaeadbwvdeh" path="res://ui.gd" id="1_ibotj"]
 [ext_resource type="FontFile" uid="uid://dir8slwrv7g00" path="res://Assets/OldeTome.ttf" id="2_n5ude"]
-[ext_resource type="Texture2D" uid="uid://b467aun0salor" path="res://Assets/Player/PlayerAssets/heartEmpty.png" id="3_y4yjw"]
-[ext_resource type="Texture2D" uid="uid://e7ht6r1t1ucn" path="res://Assets/Player/PlayerAssets/heartFull.png" id="4_waa4j"]
+[ext_resource type="Texture2D" uid="uid://b467aun0salor" path="res://Assets/Players/PlayerAssets/heartEmpty.png" id="3_y4yjw"]
+[ext_resource type="Texture2D" uid="uid://e7ht6r1t1ucn" path="res://Assets/Players/PlayerAssets/heartFull.png" id="4_waa4j"]
 [ext_resource type="Texture2D" uid="uid://dxggq56ek00ct" path="res://Assets/BG/PanelText1.png" id="5_ok7cu"]
 [ext_resource type="Texture2D" uid="uid://be1qomykvm8h0" path="res://Assets/BG/mainPanel.png" id="6_ok7cu"]
 [ext_resource type="Texture2D" uid="uid://dq3afx0hqgg2g" path="res://Assets/BG/normalButtonUI.jpg" id="7_irxef"]

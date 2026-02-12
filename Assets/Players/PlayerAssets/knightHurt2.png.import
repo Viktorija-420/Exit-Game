@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://8dq61xtywlbk"
-path="res://.godot/imported/door3.png-3913d8be91d4793884f08e974111f3d8.ctex"
+uid="uid://cq5r6x5b3qhre"
+path="res://.godot/imported/knightHurt2.png-d219441d2cb2b444f8152f2b76bb6d11.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/Player/door3.png"
-dest_files=["res://.godot/imported/door3.png-3913d8be91d4793884f08e974111f3d8.ctex"]
+source_file="res://Assets/Players/PlayerAssets/knightHurt2.png"
+dest_files=["res://.godot/imported/knightHurt2.png-d219441d2cb2b444f8152f2b76bb6d11.ctex"]
 
 [params]
 

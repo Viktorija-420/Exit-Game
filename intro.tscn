@@ -1,0 +1,83 @@
+[gd_scene load_steps=6 format=3 uid="uid://coujl313hs2hr"]
+
+[ext_resource type="Script" uid="uid://nhjgryvgdmwp" path="res://intro.gd" id="1_s2ta7"]
+[ext_resource type="Texture2D" uid="uid://cbicbc1or8t5i" path="res://Assets/BG/dialogUI2.png" id="2_7a8ye"]
+[ext_resource type="Texture2D" uid="uid://dictjayvt7p4q" path="res://Assets/BG/KnightInLevel1.png" id="2_y72e6"]
+[ext_resource type="FontFile" uid="uid://dir8slwrv7g00" path="res://Assets/OldeTome.ttf" id="3_0a7ni"]
+[ext_resource type="Texture2D" uid="uid://bsujxqjq0pbyt" path="res://Assets/BG/dialog.jpg" id="3_y72e6"]
+
+[node name="Intro" type="CanvasLayer"]
+script = ExtResource("1_s2ta7")
+first_level_scene = "uid://ef45daveb7mf"
+
+[node name="TextureRect3" type="TextureRect" parent="."]
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -12.0
+offset_top = -8.0
+offset_right = 402.66675
+offset_bottom = 368.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(0.75, 0.75)
+texture = ExtResource("2_y72e6")
+
+[node name="Fade" type="ColorRect" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0, 0, 0, 1)
+
+[node name="TextureRect" type="TextureRect" parent="."]
+offset_left = 31.0
+offset_top = 452.0
+offset_right = 590.0
+offset_bottom = 616.0
+texture = ExtResource("2_7a8ye")
+
+[node name="TextureRect2" type="TextureRect" parent="."]
+offset_left = 811.00006
+offset_top = 16.0
+offset_right = 1221.0
+offset_bottom = 148.0
+scale = Vector2(0.725, 0.725)
+texture = ExtResource("3_y72e6")
+
+[node name="StoryLabel" type="Label" parent="."]
+offset_left = 70.0
+offset_top = 474.0
+offset_right = 541.0
+offset_bottom = 627.0
+theme_override_fonts/font = ExtResource("3_0a7ni")
+theme_override_font_sizes/font_size = 30
+text = "Your eyes open.
+You don’t remember how you got here."
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 2
+
+[node name="Who" type="Label" parent="."]
+offset_left = 118.0
+offset_top = 456.0
+offset_right = 165.0
+offset_bottom = 502.0
+theme_override_fonts/font = ExtResource("3_0a7ni")
+theme_override_font_sizes/font_size = 40
+text = "Me"
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 2
+
+[node name="EnterLabel" type="Label" parent="."]
+offset_left = 837.0
+offset_top = 44.0
+offset_right = 1092.0
+offset_bottom = 86.0
+theme_override_fonts/font = ExtResource("3_0a7ni")
+theme_override_font_sizes/font_size = 30
+text = "Press Enter to begin"
+autowrap_mode = 2

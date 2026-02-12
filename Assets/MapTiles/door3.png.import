@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://b467aun0salor"
-path="res://.godot/imported/heartEmpty.png-8382060f1e2b1649d88677bfc4adddc4.ctex"
+uid="uid://8dq61xtywlbk"
+path="res://.godot/imported/door3.png-aabc11a89963aec894192ab914f89901.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/Player/PlayerAssets/heartEmpty.png"
-dest_files=["res://.godot/imported/heartEmpty.png-8382060f1e2b1649d88677bfc4adddc4.ctex"]
+source_file="res://Assets/MapTiles/door3.png"
+dest_files=["res://.godot/imported/door3.png-aabc11a89963aec894192ab914f89901.ctex"]
 
 [params]
 

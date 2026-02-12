@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bxxls3u87iive"
-path="res://.godot/imported/inventory.png-34dbced929480be6a249d45f6222c796.ctex"
+uid="uid://c6de8lmakkakk"
+path="res://.godot/imported/knightStandIdle1.png-a2fe4c41f70ae7dd2bf5d9bff92b7cf9.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/BG/inventory.png"
-dest_files=["res://.godot/imported/inventory.png-34dbced929480be6a249d45f6222c796.ctex"]
+source_file="res://Assets/Players/PlayerAssets/knightStandIdle1.png"
+dest_files=["res://.godot/imported/knightStandIdle1.png-a2fe4c41f70ae7dd2bf5d9bff92b7cf9.ctex"]
 
 [params]
 

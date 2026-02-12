@@ -1,20 +1,22 @@
-[gd_scene load_steps=29 format=3 uid="uid://ef45daveb7mf"]
+[gd_scene load_steps=31 format=3 uid="uid://ef45daveb7mf"]
 
+[ext_resource type="Script" uid="uid://dw3wwaeawlak" path="res://level_01.gd" id="1_2riie"]
 [ext_resource type="Texture2D" uid="uid://3odl545e1xpn" path="res://Assets/MapTiles/dungeon.png" id="1_2vvun"]
 [ext_resource type="Texture2D" uid="uid://c4ltwlph3ml87" path="res://Assets/MapTiles/2DPlatformerDungeonTileset.png" id="2_2vvun"]
 [ext_resource type="Texture2D" uid="uid://cmxej4wwwmj3c" path="res://Assets/MapTiles/Dungeon D_cora2.png" id="3_6kxtg"]
 [ext_resource type="Script" uid="uid://c5nb8ctl1gn3" path="res://door.gd" id="3_qqa7j"]
-[ext_resource type="Texture2D" uid="uid://60t8agd5r3d" path="res://Assets/Player/doorIdle.png" id="4_5pep1"]
+[ext_resource type="Texture2D" uid="uid://60t8agd5r3d" path="res://Assets/MapTiles/doorIdle.png" id="4_5pep1"]
 [ext_resource type="Texture2D" uid="uid://qlgv6x0qsgl6" path="res://Assets/MapTiles/skelet.png" id="4_c4q5u"]
 [ext_resource type="Script" uid="uid://carul3u1od46m" path="res://spike_1.gd" id="5_hym0u"]
 [ext_resource type="PackedScene" uid="uid://bni1x4r8t3keq" path="res://player.tscn" id="10_wyb3m"]
 [ext_resource type="PackedScene" uid="uid://drse07k85mvc8" path="res://health_pickup.tscn" id="12_4hqec"]
-[ext_resource type="Texture2D" uid="uid://yocrtunwedb7" path="res://Assets/Player/door1.png" id="15_2riie"]
-[ext_resource type="Texture2D" uid="uid://dcey8ctubf6w5" path="res://Assets/Player/door2.png" id="16_wyb3m"]
-[ext_resource type="Texture2D" uid="uid://8dq61xtywlbk" path="res://Assets/Player/door3.png" id="17_4hqec"]
+[ext_resource type="Texture2D" uid="uid://yocrtunwedb7" path="res://Assets/MapTiles/door1.png" id="15_2riie"]
+[ext_resource type="Texture2D" uid="uid://dcey8ctubf6w5" path="res://Assets/MapTiles/door2.png" id="16_wyb3m"]
+[ext_resource type="Texture2D" uid="uid://8dq61xtywlbk" path="res://Assets/MapTiles/door3.png" id="17_4hqec"]
 [ext_resource type="Script" uid="uid://bloflvsrgb3d3" path="res://key.gd" id="18_6kxtg"]
 [ext_resource type="PackedScene" uid="uid://cvmqthsogd2xy" path="res://enemy.tscn" id="18_kcaqr"]
 [ext_resource type="PackedScene" uid="uid://d31bn50tffcc2" path="res://ui.tscn" id="18_ygfr6"]
+[ext_resource type="FontFile" uid="uid://dir8slwrv7g00" path="res://Assets/OldeTome.ttf" id="20_wyb3m"]
 [ext_resource type="Texture2D" uid="uid://r3o2fjoj8rlt" path="res://Assets/Items/Spike.png" id="21_6kxtg"]
 [ext_resource type="Texture2D" uid="uid://cx55i0o4w8ku1" path="res://Assets/Items/KeyIdle.png" id="24_nft2v"]
 [ext_resource type="Texture2D" uid="uid://bxujeviyvn2a1" path="res://Assets/Items/KeyGlowDone.png" id="25_6kxtg"]
@@ -396,18 +398,19 @@ size = Vector2(29.875, 26.25)
 
 [node name="Level01" type="Node2D"]
 position = Vector2(583, 321)
+script = ExtResource("1_2riie")
 
 [node name="ColorRect" type="ColorRect" parent="."]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = -73418.0
-offset_top = -57504.0
-offset_right = 9926582.0
-offset_bottom = 9942496.0
+offset_left = -2002.0
+offset_top = -792.0
+offset_right = 2998.0
+offset_bottom = 1208.0
 grow_horizontal = 2
 grow_vertical = 2
-color = Color(0.06666667, 0, 0, 1)
+color = Color(0, 0, 0, 1)
 metadata/_edit_use_anchors_ = true
 
 [node name="TileMap" type="TileMap" parent="."]
@@ -436,7 +439,7 @@ shape = SubResource("RectangleShape2D_hym0u")
 position = Vector2(461.99997, 184)
 
 [node name="HealthPickup" parent="." instance=ExtResource("12_4hqec")]
-position = Vector2(139, 129)
+position = Vector2(139, 142)
 scale = Vector2(5, 5)
 
 [node name="Key" type="Area2D" parent="."]
@@ -478,3 +481,20 @@ shape = SubResource("RectangleShape2D_chua2")
 [node name="UI" parent="." instance=ExtResource("18_ygfr6")]
 fade_in_on_start = false
 charge_fill_speed = 1.5
+
+[node name="Panel" type="Panel" parent="."]
+offset_left = -374.0
+offset_top = 31.0
+offset_right = -164.0
+offset_bottom = 96.0
+
+[node name="popLevel" type="Label" parent="Panel"]
+layout_mode = 0
+offset_left = 31.0
+offset_top = 13.0
+offset_right = 176.0
+offset_bottom = 52.0
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("20_wyb3m")
+theme_override_font_sizes/font_size = 40
+text = "Level one"

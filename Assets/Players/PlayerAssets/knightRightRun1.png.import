@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://c4iamdlysm3j1"
-path="res://.godot/imported/Panel2.png-3d722c7c84d589d6ef0fc0810279c54f.ctex"
+uid="uid://5yh25ilhmofl"
+path="res://.godot/imported/knightRightRun1.png-f29615bc6738bed83aaa04bce9116ae1.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/Items/Panel2.png"
-dest_files=["res://.godot/imported/Panel2.png-3d722c7c84d589d6ef0fc0810279c54f.ctex"]
+source_file="res://Assets/Players/PlayerAssets/knightRightRun1.png"
+dest_files=["res://.godot/imported/knightRightRun1.png-f29615bc6738bed83aaa04bce9116ae1.ctex"]
 
 [params]
 

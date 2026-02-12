@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bhgtpw7vtlf4t"
-path="res://.godot/imported/DoorKey.png-6da66031e5e6bf85870a938d6b655d76.ctex"
+uid="uid://btsikyu3s0o82"
+path="res://.godot/imported/testEnemy.png-7f756453072be28408cfb4f153be0dbf.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/Items/DoorKey.png"
-dest_files=["res://.godot/imported/DoorKey.png-6da66031e5e6bf85870a938d6b655d76.ctex"]
+source_file="res://Assets/Players/Enemy/testEnemy.png"
+dest_files=["res://.godot/imported/testEnemy.png-7f756453072be28408cfb4f153be0dbf.ctex"]
 
 [params]
 
