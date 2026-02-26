@@ -1,6 +1,6 @@
 extends CanvasLayer
 
-@export_file("*.tscn") var first_level_scene: String = "res://scenes/Level_01.tscn"
+@export_file("*.tscn") var first_level_scene: String = "res://Level_01.tscn"
 
 @export var fade_in_time: float = 0.6
 @export var fade_out_time: float = 0.6

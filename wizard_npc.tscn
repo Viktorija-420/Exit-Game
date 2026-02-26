@@ -1,0 +1,86 @@
+[gd_scene load_steps=8 format=3 uid="uid://ypbrpsyr6foh"]
+
+[ext_resource type="Script" uid="uid://bhit0jjeo00vb" path="res://Scripts/wizard_dialog.gd" id="1_o8o5b"]
+[ext_resource type="Texture2D" uid="uid://cwni7ofoa5ycb" path="res://Assets/Players/PlayerAssets/wizardDialog (2).png" id="2_o8o5b"]
+[ext_resource type="Texture2D" uid="uid://b2pqunoeh1o6o" path="res://Assets/Players/PlayerAssets/knightDialog (2).png" id="3_a0nak"]
+[ext_resource type="FontFile" uid="uid://dir8slwrv7g00" path="res://Assets/OldeTome.ttf" id="3_sjs3a"]
+
+[sub_resource type="GDScript" id="GDScript_1kjf4"]
+script/source = "extends Node2D
+@export var dialog_scene: PackedScene
+
+@onready var area: Area2D = $InteractionArea
+@onready var prompt: Label = $PromptLabel
+
+var player_in_range := false
+var dialog_open := false
+
+func _ready():
+	prompt.visible = false
+	area.body_entered.connect(_on_body_entered)
+	area.body_exited.connect(_on_body_exited)
+
+func _process(_delta):
+	if player_in_range and not dialog_open:
+		if Input.is_action_just_pressed(\"ui_accept\"): # Enter / E
+			_open_dialog()
+
+func _on_body_entered(body):
+	if body.is_in_group(\"player\"):
+		player_in_range = true
+		prompt.visible = true
+
+func _on_body_exited(body):
+	if body.is_in_group(\"player\"):
+		player_in_range = false
+		prompt.visible = false
+
+func _open_dialog():
+	if dialog_scene == null:
+		return
+
+	dialog_open = true
+	prompt.visible = false
+
+	var dialog = dialog_scene.instantiate()
+	get_tree().current_scene.add_child(dialog)
+	dialog.start_dialog()
+"
+
+[sub_resource type="PackedScene" id="PackedScene_2swcv"]
+_bundled = {
+"conn_count": 0,
+"conns": PackedInt32Array(),
+"editable_instances": [],
+"names": PackedStringArray("WizardDialog", "script", "CanvasLayer", "Fade", "anchors_preset", "anchor_right", "anchor_bottom", "grow_horizontal", "grow_vertical", "ColorRect", "DialogPanel", "Panel", "NameLabel", "layout_mode", "offset_left", "offset_top", "offset_right", "offset_bottom", "Label", "TextLabel", "EnterLabel", "WizLabel", "position", "scale", "texture", "Sprite2D", "PlayLabel"),
+"node_count": 8,
+"node_paths": [],
+"nodes": PackedInt32Array(-1, -1, 2, 0, -1, 1, 1, 0, 0, 0, 0, 9, 3, -1, 5, 4, 1, 5, 2, 6, 2, 7, 3, 8, 3, 0, 0, 0, 11, 10, -1, 5, 4, 1, 5, 2, 6, 2, 7, 3, 8, 3, 0, 2, 0, 18, 12, -1, 5, 13, 4, 14, 5, 15, 6, 16, 7, 17, 8, 0, 2, 0, 18, 19, -1, 5, 13, 4, 14, 9, 15, 10, 16, 11, 17, 12, 0, 2, 0, 18, 20, -1, 5, 13, 4, 14, 13, 15, 14, 16, 15, 17, 6, 0, 0, 0, 25, 21, -1, 3, 22, 16, 23, 17, 24, 18, 0, 0, 0, 25, 26, -1, 3, 22, 19, 23, 20, 24, 21, 0),
+"variants": [ExtResource("1_o8o5b"), 15, 1.0, 2, 0, 880.0, 372.0, 920.0, 395.0, 494.0, 222.0, 534.0, 245.0, 153.0, 349.0, 193.0, Vector2(922.0001, 399.00003), Vector2(3.0721474, 3.1043258), ExtResource("2_o8o5b"), Vector2(236.00003, 464), Vector2(3.1374998, 3.3812654), ExtResource("3_a0nak")],
+"version": 3
+}
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_a0nak"]
+size = Vector2(247, 193)
+
+[node name="WizardNPC" type="Node2D"]
+script = SubResource("GDScript_1kjf4")
+dialog_scene = SubResource("PackedScene_2swcv")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("2_o8o5b")
+
+[node name="InteractionArea" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="InteractionArea"]
+position = Vector2(-0.5, 4.5)
+shape = SubResource("RectangleShape2D_a0nak")
+
+[node name="PromptLabel" type="Label" parent="."]
+offset_left = -88.0
+offset_top = -147.0
+offset_right = 89.0
+offset_bottom = -117.0
+theme_override_fonts/font = ExtResource("3_sjs3a")
+theme_override_font_sizes/font_size = 30
+text = "Press E to talk"

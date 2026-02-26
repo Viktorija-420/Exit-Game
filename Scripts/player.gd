@@ -93,7 +93,6 @@ func _physics_process(delta: float) -> void:
 		velocity.y = jump_force
 
 	move_and_slide()
-
 	_update_animation()
 
 func _handle_shooting(delta: float) -> void:
@@ -124,8 +123,6 @@ func _handle_shooting(delta: float) -> void:
 			progress = clamp(_charge_timer / charge_time, 0.0, 1.0)
 
 		emit_signal("charge_progress_changed", progress, true)
-		#print("CHARGE:", progress)
-
 
 	# release = fire + bar goes down
 	if _charging and Input.is_action_just_released(shoot_action):
@@ -153,12 +150,10 @@ func _update_animation() -> void:
 		if anim.sprite_frames and anim.sprite_frames.has_animation("shield"):
 			if anim.animation != "shield":
 				anim.play("shield")
-		# still flip based on current movement direction (or keep last)
 		if abs(velocity.x) > 1:
 			anim.flip_h = velocity.x < 0
 		return
 
-	# normal animations
 	if not is_on_floor():
 		return
 	elif abs(velocity.x) > 1:
@@ -170,11 +165,15 @@ func _update_animation() -> void:
 			anim.play("idle")
 
 func hurt_and_reset(from_x: float = 0.0) -> void:
-	# enemies will skip calling this if shielding; spikes can still call it
 	if _hurt:
 		return
 
 	Global.lose_life(1)
+
+	# ✅ if dead: restart THIS level (not main menu)
+	if Global.lives <= 0:
+		Global.restart_current_level()
+		return
 
 	_hurt = true
 	_hurt_timer = hurt_fall_time
@@ -182,7 +181,6 @@ func hurt_and_reset(from_x: float = 0.0) -> void:
 	_charging = false
 	_charge_timer = 0.0
 
-	# knockback direction away from hit source
 	var dir_x := 1.0
 	if from_x != 0.0:
 		dir_x = sign(global_position.x - from_x)
@@ -196,7 +194,6 @@ func hurt_and_reset(from_x: float = 0.0) -> void:
 		anim.play("hurt")
 
 	_start_throb()
-
 
 func _start_throb() -> void:
 	if not anim:
@@ -235,15 +232,12 @@ func _shoot_arrow(dmg: int) -> void:
 	var mouse_pos: Vector2 = get_global_mouse_position()
 	var dir: Vector2 = (mouse_pos - arrow_spawn.global_position).normalized()
 
-	# Your arrow script uses set_direction()
 	if arrow.has_method("set_direction"):
 		arrow.set_direction(dir)
 	else:
-		# fallback if you ever change arrow implementation
 		if "direction" in arrow:
 			arrow.direction = dir
 		arrow.rotation = dir.angle()
 
-	# Pass damage to arrow (we'll add this to your arrow script below)
 	if "damage" in arrow:
 		arrow.damage = dmg

@@ -1,4 +1,4 @@
-extends Node2D   # or Node3D if your level is 3D
+extends Node2D
 
 @onready var pop_level: Panel = $Panel
 
@@ -8,21 +8,15 @@ extends Node2D   # or Node3D if your level is 3D
 
 func _ready() -> void:
 	show_popup()
+	# Reset key for next level if needed
+	Global.has_key = false
 
 func show_popup() -> void:
 	pop_level.visible = true
 	pop_level.modulate.a = 0.0
 	
 	var tween = create_tween()
-	
-	# Fade in
 	tween.tween_property(pop_level, "modulate:a", 1.0, fade_in_time)
-	
-	# Wait
 	tween.tween_interval(visible_time)
-	
-	# Fade out
 	tween.tween_property(pop_level, "modulate:a", 0.0, fade_out_time)
-	
-	# Hide after fade
 	tween.tween_callback(func(): pop_level.visible = false)

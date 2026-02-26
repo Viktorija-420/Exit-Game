@@ -1,6 +1,6 @@
 extends Control
 
-@export_file("*.tscn") var first_level_scene := "res://Level1.tscn"
+@export_file("*.tscn") var first_level_scene := "res://Level_01.tscn"
 @export_file("*.tscn") var rules_scene := "res://Rules.tscn"
 @export_file("*.tscn") var settings_scene := "res://Settings.tscn"
 
