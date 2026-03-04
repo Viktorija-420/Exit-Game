@@ -1,6 +1,6 @@
 extends Node2D
 
-@onready var pop_level: Panel = $Panel
+@onready var pop_level: Panel = $CanvasLayer/Panel
 @onready var door: Area2D = $Door
 
 @export_file("*.tscn") var level2_scene: String = "res://level_02.tscn"

@@ -1,7 +1,9 @@
 extends CharacterBody2D
 
 signal charge_progress_changed(progress: float, charging: bool)
+
 var _charge_ready: bool = false
+var controls_enabled: bool = true  # <-- new flag to enable/disable controls
 
 @onready var anim: AnimatedSprite2D = $Anim
 @onready var arrow_spawn: Node2D = $ArrowSpawn
@@ -18,15 +20,14 @@ var _charge_ready: bool = false
 @export var hurt_push_x: float = 120.0
 
 # shield
-@export var shield_action: StringName = &"Shield" # hold Shift
+@export var shield_action: StringName = &"Shield"
 @export var shield_speed_mult: float = 0.55
 var _shielding: bool = false
 
 # shooting + charge
 @export var arrow_scene: PackedScene
-@export var shoot_action: StringName = &"Shoot"       # Space
-@export var shoot_cooldown: float = 0.20              # normal shot cooldown
-
+@export var shoot_action: StringName = &"Shoot"
+@export var shoot_cooldown: float = 0.20
 @export var charge_time: float = 1.0
 @export var charge_cooldown: float = 2.0
 @export var normal_damage: int = 1
@@ -56,16 +57,20 @@ func is_shielding() -> bool:
 	return _shielding
 
 func _physics_process(delta: float) -> void:
+	if not controls_enabled:
+		# skip movement/input while dialog is active
+		return
+
 	# timers
 	if _shoot_timer > 0.0:
 		_shoot_timer -= delta
 	if _charge_cd_timer > 0.0:
 		_charge_cd_timer -= delta
 
-	# shield state (hold shift)
+	# shield state
 	_shielding = Input.is_action_pressed(shield_action) and not _hurt
 
-	# charging logic (hold/release Space)
+	# charging logic
 	_handle_shooting(delta)
 
 	# gravity
@@ -96,21 +101,19 @@ func _physics_process(delta: float) -> void:
 	_update_animation()
 
 func _handle_shooting(delta: float) -> void:
-	if _hurt:
+	if _hurt or not controls_enabled:
 		_charging = false
 		_charge_timer = 0.0
 		_charge_ready = false
 		emit_signal("charge_progress_changed", 0.0, false)
 		return
 
-	# start charging
 	if Input.is_action_just_pressed(shoot_action):
 		_charging = true
 		_charge_timer = 0.0
 		_charge_ready = false
 		emit_signal("charge_progress_changed", 0.0, true)
 
-	# holding
 	if _charging and Input.is_action_pressed(shoot_action):
 		if not _charge_ready:
 			_charge_timer += delta
@@ -124,10 +127,8 @@ func _handle_shooting(delta: float) -> void:
 
 		emit_signal("charge_progress_changed", progress, true)
 
-	# release = fire + bar goes down
 	if _charging and Input.is_action_just_released(shoot_action):
 		_charging = false
-
 		if _charge_ready and _charge_cd_timer <= 0.0:
 			_shoot_arrow(charged_damage)
 			_charge_cd_timer = charge_cooldown
@@ -145,7 +146,6 @@ func _update_animation() -> void:
 	if not anim:
 		return
 
-	# Shield animation has priority on ground
 	if _shielding and is_on_floor():
 		if anim.sprite_frames and anim.sprite_frames.has_animation("shield"):
 			if anim.animation != "shield":
@@ -170,7 +170,6 @@ func hurt_and_reset(from_x: float = 0.0) -> void:
 
 	Global.lose_life(1)
 
-	# ✅ if dead: restart THIS level (not main menu)
 	if Global.lives <= 0:
 		Global.restart_current_level()
 		return
@@ -219,14 +218,12 @@ func _shoot_arrow(dmg: int) -> void:
 	if arrow_scene == null:
 		push_error("Player: arrow_scene not assigned!")
 		return
-
 	if arrow_spawn == null:
 		push_error("Player: ArrowSpawn not found!")
 		return
 
 	var arrow := arrow_scene.instantiate()
 	get_tree().current_scene.add_child(arrow)
-
 	arrow.global_position = arrow_spawn.global_position
 
 	var mouse_pos: Vector2 = get_global_mouse_position()
@@ -241,3 +238,6 @@ func _shoot_arrow(dmg: int) -> void:
 
 	if "damage" in arrow:
 		arrow.damage = dmg
+
+func set_controls_enabled(enabled: bool) -> void:
+	controls_enabled = enabled

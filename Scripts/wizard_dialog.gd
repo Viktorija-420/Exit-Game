@@ -1,7 +1,5 @@
 extends CanvasLayer
 
-@export_file("*.tscn") var next_scene: String = "res://level_02.tscn"
-
 @export var fade_in_time: float = 0.6
 @export var fade_out_time: float = 0.6
 @export var type_speed: float = 0.04
@@ -10,8 +8,6 @@ extends CanvasLayer
 @onready var panel: Panel = $DialogPanel
 @onready var text_label: Label = $DialogPanel/TextLabel
 @onready var enter_label: Label = $DialogPanel/EnterLabel
-
-# ✅ portraits (they can be TextureRect / Sprite2D / any CanvasItem)
 @onready var wiz_portrait: CanvasItem = get_node_or_null("WizLabel") as CanvasItem
 @onready var player_portrait: CanvasItem = get_node_or_null("PlayLabel") as CanvasItem
 
@@ -26,33 +22,36 @@ var _dialog := [
 var _line_index := 0
 var _typing := false
 var _finished_line := false
-var _transitioning := false
 var _full_text := ""
+var _dialog_active := false
 
-func _ready() -> void:
-	# Fade setup
-	if fade:
-		fade.visible = true
-		fade.color = Color.BLACK
-		fade.set_anchors_preset(Control.PRESET_FULL_RECT)
-		fade.modulate.a = 1.0
-		fade.mouse_filter = Control.MOUSE_FILTER_IGNORE
-
+func start_dialog() -> void:
+	_dialog_active = true
+	visible = true  # Show the dialog CanvasLayer
 	panel.visible = true
 	enter_label.visible = false
 	text_label.text = ""
+	if fade:
+		fade.visible = true
+		fade.modulate.a = 1.0
 
-	# ✅ start with both hidden until first line decides
-	_set_speaker_portrait("")
+	_line_index = 0
+	_finished_line = false
+	_typing = false
 
-	# fade in then start first line
+	# Pause player controls
+	var player = get_tree().current_scene.get_node_or_null("Player")
+	if player and player.has_method("set_controls_enabled"):
+		player.set_controls_enabled(false)
+
+	# fade in then show first line
 	var t := create_tween()
-	t.set_trans(Tween.TRANS_SINE)
-	t.set_ease(Tween.EASE_IN_OUT)
 	t.tween_property(fade, "modulate:a", 0.0, fade_in_time)
 	t.tween_callback(func(): _play_line(_line_index))
 
 func _unhandled_input(event: InputEvent) -> void:
+	if not _dialog_active:
+		return
 	if not event.is_action_pressed("ui_accept"):
 		return
 
@@ -65,25 +64,20 @@ func _unhandled_input(event: InputEvent) -> void:
 
 func _play_line(index: int) -> void:
 	if index >= _dialog.size():
-		_go_next_scene()
+		_end_dialog()
 		return
 
 	_finished_line = false
 	enter_label.visible = false
 
 	var speaker := str(_dialog[index]["name"])
-
-	# ✅ swap portraits based on speaker
 	_set_speaker_portrait(speaker)
 
 	_full_text = str(_dialog[index]["text"])
 	text_label.text = ""
-
 	_start_typing()
 
 func _set_speaker_portrait(speaker: String) -> void:
-	# Show only the current speaker portrait. Hide the other.
-	# If speaker is unknown, hide both.
 	if wiz_portrait:
 		wiz_portrait.visible = (speaker.to_lower() == "wizard")
 	if player_portrait:
@@ -91,7 +85,6 @@ func _set_speaker_portrait(speaker: String) -> void:
 
 func _start_typing() -> void:
 	_typing = true
-
 	for i in range(_full_text.length()):
 		if not _typing:
 			return
@@ -112,13 +105,20 @@ func _next_line() -> void:
 	_line_index += 1
 	_play_line(_line_index)
 
-func _go_next_scene() -> void:
-	if _transitioning:
-		return
-	_transitioning = true
+func _end_dialog() -> void:
+	_dialog_active = false
 
-	var t := create_tween()
-	t.set_trans(Tween.TRANS_SINE)
-	t.set_ease(Tween.EASE_IN_OUT)
-	t.tween_property(fade, "modulate:a", 1.0, fade_out_time)
-	t.tween_callback(func(): get_tree().change_scene_to_file(next_scene))
+	# hide entire dialog CanvasLayer
+	visible = false
+
+	# reset UI for next time
+	panel.visible = false
+	enter_label.visible = false
+	text_label.text = ""
+	if fade:
+		fade.visible = false
+
+	# Re-enable player controls
+	var player = get_tree().current_scene.get_node_or_null("Player")
+	if player and player.has_method("set_controls_enabled"):
+		player.set_controls_enabled(true)

@@ -1,6 +1,6 @@
 extends Node2D
 
-@onready var pop_level: Panel = $Panel
+@onready var pop_level: Panel = $CanvasLayer/Panel
 
 @export var fade_in_time: float = 0.6
 @export var visible_time: float = 1.5

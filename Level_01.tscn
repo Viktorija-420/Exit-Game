@@ -332,6 +332,9 @@ sources/5 = SubResource("TileSetAtlasSource_e08eq")
 position = Vector2(583, 321)
 script = ExtResource("1_2riie")
 
+[node name="CanvasModulate" type="CanvasModulate" parent="."]
+color = Color(0.46618116, 0.46618068, 0.4661808, 1)
+
 [node name="ColorRect" type="ColorRect" parent="."]
 anchors_preset = 15
 anchor_right = 1.0
@@ -373,23 +376,6 @@ position = Vector2(-359, 137)
 fade_in_on_start = false
 charge_fill_speed = 1.5
 
-[node name="Panel" type="Panel" parent="."]
-offset_left = -467.0
-offset_top = -30.0
-offset_right = -257.0
-offset_bottom = 35.0
-
-[node name="popLevel" type="Label" parent="Panel"]
-layout_mode = 0
-offset_left = 31.0
-offset_top = 13.0
-offset_right = 176.0
-offset_bottom = 52.0
-theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
-theme_override_fonts/font = ExtResource("20_wyb3m")
-theme_override_font_sizes/font_size = 40
-text = "Level one"
-
 [node name="torch" parent="." instance=ExtResource("11_ahj24")]
 position = Vector2(-131, 118)
 scale = Vector2(0.2, 0.2)
@@ -401,3 +387,27 @@ scale = Vector2(0.2, 0.2)
 [node name="torch3" parent="." instance=ExtResource("11_ahj24")]
 position = Vector2(-575, 118)
 scale = Vector2(0.2, 0.2)
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="Panel" type="Panel" parent="CanvasLayer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 478.0
+offset_top = 12.0
+offset_right = -481.0
+offset_bottom = -569.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="popLevel" type="Label" parent="CanvasLayer/Panel"]
+layout_mode = 0
+offset_left = 22.0
+offset_top = 17.0
+offset_right = 167.0
+offset_bottom = 56.0
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("20_wyb3m")
+theme_override_font_sizes/font_size = 40
+text = "Level one"

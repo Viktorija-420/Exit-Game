@@ -43,11 +43,13 @@ offset_right = 193.0
 offset_bottom = 372.0
 
 [node name="WizLabel" type="Sprite2D" parent="."]
+visible = false
 position = Vector2(922.0001, 399.00003)
 scale = Vector2(3.0721474, 3.1043258)
 texture = ExtResource("2_k4e77")
 
 [node name="PlayLabel" type="Sprite2D" parent="."]
+visible = false
 position = Vector2(236.00003, 464)
 scale = Vector2(3.1374998, 3.3812654)
 texture = ExtResource("3_c0kel")

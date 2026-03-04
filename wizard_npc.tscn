@@ -1,51 +1,14 @@
-[gd_scene load_steps=8 format=3 uid="uid://ypbrpsyr6foh"]
+[gd_scene load_steps=13 format=3 uid="uid://ypbrpsyr6foh"]
 
+[ext_resource type="Script" uid="uid://bwc5yxip1q3q2" path="res://Scripts/wizard_npc.gd" id="1_2swcv"]
 [ext_resource type="Script" uid="uid://bhit0jjeo00vb" path="res://Scripts/wizard_dialog.gd" id="1_o8o5b"]
 [ext_resource type="Texture2D" uid="uid://cwni7ofoa5ycb" path="res://Assets/Players/PlayerAssets/wizardDialog (2).png" id="2_o8o5b"]
 [ext_resource type="Texture2D" uid="uid://b2pqunoeh1o6o" path="res://Assets/Players/PlayerAssets/knightDialog (2).png" id="3_a0nak"]
 [ext_resource type="FontFile" uid="uid://dir8slwrv7g00" path="res://Assets/OldeTome.ttf" id="3_sjs3a"]
-
-[sub_resource type="GDScript" id="GDScript_1kjf4"]
-script/source = "extends Node2D
-@export var dialog_scene: PackedScene
-
-@onready var area: Area2D = $InteractionArea
-@onready var prompt: Label = $PromptLabel
-
-var player_in_range := false
-var dialog_open := false
-
-func _ready():
-	prompt.visible = false
-	area.body_entered.connect(_on_body_entered)
-	area.body_exited.connect(_on_body_exited)
-
-func _process(_delta):
-	if player_in_range and not dialog_open:
-		if Input.is_action_just_pressed(\"ui_accept\"): # Enter / E
-			_open_dialog()
-
-func _on_body_entered(body):
-	if body.is_in_group(\"player\"):
-		player_in_range = true
-		prompt.visible = true
-
-func _on_body_exited(body):
-	if body.is_in_group(\"player\"):
-		player_in_range = false
-		prompt.visible = false
-
-func _open_dialog():
-	if dialog_scene == null:
-		return
-
-	dialog_open = true
-	prompt.visible = false
-
-	var dialog = dialog_scene.instantiate()
-	get_tree().current_scene.add_child(dialog)
-	dialog.start_dialog()
-"
+[ext_resource type="Texture2D" uid="uid://d22gujf67powm" path="res://Assets/Players/PlayerAssets/Scribble1.png" id="6_subnk"]
+[ext_resource type="Texture2D" uid="uid://bsx8111c1lw4m" path="res://Assets/Players/PlayerAssets/Scribble2.png" id="7_fkvqw"]
+[ext_resource type="Texture2D" uid="uid://buf0gf60rgf11" path="res://Assets/Players/PlayerAssets/Scribble3.png" id="8_hvquh"]
+[ext_resource type="PackedScene" uid="uid://ekh7h6u3yy4n" path="res://wizard_dialog.tscn" id="9_subnk"]
 
 [sub_resource type="PackedScene" id="PackedScene_2swcv"]
 _bundled = {
@@ -63,8 +26,25 @@ _bundled = {
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_a0nak"]
 size = Vector2(247, 193)
 
+[sub_resource type="SpriteFrames" id="SpriteFrames_n1uy3"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("6_subnk")
+}, {
+"duration": 1.0,
+"texture": ExtResource("7_fkvqw")
+}, {
+"duration": 1.0,
+"texture": ExtResource("8_hvquh")
+}],
+"loop": true,
+"name": &"Angry",
+"speed": 5.0
+}]
+
 [node name="WizardNPC" type="Node2D"]
-script = SubResource("GDScript_1kjf4")
+script = ExtResource("1_2swcv")
 dialog_scene = SubResource("PackedScene_2swcv")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
@@ -77,10 +57,22 @@ position = Vector2(-0.5, 4.5)
 shape = SubResource("RectangleShape2D_a0nak")
 
 [node name="PromptLabel" type="Label" parent="."]
-offset_left = -88.0
-offset_top = -147.0
-offset_right = 89.0
-offset_bottom = -117.0
+offset_left = -74.0
+offset_top = -201.0
+offset_right = 103.0
+offset_bottom = -171.0
 theme_override_fonts/font = ExtResource("3_sjs3a")
 theme_override_font_sizes/font_size = 30
 text = "Press E to talk"
+
+[node name="GrumpyCloud" type="AnimatedSprite2D" parent="."]
+visible = false
+position = Vector2(12.5, -106.25)
+scale = Vector2(0.82894737, 0.60714287)
+sprite_frames = SubResource("SpriteFrames_n1uy3")
+animation = &"Angry"
+frame = 1
+frame_progress = 0.98169935
+
+[node name="WizardDialog" parent="." instance=ExtResource("9_subnk")]
+visible = false
