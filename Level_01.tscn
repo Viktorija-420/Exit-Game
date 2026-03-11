@@ -339,10 +339,10 @@ color = Color(0.46618116, 0.46618068, 0.4661808, 1)
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = -1914.0
-offset_top = -690.0
-offset_right = 3086.0
-offset_bottom = 1310.0
+offset_left = -1862.0
+offset_top = -699.0
+offset_right = 3138.0
+offset_bottom = 1301.0
 grow_horizontal = 2
 grow_vertical = 2
 color = Color(0, 0, 0, 1)
@@ -367,7 +367,7 @@ layer_1/tile_data = PackedInt32Array(458730, 196610, 1, -131094, 196610, 1342177
 position = Vector2(-198, 165)
 
 [node name="Player" parent="." instance=ExtResource("10_wyb3m")]
-position = Vector2(-68, -2)
+position = Vector2(-65, 8)
 
 [node name="Key" parent="." instance=ExtResource("10_trksy")]
 position = Vector2(-359, 137)

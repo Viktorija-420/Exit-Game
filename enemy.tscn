@@ -1,30 +1,74 @@
-[gd_scene load_steps=6 format=3 uid="uid://cvmqthsogd2xy"]
+[gd_scene load_steps=12 format=3 uid="uid://cvmqthsogd2xy"]
 
-[ext_resource type="Script" uid="uid://cg176lwqccdwf" path="res://enemy.gd" id="1_4gyqm"]
-[ext_resource type="Texture2D" uid="uid://btsikyu3s0o82" path="res://Assets/Players/Enemy/testEnemy.png" id="1_7k104"]
+[ext_resource type="Script" uid="uid://cg176lwqccdwf" path="res://Scripts/enemy.gd" id="1_4gyqm"]
+[ext_resource type="Texture2D" uid="uid://t411xcg8kngy" path="res://Assets/Players/Enemy/WalkSide2.png" id="2_hb8ge"]
+[ext_resource type="Texture2D" uid="uid://cwcgkt7qw0tmj" path="res://Assets/Players/Enemy/Attack1.png" id="3_e1ltt"]
 [ext_resource type="Texture2D" uid="uid://e7ht6r1t1ucn" path="res://Assets/Players/PlayerAssets/heartFull.png" id="3_qi2p4"]
+[ext_resource type="Texture2D" uid="uid://lbjgojmhj3ej" path="res://Assets/Players/Enemy/attack2.png" id="4_dxifv"]
+[ext_resource type="Texture2D" uid="uid://r7yghpbvc5c3" path="res://Assets/Players/Enemy/idle1.png" id="5_pwjut"]
+[ext_resource type="Texture2D" uid="uid://crvo8ri10l2yh" path="res://Assets/Players/Enemy/idle2.png" id="6_n0g06"]
+[ext_resource type="Texture2D" uid="uid://dix32aay2bq2p" path="res://Assets/Players/Enemy/walkSide1.png" id="7_ar8e5"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_doop2"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_hb8ge")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_e1ltt")
+}, {
+"duration": 1.71,
+"texture": ExtResource("4_dxifv")
+}],
+"loop": false,
+"name": &"Attack",
+"speed": 1.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("5_pwjut")
+}, {
+"duration": 1.0,
+"texture": ExtResource("6_n0g06")
+}],
+"loop": true,
+"name": &"Idle",
+"speed": 1.5
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("7_ar8e5")
+}, {
+"duration": 1.0,
+"texture": ExtResource("2_hb8ge")
+}],
+"loop": true,
+"name": &"Walk",
+"speed": 5.0
+}]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_4gyqm"]
-size = Vector2(40, 39)
+size = Vector2(34, 39)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_qi2p4"]
-size = Vector2(42.5, 41.5)
+size = Vector2(40, 41.5)
 
 [node name="Enemy" type="CharacterBody2D"]
 script = ExtResource("1_4gyqm")
 
-[node name="Anim" type="Sprite2D" parent="."]
-scale = Vector2(0.3, 0.3)
-texture = ExtResource("1_7k104")
+[node name="Anim" type="AnimatedSprite2D" parent="."]
+position = Vector2(4.7683716e-07, 0)
+scale = Vector2(1.26, 1.26)
+sprite_frames = SubResource("SpriteFrames_doop2")
+animation = &"Idle"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(0, 0.5)
 shape = SubResource("RectangleShape2D_4gyqm")
 
 [node name="HurtArea" type="Area2D" parent="."]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="HurtArea"]
-position = Vector2(-0.25, 0.25)
 shape = SubResource("RectangleShape2D_qi2p4")
 
 [node name="Hearts" type="Node2D" parent="."]

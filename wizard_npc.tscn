@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3 uid="uid://ypbrpsyr6foh"]
+[gd_scene load_steps=17 format=3 uid="uid://ypbrpsyr6foh"]
 
 [ext_resource type="Script" uid="uid://bwc5yxip1q3q2" path="res://Scripts/wizard_npc.gd" id="1_2swcv"]
 [ext_resource type="Script" uid="uid://bhit0jjeo00vb" path="res://Scripts/wizard_dialog.gd" id="1_o8o5b"]
@@ -9,6 +9,9 @@
 [ext_resource type="Texture2D" uid="uid://bsx8111c1lw4m" path="res://Assets/Players/PlayerAssets/Scribble2.png" id="7_fkvqw"]
 [ext_resource type="Texture2D" uid="uid://buf0gf60rgf11" path="res://Assets/Players/PlayerAssets/Scribble3.png" id="8_hvquh"]
 [ext_resource type="PackedScene" uid="uid://ekh7h6u3yy4n" path="res://wizard_dialog.tscn" id="9_subnk"]
+[ext_resource type="Texture2D" uid="uid://dx24njdi1mbom" path="res://Assets/Players/PlayerAssets/Wizard/Idle1.png" id="10_hvquh"]
+[ext_resource type="Texture2D" uid="uid://b4hx4ujuf1q8t" path="res://Assets/Players/PlayerAssets/Wizard/Idle2.png" id="11_n1uy3"]
+[ext_resource type="Texture2D" uid="uid://drq78ui5ehat5" path="res://Assets/Items/whitecircle.png" id="12_n1uy3"]
 
 [sub_resource type="PackedScene" id="PackedScene_2swcv"]
 _bundled = {
@@ -24,7 +27,7 @@ _bundled = {
 }
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_a0nak"]
-size = Vector2(247, 193)
+size = Vector2(288, 231)
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_n1uy3"]
 animations = [{
@@ -43,26 +46,37 @@ animations = [{
 "speed": 5.0
 }]
 
+[sub_resource type="SpriteFrames" id="SpriteFrames_5sh2j"]
+animations = [{
+"frames": [{
+"duration": 4.0,
+"texture": ExtResource("10_hvquh")
+}, {
+"duration": 2.0,
+"texture": ExtResource("11_n1uy3")
+}],
+"loop": true,
+"name": &"default",
+"speed": 1.0
+}]
+
 [node name="WizardNPC" type="Node2D"]
 script = ExtResource("1_2swcv")
 dialog_scene = SubResource("PackedScene_2swcv")
 
-[node name="Sprite2D" type="Sprite2D" parent="."]
-texture = ExtResource("2_o8o5b")
-
 [node name="InteractionArea" type="Area2D" parent="."]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="InteractionArea"]
-position = Vector2(-0.5, 4.5)
+position = Vector2(3, -3.5)
 shape = SubResource("RectangleShape2D_a0nak")
 
 [node name="PromptLabel" type="Label" parent="."]
-offset_left = -74.0
-offset_top = -201.0
-offset_right = 103.0
-offset_bottom = -171.0
+offset_left = -114.0
+offset_top = -198.0
+offset_right = 113.0
+offset_bottom = -148.0
 theme_override_fonts/font = ExtResource("3_sjs3a")
-theme_override_font_sizes/font_size = 30
+theme_override_font_sizes/font_size = 35
 text = "Press E to talk"
 
 [node name="GrumpyCloud" type="AnimatedSprite2D" parent="."]
@@ -76,3 +90,15 @@ frame_progress = 0.98169935
 
 [node name="WizardDialog" parent="." instance=ExtResource("9_subnk")]
 visible = false
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+position = Vector2(0, -9.536743e-07)
+scale = Vector2(5.069444, 5.069443)
+sprite_frames = SubResource("SpriteFrames_5sh2j")
+frame_progress = 0.98598915
+
+[node name="PointLight2D" type="PointLight2D" parent="."]
+position = Vector2(74, 45)
+scale = Vector2(0.47805643, 0.47805643)
+color = Color(1, 1, 0.69803923, 1)
+texture = ExtResource("12_n1uy3")

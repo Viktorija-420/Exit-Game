@@ -1,10 +1,11 @@
-[gd_scene load_steps=6 format=3 uid="uid://c4sdpabuobb67"]
+[gd_scene load_steps=7 format=3 uid="uid://c4sdpabuobb67"]
 
 [ext_resource type="PackedScene" uid="uid://ef45daveb7mf" path="res://Level_01.tscn" id="1_apjhw"]
 [ext_resource type="Script" uid="uid://bla3sskei8dyk" path="res://level_02.gd" id="2_ji2ok"]
 [ext_resource type="PackedScene" uid="uid://ypbrpsyr6foh" path="res://wizard_npc.tscn" id="3_rqd2m"]
 [ext_resource type="PackedScene" uid="uid://du0hwb0eypl2b" path="res://torch.tscn" id="4_scvo5"]
 [ext_resource type="PackedScene" uid="uid://ekh7h6u3yy4n" path="res://wizard_dialog.tscn" id="4_ucrpc"]
+[ext_resource type="PackedScene" uid="uid://cvmqthsogd2xy" path="res://enemy.tscn" id="6_57nq5"]
 
 [node name="Level02" instance=ExtResource("1_apjhw")]
 script = ExtResource("2_ji2ok")
@@ -20,8 +21,8 @@ layer_0/tile_data = PackedInt32Array(524264, 655360, 4, 524265, 393216, 4, 52426
 layer_1/tile_data = PackedInt32Array(458730, 196610, 1, -131094, 196610, 1342177281, -131089, 393218, 0, -65553, 393218, 1, -17, 393218, 0, 65519, 393218, 1, 131055, 393218, 0, 196591, 393218, 1, -131088, 458754, 0, -65552, 458754, 1, -131087, 393218, 0, -65551, 393218, 1, -15, 393218, 0, -131086, 458754, 0, -131090, 458754, 0, -65554, 458754, 1, -131080, 393218, 0, -65544, 393218, 1, -131079, 458754, 0, -196581, 393218, 0, 393239, 393218, 2, -196594, 393218, 0, -131058, 393218, 0, -196607, 393218, 0, -131071, 393218, 0, -196604, 393218, 0, -196586, 393218, 0, -131050, 393218, 0, -196600, 393218, 0, -131068, 393218, 0, -65532, 393218, 0, 4, 393218, 0, 65540, 393218, 0, -196603, 393218, 0, -131067, 393218, 0, -196601, 393218, 0, -131065, 393218, 0, -65529, 393218, 0, -65528, 393218, 0, -131064, 393218, 0, 8, 393218, 0, -196595, 393218, 0, -196606, 393218, 0, -131070, 393218, 0, -65535, 393218, 0, -196589, 393218, 0, -65517, 393218, 0, -131053, 393218, 0, -131045, 393218, 0, -196574, 393218, 0, -131038, 393218, 0, -65502, 393218, 0, 34, 393218, 0, -196569, 393218, 0, -131033, 393218, 0, 393252, 458754, 2, 393253, 131074, 1, 393257, 196610, 1)
 
 [node name="WizardNPC" parent="." index="4" instance=ExtResource("3_rqd2m")]
-position = Vector2(420, 162)
-scale = Vector2(0.5, 0.5)
+position = Vector2(424, 177)
+scale = Vector2(0.275, 0.275)
 dialog_scene = ExtResource("4_ucrpc")
 idle_time_before_comment = 2.0
 
@@ -32,7 +33,7 @@ position = Vector2(1185, 164)
 position = Vector2(801, 137)
 
 [node name="torch4" parent="." index="9" instance=ExtResource("4_scvo5")]
-position = Vector2(329, 98)
+position = Vector2(337, 117)
 scale = Vector2(0.2, 0.2)
 
 [node name="torch5" parent="." index="10" instance=ExtResource("4_scvo5")]
@@ -40,7 +41,7 @@ position = Vector2(-205.99994, 104)
 scale = Vector2(0.2, 0.2)
 
 [node name="torch6" parent="." index="11" instance=ExtResource("4_scvo5")]
-position = Vector2(535.99994, 104)
+position = Vector2(546.99994, 104)
 scale = Vector2(0.2, 0.2)
 
 [node name="torch" parent="." index="12"]
@@ -54,3 +55,6 @@ position = Vector2(-575, 104)
 
 [node name="popLevel" parent="CanvasLayer/Panel" index="0"]
 text = "Level two"
+
+[node name="Enemy" parent="." index="16" instance=ExtResource("6_57nq5")]
+position = Vector2(272, 186)

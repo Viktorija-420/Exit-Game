@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://btsikyu3s0o82"
-path="res://.godot/imported/testEnemy.png-7f756453072be28408cfb4f153be0dbf.ctex"
+uid="uid://bvorwqfv71c8e"
+path="res://.godot/imported/Walk1.png-9d399e7b429bfe7835a831668046054a.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/Players/Enemy/testEnemy.png"
-dest_files=["res://.godot/imported/testEnemy.png-7f756453072be28408cfb4f153be0dbf.ctex"]
+source_file="res://Assets/Players/PlayerAssets/Player/Walk/Walk1.png"
+dest_files=["res://.godot/imported/Walk1.png-9d399e7b429bfe7835a831668046054a.ctex"]
 
 [params]
 
