@@ -1,11 +1,10 @@
-[gd_scene load_steps=7 format=3 uid="uid://c4sdpabuobb67"]
+[gd_scene load_steps=6 format=3 uid="uid://c4sdpabuobb67"]
 
 [ext_resource type="PackedScene" uid="uid://ef45daveb7mf" path="res://Level_01.tscn" id="1_apjhw"]
 [ext_resource type="Script" uid="uid://bla3sskei8dyk" path="res://level_02.gd" id="2_ji2ok"]
 [ext_resource type="PackedScene" uid="uid://ypbrpsyr6foh" path="res://wizard_npc.tscn" id="3_rqd2m"]
 [ext_resource type="PackedScene" uid="uid://du0hwb0eypl2b" path="res://torch.tscn" id="4_scvo5"]
 [ext_resource type="PackedScene" uid="uid://ekh7h6u3yy4n" path="res://wizard_dialog.tscn" id="4_ucrpc"]
-[ext_resource type="PackedScene" uid="uid://cvmqthsogd2xy" path="res://enemy.tscn" id="6_57nq5"]
 
 [node name="Level02" instance=ExtResource("1_apjhw")]
 script = ExtResource("2_ji2ok")
@@ -55,6 +54,3 @@ position = Vector2(-575, 104)
 
 [node name="popLevel" parent="CanvasLayer/Panel" index="0"]
 text = "Level two"
-
-[node name="Enemy" parent="." index="16" instance=ExtResource("6_57nq5")]
-position = Vector2(272, 186)
