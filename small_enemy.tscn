@@ -1,0 +1,106 @@
+[gd_scene load_steps=11 format=3 uid="uid://cyt7gfuawb7cr"]
+
+[ext_resource type="Script" uid="uid://vvt2cyhup0at" path="res://Scripts/small_enemy.gd" id="1_g2n3m"]
+[ext_resource type="Texture2D" uid="uid://bp4s2418otru4" path="res://Assets/Players/BatEnemy/piskel_bat1.png" id="2_we8ff"]
+[ext_resource type="Texture2D" uid="uid://ca3tlcmnqutlp" path="res://Assets/Players/BatEnemy/piskel_bat2.png" id="3_6il6n"]
+[ext_resource type="Texture2D" uid="uid://v5xcucg5dk1u" path="res://Assets/Players/BatEnemy/piskel_bat3.png" id="4_bj0nv"]
+[ext_resource type="Texture2D" uid="uid://bx851ccj43qta" path="res://Assets/Players/BatEnemy/piskel_bat4.png" id="5_jwqar"]
+[ext_resource type="Texture2D" uid="uid://ynpaqa8tdcx8" path="res://Assets/Players/BatEnemy/piskel_bat5.png" id="6_4iajm"]
+[ext_resource type="Texture2D" uid="uid://bun4eix6c1dkw" path="res://Assets/Players/BatEnemy/piskel_bat6.png" id="7_q8f7s"]
+[ext_resource type="Texture2D" uid="uid://e7ht6r1t1ucn" path="res://Assets/Players/PlayerAssets/heartFull.png" id="8_h4okp"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_hiam1"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_we8ff")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_6il6n")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_bj0nv")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_jwqar")
+}, {
+"duration": 1.0,
+"texture": ExtResource("6_4iajm")
+}, {
+"duration": 1.0,
+"texture": ExtResource("7_q8f7s")
+}],
+"loop": true,
+"name": &"Attack",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_we8ff")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_6il6n")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_bj0nv")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_jwqar")
+}, {
+"duration": 1.0,
+"texture": ExtResource("6_4iajm")
+}, {
+"duration": 1.0,
+"texture": ExtResource("7_q8f7s")
+}],
+"loop": true,
+"name": &"Idle",
+"speed": 4.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_we8ff")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_6il6n")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_bj0nv")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_jwqar")
+}, {
+"duration": 1.0,
+"texture": ExtResource("6_4iajm")
+}, {
+"duration": 1.0,
+"texture": ExtResource("7_q8f7s")
+}],
+"loop": true,
+"name": &"Walk",
+"speed": 5.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_g2n3m"]
+size = Vector2(102, 63)
+
+[node name="SmallEnemy" type="CharacterBody2D"]
+position = Vector2(534, 348)
+script = ExtResource("1_g2n3m")
+
+[node name="Anim" type="AnimatedSprite2D" parent="."]
+position = Vector2(42.22222, 23.75)
+scale = Vector2(6.2777777, 6.2777777)
+sprite_frames = SubResource("SpriteFrames_hiam1")
+animation = &"Attack"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(41, 21.5)
+shape = SubResource("RectangleShape2D_g2n3m")
+
+[node name="Hearts" type="Node2D" parent="."]
+
+[node name="Heart1" type="Sprite2D" parent="Hearts"]
+position = Vector2(44, -24)
+scale = Vector2(0.15648855, 0.15648854)
+texture = ExtResource("8_h4okp")

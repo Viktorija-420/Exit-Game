@@ -67,7 +67,7 @@ func _on_body_entered(body: Node2D) -> void:
 		idle_timer = 0.0
 		idle_comment_triggered = false
 		if not has_talked:
-			prompt.text = "Press E to talk"
+			prompt.text = "Press Enter to talk"
 			prompt.visible = true
 
 func _on_body_exited(body: Node2D) -> void:

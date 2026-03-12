@@ -1,23 +1,18 @@
 extends CharacterBody2D
 
-# --- SPAWN SETTINGS ---
-@export var small_enemy_scene: PackedScene # MAKE SURE TO DRAG YOUR SMALL ENEMY .TSCN HERE
-
-# --- MOVEMENT SETTINGS ---
-@export var speed = 50 
+@export var speed = 70 
 @export var gravity = 900
 @export var lunge_speed = 300.0 
 @export var retreat_speed = 150.0
-var lives = 3 
+var lives = 1 
 
-# --- STATES ---
 var player_chase = false
 var player = null
 var player_attack_zone = false
 var can_take_damage = true 
 var _is_jolting = false 
 var _is_retreating = false 
-var _retreat_dir = 0 
+var _retreat_dir = 0 # New: Stores which way to run
 
 @onready var hearts_container = $Hearts 
 @onready var anim = $Anim
@@ -35,11 +30,13 @@ func _physics_process(delta: float) -> void:
 
 	if not _is_jolting:
 		if _is_retreating:
+			# FIX: Force the velocity to stay active during the retreat
 			velocity.x = _retreat_dir * retreat_speed
 			anim.play("Walk")
 			anim.flip_h = velocity.x < 0
 		elif player_chase and player:
 			var dist = global_position.distance_to(player.global_position)
+			
 			if dist < 120 and anim.animation != "Attack":
 				_lunge_at_player()
 			elif anim.animation != "Attack":
@@ -61,6 +58,7 @@ func _play_standard_idle():
 
 func _lunge_at_player():
 	if not player or _is_retreating: return
+	
 	anim.play("Attack")
 	var dir = sign(player.global_position.x - global_position.x)
 	anim.flip_h = dir < 0
@@ -73,12 +71,18 @@ func _on_anim_finished():
 
 func _start_retreat():
 	if _is_retreating: return
+	
+	# Determine direction ONCE at the start of the retreat
 	if player:
 		_retreat_dir = -sign(player.global_position.x - global_position.x)
 	else:
 		_retreat_dir = 1
+		
 	_is_retreating = true
+	
+	# Run away for 0.8 seconds (increased slightly to make it visible)
 	await get_tree().create_timer(0.8).timeout
+	
 	_is_retreating = false
 	velocity.x = 0
 	anim.play("Idle")
@@ -111,34 +115,11 @@ func _start_damage_cooldown():
 	await get_tree().create_timer(0.3).timeout
 	
 	if lives <= 0:
-		spawn_minions() # Spawning is called right before death
 		self.queue_free()
 	else:
 		modulate = Color(1, 1, 1) 
 		_is_jolting = false 
 		can_take_damage = true
-		
-func spawn_minions():
-	# SAFETY CHECK: If you forgot to assign the scene, don't crash the game
-	if small_enemy_scene == null:
-		print("ERROR: No Small Enemy Scene assigned to Big Enemy Inspector!")
-		return
-
-	var number_of_minions = 3 
-	
-	for i in range(number_of_minions):
-		var minion = small_enemy_scene.instantiate()
-		
-		# Set spawn position with a slight random offset so they don't overlap perfectly
-		var spawn_offset = Vector2(randf_range(-20, 20), randf_range(-10, 0))
-		minion.global_position = global_position + spawn_offset
-		
-		# Add them to the Level (Parent), not the big enemy (since big enemy is being deleted)
-		get_parent().add_child(minion)
-		
-		# Optional: Give them a random burst of speed upon spawning
-		if minion is CharacterBody2D:
-			minion.velocity = Vector2(randf_range(-250, 250), -200)
 
 func enemy(): pass 
 

@@ -28,6 +28,9 @@ idle_time_before_comment = 2.0
 [node name="Door" parent="." index="5"]
 position = Vector2(1185, 164)
 
+[node name="Player" parent="." index="6"]
+position = Vector2(-508, 177)
+
 [node name="Key" parent="." index="7"]
 position = Vector2(801, 137)
 

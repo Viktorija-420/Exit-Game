@@ -1,243 +1,227 @@
 extends CharacterBody2D
 
-signal charge_progress_changed(progress: float, charging: bool)
-
-var _charge_ready: bool = false
-var controls_enabled: bool = true  # <-- new flag to enable/disable controls
-
-@onready var anim: AnimatedSprite2D = $Anim
-@onready var arrow_spawn: Node2D = $ArrowSpawn
-
-@export var speed: float = 200.0
-@export var jump_force: float = -400.0
-@export var gravity: float = 1000.0
-
-# hurt tuning
-@export var hurt_throb_scale: float = 1.18
-@export var hurt_throb_time: float = 0.10
-@export var hurt_fall_time: float = 0.80
-@export var hurt_knockup: float = -220.0
-@export var hurt_push_x: float = 120.0
-
-# shield
-@export var shield_action: StringName = &"Shield"
-@export var shield_speed_mult: float = 0.55
-var _shielding: bool = false
-
-# shooting + charge
-@export var arrow_scene: PackedScene
-@export var shoot_action: StringName = &"Shoot"
-@export var shoot_cooldown: float = 0.20
-@export var charge_time: float = 1.0
-@export var charge_cooldown: float = 2.0
-@export var normal_damage: int = 1
-@export var charged_damage: int = 2
-
-var _shoot_timer: float = 0.0
-var _charge_cd_timer: float = 0.0
-var _charging: bool = false
-var _charge_timer: float = 0.0
-
-# misc
-var _normal_scale: Vector2
+# -------------------------
+# VARIABLES & STATE
+# -------------------------
+var player_alive: bool = true
+var _attacking: bool = false 
 var _hurt: bool = false
 var _hurt_timer: float = 0.0
+var _shielding: bool = false
+var _normal_scale: Vector2
+var controls_enabled: bool = true
 
-@export_multiline var text: String = ""
+var enemy_inattack_range: bool = false
+var enemy_attack_cooldown: bool = true
+var last_enemy_hit_position: float = 0.0 
 
-func _ready() -> void:
-	_normal_scale = anim.scale if anim else Vector2.ONE
+# -------------------------
+# NODES
+# -------------------------
+@onready var anim: AnimatedSprite2D = $Anim
+@onready var cam: Camera2D = $Camera2D
+
+# -------------------------
+# SETTINGS
+# -------------------------
+@export_group("Movement")
+@export var speed: float = 200.0
+@export var jump_force: float = -400.0
+@export var gravity: float = 1200.0 
+
+@export_group("Hurt & Jolt Settings")
+@export var hurt_fall_time: float = 0.40
+@export var hurt_knockup: float = -350.0 
+@export var hurt_push_x: float = 400.0
+@export var hurt_throb_scale: float = 1.18
+@export var hurt_throb_time: float = 0.10
+
+@export_group("Camera Shake")
+@export var shake_strength: float = 15.0 
+@export var shake_decay: float = 8.0
+@export var shake_noise_speed: float = 25.0
+var _shake_amount: float = 0.0
+var _noise_time: float = 0.0
+
+@export_group("Shield Settings")
+@export var shield_action: StringName = &"Shield"
+@export var shield_speed_mult: float = 0.55
+
+# -------------------------
+# READY
+# -------------------------
+func _ready():
+	add_to_group("player")
 	if anim:
+		_normal_scale = anim.scale
 		anim.play("idle")
+		if not anim.animation_finished.is_connected(_on_anim_animation_finished):
+			anim.animation_finished.connect(_on_anim_animation_finished)
 
-func is_hurt() -> bool:
-	return _hurt
+# -------------------------
+# MAIN LOOP
+# -------------------------
+func _physics_process(delta: float):
+	_update_camera_shake(delta)
 
-func is_shielding() -> bool:
-	return _shielding
-
-func _physics_process(delta: float) -> void:
-	if not controls_enabled:
-		# skip movement/input while dialog is active
+	if not controls_enabled or not player_alive:
 		return
 
-	# timers
-	if _shoot_timer > 0.0:
-		_shoot_timer -= delta
-	if _charge_cd_timer > 0.0:
-		_charge_cd_timer -= delta
+	_apply_gravity(delta)
 
-	# shield state
-	_shielding = Input.is_action_pressed(shield_action) and not _hurt
-
-	# charging logic
-	_handle_shooting(delta)
-
-	# gravity
-	if not is_on_floor():
-		velocity.y += gravity * delta
-
-	# hurt state
 	if _hurt:
-		_hurt_timer -= delta
-		move_and_slide()
+		_process_hurt(delta)
+		return 
 
-		if _hurt_timer <= 0.0 and is_on_floor():
-			_finish_hurt()
-		elif _hurt_timer <= -0.25:
-			_finish_hurt()
-		return
-
-	# movement
-	var dir := Input.get_action_strength("Right") - Input.get_action_strength("Left")
-	var move_speed := speed * (shield_speed_mult if _shielding else 1.0)
-	velocity.x = dir * move_speed
-
-	# jump
-	if Input.is_action_just_pressed("Up") and is_on_floor():
-		velocity.y = jump_force
+	# ACTION UPDATES
+	_shielding = Input.is_action_pressed(shield_action) and not _attacking
+	_handle_attack_input()
+	
+	# MOVEMENT & JUMP (Now allowed during attack)
+	_handle_movement()
+	_handle_jump()
 
 	move_and_slide()
 	_update_animation()
+	enemy_attack()
 
-func _handle_shooting(delta: float) -> void:
-	if _hurt or not controls_enabled:
-		_charging = false
-		_charge_timer = 0.0
-		_charge_ready = false
-		emit_signal("charge_progress_changed", 0.0, false)
-		return
+# -------------------------
+# MOVEMENT FUNCTIONS
+# -------------------------
 
-	if Input.is_action_just_pressed(shoot_action):
-		_charging = true
-		_charge_timer = 0.0
-		_charge_ready = false
-		emit_signal("charge_progress_changed", 0.0, true)
+func _handle_movement():
+	var dir := Input.get_action_strength("Right") - Input.get_action_strength("Left")
+	var move_speed := speed * (shield_speed_mult if _shielding else 1.0)
+	
+	velocity.x = dir * move_speed
+	
+	# Allow flipping the sprite even while attacking so you can change direction mid-swing
+	if abs(velocity.x) > 1:
+		anim.flip_h = velocity.x < 0
 
-	if _charging and Input.is_action_pressed(shoot_action):
-		if not _charge_ready:
-			_charge_timer += delta
-			if _charge_timer >= charge_time:
-				_charge_timer = charge_time
-				_charge_ready = true
+func _handle_jump():
+	if Input.is_action_just_pressed("Up") and is_on_floor():
+		velocity.y = jump_force
 
-		var progress := 0.0
-		if charge_time > 0.0:
-			progress = clamp(_charge_timer / charge_time, 0.0, 1.0)
+func _apply_gravity(delta: float):
+	if not is_on_floor():
+		velocity.y += gravity * delta
 
-		emit_signal("charge_progress_changed", progress, true)
+func _handle_attack_input():
+	if Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT) and not _attacking and not _shielding:
+		_attacking = true
+		Global.player_current_attack = true 
+		anim.play("attack")
 
-	if _charging and Input.is_action_just_released(shoot_action):
-		_charging = false
-		if _charge_ready and _charge_cd_timer <= 0.0:
-			_shoot_arrow(charged_damage)
-			_charge_cd_timer = charge_cooldown
-			_shoot_timer = shoot_cooldown
-		else:
-			if _shoot_timer <= 0.0:
-				_shoot_arrow(normal_damage)
-				_shoot_timer = shoot_cooldown
-
-		_charge_timer = 0.0
-		_charge_ready = false
-		emit_signal("charge_progress_changed", 0.0, false)
-
-func _update_animation() -> void:
-	if not anim:
+func _update_animation():
+	if not anim or _hurt: return
+	
+	# If we are attacking, don't let walk/idle animations overwrite it
+	if _attacking:
 		return
 
 	if _shielding and is_on_floor():
-		if anim.sprite_frames and anim.sprite_frames.has_animation("shield"):
-			if anim.animation != "shield":
-				anim.play("shield")
-		if abs(velocity.x) > 1:
-			anim.flip_h = velocity.x < 0
+		anim.play("shield")
 		return
 
 	if not is_on_floor():
+		# Optional: Add a "jump" animation check here if you have one
 		return
-	elif abs(velocity.x) > 1:
-		if anim.animation != "walk":
-			anim.play("walk")
-		anim.flip_h = velocity.x < 0
+
+	if abs(velocity.x) > 1:
+		anim.play("walk")
 	else:
-		if anim.animation != "idle":
-			anim.play("idle")
-
-func hurt_and_reset(from_x: float = 0.0) -> void:
-	if _hurt:
-		return
-
-	Global.lose_life(1)
-
-	if Global.lives <= 0:
-		Global.restart_current_level()
-		return
-
-	_hurt = true
-	_hurt_timer = hurt_fall_time
-	_shielding = false
-	_charging = false
-	_charge_timer = 0.0
-
-	var dir_x := 1.0
-	if from_x != 0.0:
-		dir_x = sign(global_position.x - from_x)
-		if dir_x == 0:
-			dir_x = 1.0
-
-	velocity.x = dir_x * hurt_push_x
-	velocity.y = hurt_knockup
-
-	if anim and anim.sprite_frames and anim.sprite_frames.has_animation("hurt"):
-		anim.play("hurt")
-
-	_start_throb()
-
-func _start_throb() -> void:
-	if not anim:
-		return
-
-	var tween: Tween = create_tween()
-	tween.set_trans(Tween.TRANS_SINE)
-	tween.set_ease(Tween.EASE_OUT)
-
-	anim.scale = _normal_scale
-	tween.tween_property(anim, "scale", _normal_scale * hurt_throb_scale, hurt_throb_time)
-	tween.tween_property(anim, "scale", _normal_scale, hurt_throb_time)
-	tween.tween_property(anim, "scale", _normal_scale * hurt_throb_scale, hurt_throb_time)
-	tween.tween_property(anim, "scale", _normal_scale, hurt_throb_time)
-
-func _finish_hurt() -> void:
-	_hurt = false
-	if anim:
-		anim.scale = _normal_scale
 		anim.play("idle")
 
-func _shoot_arrow(dmg: int) -> void:
-	if arrow_scene == null:
-		push_error("Player: arrow_scene not assigned!")
+func _on_anim_animation_finished():
+	if anim.animation == "attack":
+		_attacking = false
+		Global.player_current_attack = false 
+
+# -------------------------
+# COMBAT & DAMAGE
+# -------------------------
+
+func enemy_attack():
+	if enemy_inattack_range and enemy_attack_cooldown and not _hurt:
+		enemy_attack_cooldown = false
+		hurt_and_reset(last_enemy_hit_position)
+		await get_tree().create_timer(1.2).timeout
+		enemy_attack_cooldown = true
+
+func hurt_and_reset(from_x: float):
+	if _hurt or not player_alive: return
+	
+	start_camera_shake(shake_strength)
+	Global.lose_life(1)
+	
+	if Global.lives <= 0:
+		die()
 		return
-	if arrow_spawn == null:
-		push_error("Player: ArrowSpawn not found!")
-		return
+		
+	_hurt = true
+	_hurt_timer = hurt_fall_time
+	_attacking = false
+	_shielding = false
+	
+	var dir = 1 if global_position.x > from_x else -1
+	velocity.x = dir * hurt_push_x
+	velocity.y = hurt_knockup
+	
+	move_and_slide()
+	
+	if anim.sprite_frames.has_animation("hurt"): 
+		anim.play("hurt")
+		
+	_start_throb()
 
-	var arrow := arrow_scene.instantiate()
-	get_tree().current_scene.add_child(arrow)
-	arrow.global_position = arrow_spawn.global_position
+func _process_hurt(delta: float):
+	_hurt_timer -= delta
+	velocity.x = move_toward(velocity.x, 0, 600 * delta)
+	move_and_slide()
+	
+	if _hurt_timer <= 0 and is_on_floor():
+		_hurt = false
+		anim.play("idle")
+		anim.scale = _normal_scale
 
-	var mouse_pos: Vector2 = get_global_mouse_position()
-	var dir: Vector2 = (mouse_pos - arrow_spawn.global_position).normalized()
+func die():
+	player_alive = false
+	start_camera_shake(25.0)
+	Global.restart_current_level()
 
-	if arrow.has_method("set_direction"):
-		arrow.set_direction(dir)
+# -------------------------
+# EFFECTS
+# -------------------------
+
+func start_camera_shake(amount: float = shake_strength):
+	_shake_amount = amount
+
+func _update_camera_shake(delta: float):
+	if not cam: return
+	if _shake_amount > 0:
+		_noise_time += delta * shake_noise_speed
+		cam.offset = Vector2(sin(_noise_time), cos(_noise_time * 1.3)) * _shake_amount
+		_shake_amount = lerp(_shake_amount, 0.0, shake_decay * delta)
 	else:
-		if "direction" in arrow:
-			arrow.direction = dir
-		arrow.rotation = dir.angle()
+		cam.offset = Vector2.ZERO
 
-	if "damage" in arrow:
-		arrow.damage = dmg
+func _start_throb():
+	var tween = create_tween()
+	tween.tween_property(anim, "scale", _normal_scale * hurt_throb_scale, hurt_throb_time)
+	tween.tween_property(anim, "scale", _normal_scale, hurt_throb_time)
 
-func set_controls_enabled(enabled: bool) -> void:
-	controls_enabled = enabled
+# -------------------------
+# SIGNALS
+# -------------------------
+
+func _on_player_hitbox_body_entered(body):
+	if body.has_method("enemy"): 
+		enemy_inattack_range = true
+		last_enemy_hit_position = body.global_position.x
+
+func _on_player_hitbox_body_exited(body):
+	if body.has_method("enemy"): 
+		enemy_inattack_range = false
+
+func player(): pass
