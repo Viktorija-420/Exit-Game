@@ -82,25 +82,22 @@ animations = [{
 }]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_g2n3m"]
-size = Vector2(102, 63)
+size = Vector2(144, 86)
 
 [node name="SmallEnemy" type="CharacterBody2D"]
-position = Vector2(534, 348)
 script = ExtResource("1_g2n3m")
 
 [node name="Anim" type="AnimatedSprite2D" parent="."]
-position = Vector2(42.22222, 23.75)
 scale = Vector2(6.2777777, 6.2777777)
 sprite_frames = SubResource("SpriteFrames_hiam1")
 animation = &"Attack"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(41, 21.5)
 shape = SubResource("RectangleShape2D_g2n3m")
 
 [node name="Hearts" type="Node2D" parent="."]
 
 [node name="Heart1" type="Sprite2D" parent="Hearts"]
-position = Vector2(44, -24)
+position = Vector2(0, -28)
 scale = Vector2(0.15648855, 0.15648854)
 texture = ExtResource("8_h4okp")

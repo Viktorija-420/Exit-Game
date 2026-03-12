@@ -73,11 +73,9 @@ func _physics_process(delta: float):
 		_process_hurt(delta)
 		return 
 
-	# ACTION UPDATES
 	_shielding = Input.is_action_pressed(shield_action) and not _attacking
 	_handle_attack_input()
 	
-	# MOVEMENT & JUMP (Now allowed during attack)
 	_handle_movement()
 	_handle_jump()
 
@@ -95,7 +93,6 @@ func _handle_movement():
 	
 	velocity.x = dir * move_speed
 	
-	# Allow flipping the sprite even while attacking so you can change direction mid-swing
 	if abs(velocity.x) > 1:
 		anim.flip_h = velocity.x < 0
 
@@ -116,7 +113,6 @@ func _handle_attack_input():
 func _update_animation():
 	if not anim or _hurt: return
 	
-	# If we are attacking, don't let walk/idle animations overwrite it
 	if _attacking:
 		return
 
@@ -125,7 +121,6 @@ func _update_animation():
 		return
 
 	if not is_on_floor():
-		# Optional: Add a "jump" animation check here if you have one
 		return
 
 	if abs(velocity.x) > 1:
@@ -144,6 +139,7 @@ func _on_anim_animation_finished():
 
 func enemy_attack():
 	if enemy_inattack_range and enemy_attack_cooldown and not _hurt:
+		# Double check that we aren't currently attacking (optional, but safer)
 		enemy_attack_cooldown = false
 		hurt_and_reset(last_enemy_hit_position)
 		await get_tree().create_timer(1.2).timeout
@@ -216,6 +212,12 @@ func _start_throb():
 # -------------------------
 
 func _on_player_hitbox_body_entered(body):
+	# KILL LOGIC FOR BATS (AND OTHER ENEMIES)
+	if body.has_method("take_damage") and _attacking:
+		body.take_damage()
+		return # Stop here so we don't also take damage from the same body
+	
+	# DAMAGE LOGIC FOR HOSTILE ENEMIES
 	if body.has_method("enemy"): 
 		enemy_inattack_range = true
 		last_enemy_hit_position = body.global_position.x

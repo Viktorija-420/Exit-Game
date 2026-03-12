@@ -1,7 +1,7 @@
 extends CharacterBody2D
 
 # --- SPAWN SETTINGS ---
-@export var small_enemy_scene: PackedScene # MAKE SURE TO DRAG YOUR SMALL ENEMY .TSCN HERE
+@export var small_enemy_scene: PackedScene 
 
 # --- MOVEMENT SETTINGS ---
 @export var speed = 50 
@@ -111,52 +111,42 @@ func _start_damage_cooldown():
 	await get_tree().create_timer(0.3).timeout
 	
 	if lives <= 0:
-		spawn_minions() # Spawning is called right before death
+		spawn_minions() 
 		self.queue_free()
 	else:
 		modulate = Color(1, 1, 1) 
 		_is_jolting = false 
 		can_take_damage = true
-		
-func spawn_minions():
-	# SAFETY CHECK: If you forgot to assign the scene, don't crash the game
-	if small_enemy_scene == null:
-		print("ERROR: No Small Enemy Scene assigned to Big Enemy Inspector!")
-		return
 
-	var number_of_minions = 3 
+func spawn_minions():
+	if small_enemy_scene == null: return
+
+	# FIX: Spawn 20-30 pixels ABOVE the current position to avoid TileMap collision
+	var spawn_origin = global_position + Vector2(0, -25) 
 	
-	for i in range(number_of_minions):
-		var minion = small_enemy_scene.instantiate()
+	var num_bats = 4
+	for i in range(num_bats):
+		var bat = small_enemy_scene.instantiate()
 		
-		# Set spawn position with a slight random offset so they don't overlap perfectly
-		var spawn_offset = Vector2(randf_range(-20, 20), randf_range(-10, 0))
-		minion.global_position = global_position + spawn_offset
+		# Set global position before adding to tree
+		bat.global_position = spawn_origin
 		
-		# Add them to the Level (Parent), not the big enemy (since big enemy is being deleted)
-		get_parent().add_child(minion)
+		var angle = i * (PI * 2 / num_bats)
+		var burst_velocity = Vector2(cos(angle), sin(angle)) * 350.0
 		
-		# Optional: Give them a random burst of speed upon spawning
-		if minion is CharacterBody2D:
-			minion.velocity = Vector2(randf_range(-250, 250), -200)
+		# Add to the SceneTree root to bypass any parent offsets
+		get_tree().root.add_child(bat)
+		
+		if bat.has_method("apply_burst"):
+			bat.apply_burst(burst_velocity)
 
 func enemy(): pass 
 
-# --- SIGNAL CONNECTIONS ---
-func _on_detection_area_body_entered(body: Node2D) -> void:
-	if body.is_in_group("player"): 
-		player = body
-		player_chase = true
-
-func _on_detection_area_body_exited(body: Node2D) -> void:
-	if body == player:
-		player = null
-		player_chase = false
-
-func _on_enemy_hitbox_body_entered(body: Node2D) -> void:
-	if body.is_in_group("player"):
-		player_attack_zone = true
-
-func _on_enemy_hitbox_body_exited(body: Node2D) -> void:
-	if body.is_in_group("player"):
-		player_attack_zone = false
+func _on_detection_area_body_entered(body):
+	if body.is_in_group("player"): player = body; player_chase = true
+func _on_detection_area_body_exited(body):
+	if body == player: player = null; player_chase = false
+func _on_enemy_hitbox_body_entered(body):
+	if body.is_in_group("player"): player_attack_zone = true
+func _on_enemy_hitbox_body_exited(body):
+	if body.is_in_group("player"): player_attack_zone = false

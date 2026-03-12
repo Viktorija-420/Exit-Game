@@ -1,143 +1,75 @@
 extends CharacterBody2D
 
-@export var speed = 70 
-@export var gravity = 900
-@export var lunge_speed = 300.0 
-@export var retreat_speed = 150.0
-var lives = 1 
-
-var player_chase = false
+@export var speed = 160 
+@export var death_gravity = 1000.0 
 var player = null
-var player_attack_zone = false
-var can_take_damage = true 
-var _is_jolting = false 
-var _is_retreating = false 
-var _retreat_dir = 0 # New: Stores which way to run
-
-@onready var hearts_container = $Hearts 
-@onready var anim = $Anim
+var _is_bursting = false
+var _hover_offset = Vector2.ZERO
+var _time_passed = 0.0
+var _is_dead = false
 
 func _ready():
-	update_hearts() 
-	if not anim.animation_finished.is_connected(_on_anim_finished):
-		anim.animation_finished.connect(_on_anim_finished)
+	scale = Vector2(0.2, 0.2)
+	player = get_tree().get_first_node_in_group("player")
+	_hover_offset = Vector2(randf_range(-40, 40), randf_range(-50, -10))
 
-func _physics_process(delta: float) -> void:
-	if not is_on_floor():
-		velocity.y += gravity * delta
-	
-	deal_with_damage()
+func apply_burst(burst_vel: Vector2):
+	velocity = burst_vel
+	_is_bursting = true
+	await get_tree().create_timer(0.4).timeout
+	_is_bursting = false
 
-	if not _is_jolting:
-		if _is_retreating:
-			# FIX: Force the velocity to stay active during the retreat
-			velocity.x = _retreat_dir * retreat_speed
-			anim.play("Walk")
-			anim.flip_h = velocity.x < 0
-		elif player_chase and player:
-			var dist = global_position.distance_to(player.global_position)
-			
-			if dist < 120 and anim.animation != "Attack":
-				_lunge_at_player()
-			elif anim.animation != "Attack":
-				velocity.x = move_toward(velocity.x, 0, speed)
-				anim.play("Idle")
-				anim.flip_h = (player.global_position.x < global_position.x)
+func _physics_process(delta):
+	if _is_dead:
+		# Only apply gravity if we aren't already resting on the floor
+		if not is_on_floor():
+			velocity.y += death_gravity * delta
 		else:
-			_play_standard_idle()
-	else:
-		velocity.x = move_toward(velocity.x, 0, 500 * delta)
-
+			velocity.y = 0
+			velocity.x = move_toward(velocity.x, 0, 500 * delta) # Friction on floor
+		
+		move_and_slide()
+		return 
+	
+	_time_passed += delta
+	
+	if _is_bursting:
+		velocity = velocity.move_toward(Vector2.ZERO, 500 * delta)
+	elif player:
+		var wobble = Vector2(sin(_time_passed * 6) * 15, cos(_time_passed * 4) * 15)
+		var target_pos = player.global_position + _hover_offset + wobble
+		var direction = (target_pos - global_position).normalized()
+		velocity = velocity.move_toward(direction * speed, 1200 * delta)
+	
+	if $Anim.sprite_frames.has_animation("Attack"):
+		$Anim.play("Attack")
+	
+	$Anim.flip_h = velocity.x < 0
 	move_and_slide()
 
-func _play_standard_idle():
-	if not _is_retreating:
-		velocity.x = move_toward(velocity.x, 0, speed)
-		if anim.animation != "Hurt":
-			anim.play("Idle")
-
-func _lunge_at_player():
-	if not player or _is_retreating: return
+func take_damage():
+	if _is_dead: return
+	_is_dead = true
 	
-	anim.play("Attack")
-	var dir = sign(player.global_position.x - global_position.x)
-	anim.flip_h = dir < 0
-	velocity.x = dir * lunge_speed
-	velocity.y = -150 
-
-func _on_anim_finished():
-	if anim.animation == "Attack":
-		_start_retreat()
-
-func _start_retreat():
-	if _is_retreating: return
+	# 1. DISABLE PLAYER COLLISION
+	# This stops the player from getting stuck. 
+	# Layer 0/Mask 0 means it won't collide with anything anymore...
+	# HOWEVER, if you want it to still hit the floor, use collision_mask = 1 (or whatever your floor layer is)
+	collision_layer = 0
+	collision_mask = 1 # Keep this as your TileMap/Floor layer so it doesn't fall through the world
 	
-	# Determine direction ONCE at the start of the retreat
-	if player:
-		_retreat_dir = -sign(player.global_position.x - global_position.x)
-	else:
-		_retreat_dir = 1
-		
-	_is_retreating = true
+	# 2. STOP ANIMATION
+	if $Anim:
+		$Anim.stop() 
+		$Anim.z_index = -1 # Send it behind the player so it doesn't cover the player's feet
 	
-	# Run away for 0.8 seconds (increased slightly to make it visible)
-	await get_tree().create_timer(0.8).timeout
+	# 3. SET VISUALS
+	modulate = Color.DARK_GRAY 
 	
-	_is_retreating = false
-	velocity.x = 0
-	anim.play("Idle")
-
-func deal_with_damage():
-	if player_attack_zone and Global.player_current_attack and can_take_damage:
-		_is_retreating = false 
-		lives -= 1 
-		update_hearts() 
-		_start_damage_cooldown()
-
-func update_hearts():
-	if not hearts_container: return
-	var heart_sprites = hearts_container.get_children()
-	for i in range(heart_sprites.size()):
-		heart_sprites[i].visible = i < lives
-
-func _start_damage_cooldown():
-	can_take_damage = false
-	_is_jolting = true 
-	modulate = Color(10, 1, 1) 
+	# 4. SET INITIAL FALL ARC
+	velocity = Vector2(randf_range(-80, 80), -250)
 	
-	var knockback_dir = 1 if player and global_position.x > player.global_position.x else -1
-	velocity.x = knockback_dir * 300 
-	velocity.y = -250               
-	
-	if anim.sprite_frames.has_animation("Hurt"):
-		anim.play("Hurt")
+	# 5. PHYSICS ROTATION (Optional touch: makes it look dead)
+	rotation = PI # Flips the bat upside down
 
-	await get_tree().create_timer(0.3).timeout
-	
-	if lives <= 0:
-		self.queue_free()
-	else:
-		modulate = Color(1, 1, 1) 
-		_is_jolting = false 
-		can_take_damage = true
-
-func enemy(): pass 
-
-# --- SIGNAL CONNECTIONS ---
-func _on_detection_area_body_entered(body: Node2D) -> void:
-	if body.is_in_group("player"): 
-		player = body
-		player_chase = true
-
-func _on_detection_area_body_exited(body: Node2D) -> void:
-	if body == player:
-		player = null
-		player_chase = false
-
-func _on_enemy_hitbox_body_entered(body: Node2D) -> void:
-	if body.is_in_group("player"):
-		player_attack_zone = true
-
-func _on_enemy_hitbox_body_exited(body: Node2D) -> void:
-	if body.is_in_group("player"):
-		player_attack_zone = false
+func is_bat(): return true
