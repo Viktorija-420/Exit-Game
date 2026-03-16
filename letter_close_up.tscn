@@ -1,0 +1,9 @@
+[gd_scene format=3 uid="uid://dxayys4euqf8y"]
+
+[node name="Node3D" type="Node3D"]
+
+[node name="SubViewportContainer" type="SubViewportContainer" parent="."]
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="Camera3D" type="Camera3D" parent="SubViewportContainer"]

@@ -1,6 +1,6 @@
-[gd_scene load_steps=22 format=3 uid="uid://d31bn50tffcc2"]
+[gd_scene load_steps=20 format=3 uid="uid://d31bn50tffcc2"]
 
-[ext_resource type="Script" uid="uid://bjiaeadbwvdeh" path="res://ui.gd" id="1_ibotj"]
+[ext_resource type="Script" uid="uid://bjiaeadbwvdeh" path="res://Scripts/ui.gd" id="1_ibotj"]
 [ext_resource type="FontFile" uid="uid://dir8slwrv7g00" path="res://Assets/OldeTome.ttf" id="2_n5ude"]
 [ext_resource type="Texture2D" uid="uid://b467aun0salor" path="res://Assets/Players/PlayerAssets/heartEmpty.png" id="3_y4yjw"]
 [ext_resource type="Texture2D" uid="uid://e7ht6r1t1ucn" path="res://Assets/Players/PlayerAssets/heartFull.png" id="4_waa4j"]
@@ -9,13 +9,6 @@
 [ext_resource type="Texture2D" uid="uid://dq3afx0hqgg2g" path="res://Assets/BG/normalButtonUI.jpg" id="7_irxef"]
 [ext_resource type="Texture2D" uid="uid://dty0yfthuqhe4" path="res://Assets/BG/prressedButtonUI.jpg" id="8_e2l4f"]
 [ext_resource type="Texture2D" uid="uid://daavc0j5svjki" path="res://Assets/BG/hoverButtonUI.jpg" id="9_n5rqp"]
-
-[sub_resource type="Gradient" id="Gradient_e2l4f"]
-offsets = PackedFloat32Array(0, 0.56962025, 1)
-colors = PackedColorArray(0.36078432, 0, 0, 1, 0.64805937, 0.22739053, 0.28071228, 1, 0.6499141, 0.30339843, 0.384161, 1)
-
-[sub_resource type="GradientTexture1D" id="GradientTexture1D_n5rqp"]
-gradient = SubResource("Gradient_e2l4f")
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_gs482"]
 texture = ExtResource("6_ok7cu")
@@ -56,9 +49,9 @@ anchors_preset = -1
 anchor_right = 0.056423612
 anchor_bottom = 0.024691353
 offset_left = 48.0
-offset_top = 60.0
+offset_top = 35.0
 offset_right = 88.0
-offset_bottom = 83.0
+offset_bottom = 58.000004
 theme_override_fonts/font = ExtResource("2_n5ude")
 theme_override_font_sizes/font_size = 40
 text = "Lives: "
@@ -71,33 +64,13 @@ offset_right = 978.0592
 offset_bottom = 35.0
 scale = Vector2(1.6526206, 5.7151217)
 
-[node name="Label" type="Label" parent="."]
-offset_left = 40.0
-offset_top = 12.0
-offset_right = 267.0
-offset_bottom = 51.0
-theme_override_fonts/font = ExtResource("2_n5ude")
-theme_override_font_sizes/font_size = 40
-text = "Arrow charge:"
-
-[node name="ChargeBar" type="TextureProgressBar" parent="."]
-offset_left = 278.0
-offset_top = 26.0
-offset_right = 503.0
-offset_bottom = 35.0
-max_value = 1.0
-step = 0.01
-nine_patch_stretch = true
-stretch_margin_left = 225
-texture_progress = SubResource("GradientTexture1D_n5rqp")
-
 [node name="HeartsHolder" type="Control" parent="."]
 layout_mode = 3
 anchors_preset = 0
-offset_left = 35.0
-offset_top = 47.0
-offset_right = 75.0
-offset_bottom = 87.0
+offset_left = 22.0
+offset_top = 24.0
+offset_right = 62.0
+offset_bottom = 64.0
 
 [node name="HeartsEmpty" type="HBoxContainer" parent="HeartsHolder"]
 layout_mode = 0
@@ -150,8 +123,8 @@ texture = ExtResource("4_waa4j")
 [node name="Collect" type="Area2D" parent="."]
 
 [node name="Sprite2D" type="Sprite2D" parent="Collect"]
-position = Vector2(213.5, 589.75)
-scale = Vector2(0.9298642, 0.7903226)
+position = Vector2(205.00002, 593)
+scale = Vector2(0.8476313, 0.72043)
 texture = ExtResource("5_ok7cu")
 
 [node name="Label" type="Label" parent="Collect"]

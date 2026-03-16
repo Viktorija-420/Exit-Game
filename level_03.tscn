@@ -71,7 +71,7 @@ offset_right = -458.0
 text = "Level three"
 
 [node name="Enemy" parent="." index="16" instance=ExtResource("5_11nvs")]
-position = Vector2(-405, 199)
+position = Vector2(662, 186)
 
 [node name="DustParticles" type="GPUParticles2D" parent="." index="17"]
 position = Vector2(-356.00003, 8.000008)

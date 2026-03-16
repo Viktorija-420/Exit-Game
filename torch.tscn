@@ -1,46 +1,96 @@
-[gd_scene load_steps=9 format=3 uid="uid://du0hwb0eypl2b"]
+[gd_scene load_steps=15 format=3 uid="uid://du0hwb0eypl2b"]
 
 [ext_resource type="Script" uid="uid://dnd74ycwjwgje" path="res://Scripts/torch.gd" id="1_72pgl"]
-[ext_resource type="Texture2D" uid="uid://dfkrvvfwtrh84" path="res://Assets/Items/TorchAssets1.png" id="1_kx7w4"]
-[ext_resource type="Texture2D" uid="uid://nuccaq3t1w2t" path="res://Assets/Items/TorchAssets2.png" id="2_72pgl"]
-[ext_resource type="Texture2D" uid="uid://c2phc757lmyw" path="res://Assets/Items/TorchAssets3.png" id="3_wfdi7"]
-[ext_resource type="Texture2D" uid="uid://cl1etjp57ybti" path="res://Assets/Items/TorchAssets4.png" id="4_vkaj5"]
+[ext_resource type="Texture2D" uid="uid://dao0jsqunpknv" path="res://Assets/Items/flame/Flame.png" id="2_yjfty"]
+[ext_resource type="Texture2D" uid="uid://cf7m4sp32ifxr" path="res://Assets/Items/flame/flame2.png" id="3_hm310"]
+[ext_resource type="Texture2D" uid="uid://xljtx568s1rg" path="res://Assets/Items/flame/flame3.png" id="4_jl6w5"]
+[ext_resource type="Texture2D" uid="uid://burf881vcejmq" path="res://Assets/Items/flame/flame4.png" id="5_oslys"]
+[ext_resource type="Texture2D" uid="uid://b3pnwtbvxlxdp" path="res://Assets/Items/flame/flame5.png" id="6_twb5c"]
 [ext_resource type="Texture2D" uid="uid://drq78ui5ehat5" path="res://Assets/Items/whitecircle.png" id="6_wfdi7"]
+[ext_resource type="Texture2D" uid="uid://bj1c528bx7j3c" path="res://Assets/Items/flame/flame6.png" id="7_vcn41"]
+[ext_resource type="Texture2D" uid="uid://l5hvy2nqd437" path="res://Assets/Items/flame/flame7.png" id="8_kr6e6"]
+[ext_resource type="Texture2D" uid="uid://b7cuoc74jruom" path="res://Assets/Items/flame/flame8.png" id="9_6wec4"]
+[ext_resource type="Texture2D" uid="uid://cwgurtiqn0666" path="res://Assets/Items/flame/Rokturis.png" id="11_wlj5o"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_cfb3y"]
 animations = [{
 "frames": [{
 "duration": 1.0,
-"texture": ExtResource("1_kx7w4")
+"texture": ExtResource("2_yjfty")
 }, {
 "duration": 1.0,
-"texture": ExtResource("2_72pgl")
+"texture": ExtResource("3_hm310")
 }, {
 "duration": 1.0,
-"texture": ExtResource("3_wfdi7")
+"texture": ExtResource("4_jl6w5")
 }, {
 "duration": 1.0,
-"texture": ExtResource("4_vkaj5")
+"texture": ExtResource("5_oslys")
+}, {
+"duration": 1.0,
+"texture": ExtResource("6_twb5c")
+}, {
+"duration": 1.0,
+"texture": ExtResource("7_vcn41")
+}, {
+"duration": 1.0,
+"texture": ExtResource("8_kr6e6")
+}, {
+"duration": 1.0,
+"texture": ExtResource("9_6wec4")
 }],
 "loop": true,
-"name": &"default",
-"speed": 1.0
+"name": &"new_animation",
+"speed": 2.0
 }]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_cfxwm"]
-size = Vector2(38, 200)
+size = Vector2(38, 90)
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_yjfty"]
+particle_flag_disable_z = true
+emission_shape = 1
+emission_sphere_radius = 72.48
+gravity = Vector3(0, -10, 0)
+scale_min = 0.29999998
+turbulence_enabled = true
+turbulence_noise_scale = 1.0
+turbulence_influence_min = 0.3
+turbulence_influence_max = 0.3
 
 [node name="torch" type="Area2D"]
 script = ExtResource("1_72pgl")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+position = Vector2(9.536743e-07, -6)
+scale = Vector2(1.8636364, 1.8636364)
 sprite_frames = SubResource("SpriteFrames_cfb3y")
-autoplay = "default"
+animation = &"new_animation"
+autoplay = "new_animation"
+frame_progress = 0.72943246
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, 24)
 shape = SubResource("RectangleShape2D_cfxwm")
 
 [node name="PointLight2D" type="PointLight2D" parent="."]
-scale = Vector2(424.2947, 331.57846)
+position = Vector2(0, -24.907845)
+scale = Vector2(59.24765, 59.942406)
+color = Color(1, 1, 0.6901961, 1)
+shadow_enabled = true
+shadow_color = Color(0, 0, 0, 0.6627451)
 texture = ExtResource("6_wfdi7")
 texture_scale = 0.01
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(-1.9073486e-06, 38.999992)
+scale = Vector2(0.27777776, 0.4900332)
+texture = ExtResource("11_wlj5o")
+
+[node name="GPUParticles2D" type="GPUParticles2D" parent="."]
+modulate = Color(1, 0.54509807, 0.43137255, 1)
+position = Vector2(0, -20.000002)
+scale = Vector2(0.725, 0.725)
+amount = 12
+lifetime = 0.7
+process_material = SubResource("ParticleProcessMaterial_yjfty")

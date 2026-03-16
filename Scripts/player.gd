@@ -15,6 +15,8 @@ var enemy_inattack_range: bool = false
 var enemy_attack_cooldown: bool = true
 var last_enemy_hit_position: float = 0.0 
 
+var current_letter: Node = null
+
 # -------------------------
 # NODES
 # -------------------------
@@ -71,13 +73,12 @@ func _physics_process(delta: float):
 
 	if _hurt:
 		_process_hurt(delta)
-		return 
-
-	_shielding = Input.is_action_pressed(shield_action) and not _attacking
-	_handle_attack_input()
-	
-	_handle_movement()
-	_handle_jump()
+	else:
+		_shielding = Input.is_action_pressed(shield_action) and not _attacking
+		_handle_attack_input()
+		_handle_movement()
+		_handle_jump()
+		_handle_letter_input()
 
 	move_and_slide()
 	_update_animation()
@@ -86,32 +87,46 @@ func _physics_process(delta: float):
 # -------------------------
 # MOVEMENT FUNCTIONS
 # -------------------------
-
 func _handle_movement():
 	var dir := Input.get_action_strength("Right") - Input.get_action_strength("Left")
 	var move_speed := speed * (shield_speed_mult if _shielding else 1.0)
 	
-	velocity.x = dir * move_speed
+	if not _hurt:
+		velocity.x = dir * move_speed
 	
 	if abs(velocity.x) > 1:
 		anim.flip_h = velocity.x < 0
 
 func _handle_jump():
-	if Input.is_action_just_pressed("Up") and is_on_floor():
+	if Input.is_action_just_pressed("Up") and is_on_floor() and not _hurt:
 		velocity.y = jump_force
 
 func _apply_gravity(delta: float):
-	if not is_on_floor():
+	if not is_on_floor() or _hurt:
 		velocity.y += gravity * delta
 
 func _handle_attack_input():
-	if Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT) and not _attacking and not _shielding:
+	if Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT) and not _attacking and not _shielding and not _hurt:
 		_attacking = true
 		Global.player_current_attack = true 
 		anim.play("attack")
 
+# -------------------------
+# LETTER PICKUP INPUT
+# -------------------------
+func _handle_letter_input():
+	if current_letter and Input.is_action_just_pressed("interact"):
+		pickup_letter()
+
+# -------------------------
+# ANIMATION
+# -------------------------
 func _update_animation():
-	if not anim or _hurt: return
+	if not anim: return
+	
+	if _hurt:
+		anim.play("hurt")
+		return
 	
 	if _attacking:
 		return
@@ -121,6 +136,10 @@ func _update_animation():
 		return
 
 	if not is_on_floor():
+		if velocity.y < 0:
+			anim.play("jump")
+		else:
+			anim.play("fall")
 		return
 
 	if abs(velocity.x) > 1:
@@ -136,17 +155,16 @@ func _on_anim_animation_finished():
 # -------------------------
 # COMBAT & DAMAGE
 # -------------------------
-
 func enemy_attack():
 	if enemy_inattack_range and enemy_attack_cooldown and not _hurt:
-		# Double check that we aren't currently attacking (optional, but safer)
 		enemy_attack_cooldown = false
 		hurt_and_reset(last_enemy_hit_position)
 		await get_tree().create_timer(1.2).timeout
 		enemy_attack_cooldown = true
 
 func hurt_and_reset(from_x: float):
-	if _hurt or not player_alive: return
+	if _hurt or not player_alive:
+		return
 	
 	start_camera_shake(shake_strength)
 	Global.lose_life(1)
@@ -154,33 +172,41 @@ func hurt_and_reset(from_x: float):
 	if Global.lives <= 0:
 		die()
 		return
-		
+	
 	_hurt = true
 	_hurt_timer = hurt_fall_time
 	_attacking = false
 	_shielding = false
 	
-	var dir = 1 if global_position.x > from_x else -1
+	var dir = -1 if global_position.x > from_x else 1
 	velocity.x = dir * hurt_push_x
 	velocity.y = hurt_knockup
 	
-	move_and_slide()
-	
-	if anim.sprite_frames.has_animation("hurt"): 
+	if anim.sprite_frames.has_animation("hurt"):
 		anim.play("hurt")
 		
 	_start_throb()
 
 func _process_hurt(delta: float):
 	_hurt_timer -= delta
-	velocity.x = move_toward(velocity.x, 0, 600 * delta)
+
+	var knockback_friction := 100
+	if velocity.x > 0:
+		velocity.x = max(velocity.x - knockback_friction * delta, 0)
+	elif velocity.x < 0:
+		velocity.x = min(velocity.x + knockback_friction * delta, 0)
+
+	velocity.y += gravity * delta
 	move_and_slide()
-	
+
 	if _hurt_timer <= 0 and is_on_floor():
 		_hurt = false
 		anim.play("idle")
 		anim.scale = _normal_scale
 
+# -------------------------
+# DEATH
+# -------------------------
 func die():
 	player_alive = false
 	start_camera_shake(25.0)
@@ -189,7 +215,6 @@ func die():
 # -------------------------
 # EFFECTS
 # -------------------------
-
 func start_camera_shake(amount: float = shake_strength):
 	_shake_amount = amount
 
@@ -210,20 +235,40 @@ func _start_throb():
 # -------------------------
 # SIGNALS
 # -------------------------
-
 func _on_player_hitbox_body_entered(body):
-	# KILL LOGIC FOR BATS (AND OTHER ENEMIES)
 	if body.has_method("take_damage") and _attacking:
 		body.take_damage()
-		return # Stop here so we don't also take damage from the same body
+		return 
 	
-	# DAMAGE LOGIC FOR HOSTILE ENEMIES
 	if body.has_method("enemy"): 
 		enemy_inattack_range = true
 		last_enemy_hit_position = body.global_position.x
 
-func _on_player_hitbox_body_exited(body):
-	if body.has_method("enemy"): 
-		enemy_inattack_range = false
+	# Letter detection
+	if body.has_method("letter"):
+		current_letter = body
+		if body.has_node("Popup"):
+			body.get_node("Popup").visible = true
 
-func player(): pass
+func _on_player_hitbox_body_exited(body):
+	if body.has_method("enemy"):
+		enemy_inattack_range = false
+	
+	if body.has_method("letter"):
+		if body.has_node("Popup"):
+			body.get_node("Popup").visible = false
+		if current_letter == body:
+			current_letter = null
+
+# -------------------------
+# LETTER PICKUP
+# -------------------------
+func show_letter_detail():
+	var letter_ui = preload("res://letter_close_up.tscn").instantiate()
+	get_tree().current_scene.add_child(letter_ui)
+	
+func pickup_letter():
+	if current_letter and current_letter.has_node("Popup"):
+		current_letter.get_node("Popup").visible = false
+	current_letter = null
+	show_letter_detail()

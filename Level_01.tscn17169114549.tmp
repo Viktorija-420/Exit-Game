@@ -726,7 +726,7 @@ theme_override_font_sizes/font_size = 25
 text = "Move with:"
 
 [node name="Player" parent="." instance=ExtResource("10_wyb3m")]
-position = Vector2(-525, 178)
+position = Vector2(-548, 177)
 
 [node name="Letter" parent="." instance=ExtResource("13_trksy")]
 position = Vector2(-597, 204)
