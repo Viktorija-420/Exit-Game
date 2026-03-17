@@ -116,7 +116,7 @@ func _handle_attack_input():
 # -------------------------
 func _handle_letter_input():
 	if current_letter and Input.is_action_just_pressed("interact"):
-		pickup_letter()
+		current_letter.pickup()
 
 # -------------------------
 # ANIMATION

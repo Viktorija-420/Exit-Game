@@ -1,0 +1,18 @@
+[gd_scene load_steps=2 format=3 uid="uid://ybpg1t77ndwa"]
+
+[ext_resource type="PackedScene" uid="uid://dxayys4euqf8y" path="res://letter_close_up.tscn" id="1_y3vph"]
+
+[node name="CanvasLayer" type="CanvasLayer"]
+
+[node name="LetterUI" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 1152.0
+offset_bottom = 648.0
+
+[node name="Node3D" parent="LetterUI" instance=ExtResource("1_y3vph")]
+
+[node name="Label" type="Label" parent="LetterUI"]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 23.0
