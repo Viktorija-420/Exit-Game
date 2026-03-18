@@ -1,6 +1,7 @@
-[gd_scene load_steps=2 format=3 uid="uid://drov3lxat1oof"]
+[gd_scene load_steps=3 format=3 uid="uid://drov3lxat1oof"]
 
 [ext_resource type="PackedScene" uid="uid://cfgodi7lhuamh" path="res://Assets/Items/cards/diamonds-A Cards.glb" id="1_1jkrl"]
+[ext_resource type="FontFile" uid="uid://pvrnpf7ff56p" path="res://Assets/Nosifer-Regular.ttf" id="2_vty7m"]
 
 [node name="diamonds-A Cards" instance=ExtResource("1_1jkrl")]
 
@@ -9,3 +10,11 @@ transform = Transform3D(0.46323404, 4.3590202e-07, -1.5401452e-05, -3.7761037e-0
 
 [node name="node_id697" parent="root" index="3"]
 transform = Transform3D(0.0009999647, 0, -8.499567e-06, 0, 0.0010069074, 0, 8.499567e-06, 0, 0.0009999647, 0.5635057, 0.019, 0.2)
+
+[node name="Label3D" type="Label3D" parent="root/node_id697/node_id87/node_id58/node_id48/node_id49/node_id50" index="0"]
+transform = Transform3D(0.9654727, 0.26050454, 8.731149e-08, 0.2605046, -0.965473, 3.637979e-12, 5.9604645e-08, 5.5879354e-09, -1.0000007, -0.07033491, 0.3465232, -0.04740739)
+modulate = Color(0.3812191, 3.549643e-07, 0.06826673, 1)
+outline_modulate = Color(0, 0, 0, 0)
+text = "7"
+font = ExtResource("2_vty7m")
+font_size = 100

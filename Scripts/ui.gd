@@ -299,3 +299,13 @@ func _safe_connect_pressed(btn: Button, callable: Callable) -> void:
 
 	if not btn.pressed.is_connected(callable):
 		btn.pressed.connect(callable)
+
+
+# saistīts ar letter ui. pazūd šis ui
+func hide_for_letter(active: bool) -> void:
+	# Hide the whole UI layer
+	visible = not active
+
+	# Safety: always force pause menu hidden
+	if pause_menu:
+		pause_menu.visible = false
