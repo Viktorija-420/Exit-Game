@@ -11,12 +11,22 @@ var _last_mouse_pos: Vector2 = Vector2.ZERO
 var _rotate_speed: float = 0.5  # degrees per pixel dragged
 
 func _ready():
+	# ✅ Make this node keep processing even when paused
+	process_mode = Node.PROCESS_MODE_ALWAYS
+
 	if has_node("CanvasLayer/LetterContainer"):
 		letter_container = $CanvasLayer/LetterContainer
 		letter_container.visible = false
 
+		# ✅ UI should also ignore pause
+		letter_container.process_mode = Node.PROCESS_MODE_ALWAYS
+
 		if letter_container.has_node("SubViewportContainer"):
 			subview = letter_container.get_node("SubViewportContainer")
+
+			# ✅ SubViewport container also keeps updating
+			subview.process_mode = Node.PROCESS_MODE_ALWAYS
+
 			if subview.has_node("SubViewport"):
 				var viewport = subview.get_node("SubViewport")
 				viewport.render_target_update_mode = SubViewport.UPDATE_ALWAYS
@@ -92,6 +102,8 @@ func pickup():
 			letter_node.scale = Vector3.ONE
 
 	_dragging = false
+	
+	# ✅ Pause the game (letter + UI will still work)
 	get_tree().paused = true
 
 func close_letter_view():
@@ -99,5 +111,8 @@ func close_letter_view():
 		letter_container.visible = false
 	if subview:
 		subview.visible = false
+
 	_dragging = false
+	
+	# ✅ Resume game
 	get_tree().paused = false
