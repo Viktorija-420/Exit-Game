@@ -2,8 +2,8 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dpg6jdrnme4xg"
-path.s3tc="res://.godot/imported/diamonds-A Cards_3.png-6cc129d7fed3c868a3946a07a4a44150.s3tc.ctex"
+uid="uid://5wbgbpuxbgd1"
+path.s3tc="res://.godot/imported/spades-A Cards_3.png-449d7365c392bebb344eb4892bccc7e5.s3tc.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc"],
 "vram_texture": true
@@ -14,8 +14,8 @@ generator_parameters={
 
 [deps]
 
-source_file="res://Assets/Items/diamonds-A Cards_3.png"
-dest_files=["res://.godot/imported/diamonds-A Cards_3.png-6cc129d7fed3c868a3946a07a4a44150.s3tc.ctex"]
+source_file="res://Assets/Items/cards/spades-A Cards_3.png"
+dest_files=["res://.godot/imported/spades-A Cards_3.png-449d7365c392bebb344eb4892bccc7e5.s3tc.ctex"]
 
 [params]
 

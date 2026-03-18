@@ -1,0 +1,11 @@
+[gd_scene load_steps=2 format=3 uid="uid://drov3lxat1oof"]
+
+[ext_resource type="PackedScene" uid="uid://cfgodi7lhuamh" path="res://Assets/Items/cards/diamonds-A Cards.glb" id="1_1jkrl"]
+
+[node name="diamonds-A Cards" instance=ExtResource("1_1jkrl")]
+
+[node name="Mesh" parent="root" index="0"]
+transform = Transform3D(0.46323404, 4.3590202e-07, -1.5401452e-05, -3.7761037e-08, 0.6980692, 3.5252715e-08, 0.007135322, -2.4605035e-05, 0.0009998815, 0.564, -0.002, 0.201)
+
+[node name="node_id697" parent="root" index="3"]
+transform = Transform3D(0.0009999647, 0, -8.499567e-06, 0, 0.0010069074, 0, 8.499567e-06, 0, 0.0009999647, 0.5635057, 0.019, 0.2)

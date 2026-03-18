@@ -2,19 +2,19 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://b0gg4em2m1qmw"
-path="res://.godot/imported/diamonds-A Cards_2.png-d63c13bbe323ec420b2e064a9a77a38f.ctex"
+uid="uid://btym1bo6ur5gw"
+path="res://.godot/imported/diamonds-A Cards_5.png-5c0ad3f7941764e779f4d51415c9928c.ctex"
 metadata={
 "vram_texture": false
 }
 generator_parameters={
-"md5": "08dfe6c071cfa5dafe143156dfeacee1"
+"md5": "4149415c91cc1a96b1a40f0c7e93a39e"
 }
 
 [deps]
 
-source_file="res://Assets/Items/diamonds-A Cards_2.png"
-dest_files=["res://.godot/imported/diamonds-A Cards_2.png-d63c13bbe323ec420b2e064a9a77a38f.ctex"]
+source_file="res://Assets/Items/cards/diamonds-A Cards_5.png"
+dest_files=["res://.godot/imported/diamonds-A Cards_5.png-5c0ad3f7941764e779f4d51415c9928c.ctex"]
 
 [params]
 

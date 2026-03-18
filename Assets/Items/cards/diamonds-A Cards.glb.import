@@ -4,12 +4,12 @@ importer="scene"
 importer_version=1
 type="PackedScene"
 uid="uid://cfgodi7lhuamh"
-path="res://.godot/imported/diamonds-A Cards.glb-1eb64b61bb8c074af94eb2f945a45875.scn"
+path="res://.godot/imported/diamonds-A Cards.glb-f18347237627deaf924eff2f780e62e7.scn"
 
 [deps]
 
-source_file="res://Assets/Items/diamonds-A Cards.glb"
-dest_files=["res://.godot/imported/diamonds-A Cards.glb-1eb64b61bb8c074af94eb2f945a45875.scn"]
+source_file="res://Assets/Items/cards/diamonds-A Cards.glb"
+dest_files=["res://.godot/imported/diamonds-A Cards.glb-f18347237627deaf924eff2f780e62e7.scn"]
 
 [params]
 

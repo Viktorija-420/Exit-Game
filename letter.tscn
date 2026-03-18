@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" uid="uid://b6se73s2pmmnr" path="res://letter.gd" id="1_5gbsb"]
 [ext_resource type="Texture2D" uid="uid://d2mml855r0np3" path="res://Assets/Items/letter.png" id="1_r6swm"]
-[ext_resource type="PackedScene" uid="uid://cfgodi7lhuamh" path="res://Assets/Items/diamonds-A Cards.glb" id="3_57kop"]
+[ext_resource type="PackedScene" uid="uid://drov3lxat1oof" path="res://diamonds_a_cards.tscn" id="3_57kop"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_5gbsb"]
 size = Vector2(71.5, 48)
@@ -40,7 +40,11 @@ transparent_bg = true
 handle_input_locally = false
 render_target_update_mode = 4
 
-[node name="diamonds-A Cards" parent="CanvasLayer/LetterContainer/SubViewportContainer/SubViewport" instance=ExtResource("3_57kop")]
+[node name="LetterModel" type="Node3D" parent="CanvasLayer/LetterContainer/SubViewportContainer/SubViewport"]
+transform = Transform3D(0.9998801, 0, -0.01548045, 0, 1, 0, 0.01548045, 0, 0.9998801, -0.09098187, 0, -0.25819683)
+
+[node name="diamonds-A Cards" parent="CanvasLayer/LetterContainer/SubViewportContainer/SubViewport/LetterModel" instance=ExtResource("3_57kop")]
+transform = Transform3D(0.9998803, 0, 0.015480454, 0, 1, 0, -0.015480454, 0, 0.9998803, -0.52107614, 0, -0.3094877)
 
 [node name="Camera3D" type="Camera3D" parent="CanvasLayer/LetterContainer/SubViewportContainer/SubViewport"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.09739667, 0, 1.0550823)

@@ -3,7 +3,7 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://dpd3t6cscps2j"
-path="res://.godot/imported/diamonds-A Cards_4.png-04a5d62f1f46c14ec92d38cb6737643c.ctex"
+path="res://.godot/imported/diamonds-A Cards_4.png-d540a41aedfb2cb498cbe185c5fee769.ctex"
 metadata={
 "vram_texture": false
 }
@@ -13,8 +13,8 @@ generator_parameters={
 
 [deps]
 
-source_file="res://Assets/Items/diamonds-A Cards_4.png"
-dest_files=["res://.godot/imported/diamonds-A Cards_4.png-04a5d62f1f46c14ec92d38cb6737643c.ctex"]
+source_file="res://Assets/Items/cards/diamonds-A Cards_4.png"
+dest_files=["res://.godot/imported/diamonds-A Cards_4.png-d540a41aedfb2cb498cbe185c5fee769.ctex"]
 
 [params]
 
