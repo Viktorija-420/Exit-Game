@@ -7,7 +7,7 @@ extends Node2D
 @export_file("*.tscn") var level2_scene: String = "res://level_02.tscn"
 
 @export var fade_in_time: float = 0.6
-@export var visible_time: float = 5.0
+@export var visible_time: float = 3.0
 @export var fade_out_time: float = 0.6
 
 var _transitioning: bool = false

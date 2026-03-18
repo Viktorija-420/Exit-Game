@@ -1,9 +1,11 @@
-[gd_scene load_steps=41 format=3 uid="uid://bv1e7wgpkhu4n"]
+[gd_scene load_steps=43 format=3 uid="uid://bv1e7wgpkhu4n"]
 
 [ext_resource type="Script" uid="uid://b6se73s2pmmnr" path="res://letter.gd" id="1_5gbsb"]
 [ext_resource type="Texture2D" uid="uid://d2mml855r0np3" path="res://Assets/Items/letter.png" id="1_r6swm"]
+[ext_resource type="Texture2D" uid="uid://drq78ui5ehat5" path="res://Assets/Items/whitecircle.png" id="2_r0ivh"]
 [ext_resource type="PackedScene" uid="uid://drov3lxat1oof" path="res://diamonds_a_cards.tscn" id="3_57kop"]
 [ext_resource type="Texture2D" uid="uid://bplkaj8764maa" path="res://Assets/BG/Panels/vig.jpg" id="3_kv2n4"]
+[ext_resource type="PackedScene" uid="uid://d31bn50tffcc2" path="res://ui.tscn" id="4_fmnkl"]
 [ext_resource type="FontFile" uid="uid://dir8slwrv7g00" path="res://Assets/OldeTome.ttf" id="4_v0q87"]
 [ext_resource type="Texture2D" uid="uid://cpa81pw6ss17j" path="res://Assets/Items/mouse/mouseSprite.png" id="5_45yc0"]
 [ext_resource type="Texture2D" uid="uid://bfe5per67cay4" path="res://Assets/Items/button/button_small1.png" id="7_q62lq"]
@@ -218,6 +220,7 @@ texture = ExtResource("9_fmnkl")
 
 [node name="Letter" type="Area2D"]
 script = ExtResource("1_5gbsb")
+collect_label_path = NodePath("UI")
 
 [node name="Letter2" type="Sprite2D" parent="."]
 position = Vector2(-3.8146973e-06, -3.8146973e-06)
@@ -226,6 +229,16 @@ texture = ExtResource("1_r6swm")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("RectangleShape2D_5gbsb")
+
+[node name="PointLight2D" type="PointLight2D" parent="."]
+position = Vector2(-7.6293945e-06, 0)
+scale = Vector2(0.2711599, 0.153125)
+color = Color(0.4844556, 0, 0.082316734, 1)
+shadow_enabled = true
+shadow_color = Color(0, 0, 0, 0.6313726)
+texture = ExtResource("2_r0ivh")
+
+[node name="UI" parent="." instance=ExtResource("4_fmnkl")]
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
@@ -291,7 +304,8 @@ Better hang onto it… just in case."
 autowrap_mode = 2
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="CanvasLayer/LetterContainer"]
-modulate = Color(0.61339027, 0.61339027, 0.61339027, 1)
+modulate = Color(1, 1, 1, 0.45490196)
+self_modulate = Color(18.892157, 18.892157, 18.892157, 1)
 position = Vector2(1014, 509)
 sprite_frames = SubResource("SpriteFrames_if5m5")
 animation = &"MouseAnim"

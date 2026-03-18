@@ -707,6 +707,14 @@ theme_override_fonts/font = ExtResource("20_wyb3m")
 theme_override_font_sizes/font_size = 40
 text = "Level one"
 
+[node name="Letter" parent="." instance=ExtResource("13_trksy")]
+position = Vector2(-597, 199)
+rotation = -0.38397244
+scale = Vector2(0.63, 0.63)
+
+[node name="Player" parent="." instance=ExtResource("10_wyb3m")]
+position = Vector2(-502, 181)
+
 [node name="KeysAnimation" type="AnimatedSprite2D" parent="."]
 modulate = Color(0.72464263, 0.72464263, 0.72464246, 1)
 position = Vector2(-402.00003, 134)
@@ -724,11 +732,3 @@ offset_bottom = -7.3124847
 theme_override_fonts/font = ExtResource("20_wyb3m")
 theme_override_font_sizes/font_size = 25
 text = "Move with:"
-
-[node name="Player" parent="." instance=ExtResource("10_wyb3m")]
-position = Vector2(-502, 181)
-
-[node name="Letter" parent="." instance=ExtResource("13_trksy")]
-position = Vector2(-597, 199)
-rotation = -0.38397244
-scale = Vector2(0.63, 0.63)

@@ -121,8 +121,8 @@ func _ready() -> void:
 
 	# Connect to player signal a moment later (safer with instanced scenes)
 	call_deferred("_connect_charge_bar_to_player")
-
-
+		
+		
 func _process(delta: float) -> void:
 	if charge_bar == null:
 		return
