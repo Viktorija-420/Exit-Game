@@ -38,6 +38,9 @@ var current_letter: Node = null
 @export var hurt_throb_scale: float = 1.18
 @export var hurt_throb_time: float = 0.10
 
+# -------------------------
+# CAMERA
+# -------------------------
 @export_group("Camera Shake")
 @export var shake_strength: float = 15.0 
 @export var shake_decay: float = 8.0
@@ -45,9 +48,30 @@ var current_letter: Node = null
 var _shake_amount: float = 0.0
 var _noise_time: float = 0.0
 
+@export_group("Camera Follow")
+@export var look_ahead_distance: float = 80.0
+@export var look_ahead_speed: float = 3.0
+
+var _look_ahead: float = 0.0
+
+var _was_on_floor: bool = false
+
+@export var landing_shake_strength: float = 6.0
+@export var landing_velocity_threshold: float = 250.0
+
+# -------------------------
+# SHIELD
+# -------------------------
+
 @export_group("Shield Settings")
 @export var shield_action: StringName = &"Shield"
 @export var shield_speed_mult: float = 0.55
+
+# -------------------------
+# DUST
+# -------------------------
+
+@onready var dust: GPUParticles2D = $Dust
 
 # -------------------------
 # READY
@@ -65,6 +89,7 @@ func _ready():
 # -------------------------
 func _physics_process(delta: float):
 	_update_camera_shake(delta)
+	_update_camera_follow(delta)
 
 	if not controls_enabled or not player_alive:
 		return
@@ -83,6 +108,8 @@ func _physics_process(delta: float):
 	move_and_slide()
 	_update_animation()
 	enemy_attack()
+	_check_landing()
+	_update_dust()
 
 # -------------------------
 # MOVEMENT FUNCTIONS
@@ -227,6 +254,28 @@ func _update_camera_shake(delta: float):
 	else:
 		cam.offset = Vector2.ZERO
 
+func _update_camera_follow(delta: float):
+	if not cam:
+		return
+	
+	var target = 0.0
+	
+	if abs(velocity.x) > 10:
+		target = sign(velocity.x) * look_ahead_distance
+	
+	_look_ahead = lerp(_look_ahead, target, look_ahead_speed * delta)
+	
+	cam.offset.x = _look_ahead
+
+func _check_landing():
+	if not _was_on_floor and is_on_floor():
+		# Tikko piezemējās
+		if velocity.y > landing_velocity_threshold:
+			var strength = clamp(velocity.y / 180.0, 0, landing_shake_strength)
+			start_camera_shake(strength)
+	
+	_was_on_floor = is_on_floor()
+		
 func _start_throb():
 	var tween = create_tween()
 	tween.tween_property(anim, "scale", _normal_scale * hurt_throb_scale, hurt_throb_time)
@@ -272,3 +321,43 @@ func pickup_letter():
 		current_letter.get_node("Popup").visible = false
 	current_letter = null
 	show_letter_detail()
+	
+# -------------------------
+# DUST
+# -------------------------
+
+func _update_dust():
+	if not dust:
+		return
+
+	if is_on_floor() and abs(velocity.x) > 20:
+		dust.emitting = true
+		
+		var mat = dust.process_material
+		
+		if mat:
+			var dir = sign(velocity.x)
+			
+			# 📍 Pārvieto dust uz aizmuguri (pie pēdām)
+			dust.position.x = -dir * 10   # ← maini 10 ja vajag
+			
+			# 💨 Virziens PRET kustību
+			mat.direction = Vector3(-dir, -0.3, 0)
+			
+			# 🎯 Spread
+			mat.spread = randf_range(30.0, 60.0)
+			
+			# ⚡ Velocity
+			var vel = randf_range(30.0, 70.0)
+			mat.initial_velocity_min = vel * 0.5
+			mat.initial_velocity_max = vel
+			
+			# 🌪 Mazs randomness
+			mat.gravity = Vector3(
+				randf_range(-10, 10),
+				randf_range(120, 200),
+				0
+			)
+
+	else:
+		dust.emitting = false
