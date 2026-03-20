@@ -653,7 +653,7 @@ position = Vector2(583, 321)
 script = ExtResource("1_2riie")
 
 [node name="CanvasModulate" type="CanvasModulate" parent="."]
-color = Color(0.6052743, 0.6052744, 0.6052742, 1)
+color = Color(0.3180196, 0.31801987, 0.31801963, 1)
 
 [node name="ColorRect" type="ColorRect" parent="."]
 anchors_preset = 15
@@ -695,15 +695,19 @@ fade_in_on_start = false
 charge_fill_speed = 1.5
 
 [node name="torch" parent="." instance=ExtResource("11_ahj24")]
-position = Vector2(170.00002, 92)
+position = Vector2(152.00002, 105)
 scale = Vector2(0.67, 0.67)
 
 [node name="torch2" parent="." instance=ExtResource("11_ahj24")]
-position = Vector2(0, 92)
+position = Vector2(0, 105)
 scale = Vector2(0.67, 0.67)
 
 [node name="torch3" parent="." instance=ExtResource("11_ahj24")]
-position = Vector2(-597, 87)
+position = Vector2(-561, 108)
+scale = Vector2(0.67, 0.67)
+
+[node name="torch4" parent="." instance=ExtResource("11_ahj24")]
+position = Vector2(-265, 113)
 scale = Vector2(0.67, 0.67)
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
@@ -736,7 +740,7 @@ rotation = -0.38397244
 scale = Vector2(0.63, 0.63)
 
 [node name="Player" parent="." instance=ExtResource("10_wyb3m")]
-position = Vector2(-502, 163)
+position = Vector2(-449, 175)
 
 [node name="KeysAnimation" type="AnimatedSprite2D" parent="."]
 modulate = Color(0.72464263, 0.72464263, 0.72464246, 1)

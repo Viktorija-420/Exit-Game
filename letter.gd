@@ -24,7 +24,7 @@ var _bop_time: float = 0.0
 var _original_position: Vector3 = Vector3.ZERO
 
 # Typewriter settings
-@export var type_speed: float = 0.04
+@export var type_speed: float = 0.03
 @export var pause_between_title_text: float = 0.3
 @onready var title_label: Label = null
 @onready var text_label: Label = null

@@ -72,6 +72,7 @@ var _was_on_floor: bool = false
 # -------------------------
 
 @onready var dust: GPUParticles2D = $Dust
+@onready var landing_dust: GPUParticles2D = $LandingDUst
 
 # -------------------------
 # READY
@@ -269,6 +270,10 @@ func _update_camera_follow(delta: float):
 
 func _check_landing():
 	if not _was_on_floor and is_on_floor():
+		
+		if landing_dust:
+			landing_dust.restart()
+			
 		# Tikko piezemējās
 		if velocity.y > landing_velocity_threshold:
 			var strength = clamp(velocity.y / 180.0, 0, landing_shake_strength)
