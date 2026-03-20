@@ -35,6 +35,9 @@ var _charge_active: bool = false
 
 var _tween: Tween
 
+# -------------------- Collect --------------------
+
+@onready var collect_ui: CanvasItem = get_node_or_null("Collect")
 
 func _ready() -> void:
 	# UI must keep working when the game is paused
@@ -121,6 +124,9 @@ func _ready() -> void:
 
 	# Connect to player signal a moment later (safer with instanced scenes)
 	call_deferred("_connect_charge_bar_to_player")
+	
+	if collect_ui:
+		collect_ui.visible = false
 		
 		
 func _process(delta: float) -> void:
@@ -309,3 +315,8 @@ func hide_for_letter(active: bool) -> void:
 	# Safety: always force pause menu hidden
 	if pause_menu:
 		pause_menu.visible = false
+
+
+func show_collect_label(show: bool) -> void:
+	if collect_ui:
+		collect_ui.visible = show

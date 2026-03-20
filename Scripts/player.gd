@@ -330,34 +330,21 @@ func _update_dust():
 	if not dust:
 		return
 
-	if is_on_floor() and abs(velocity.x) > 20:
-		dust.emitting = true
-		
-		var mat = dust.process_material
-		
+	var moving = is_on_floor() and abs(velocity.x) > 20
+
+	var target_amount := 20.0 if moving else 0.0
+	dust.amount = max(1, int(move_toward(dust.amount, target_amount, 2.0)))
+	dust.emitting = dust.amount > 1
+
+	if moving:
+		var mat := dust.process_material
 		if mat:
 			var dir = sign(velocity.x)
-			
-			# 📍 Pārvieto dust uz aizmuguri (pie pēdām)
-			dust.position.x = -dir * 10   # ← maini 10 ja vajag
-			
-			# 💨 Virziens PRET kustību
-			mat.direction = Vector3(-dir, -0.3, 0)
-			
-			# 🎯 Spread
-			mat.spread = randf_range(30.0, 60.0)
-			
-			# ⚡ Velocity
-			var vel = randf_range(30.0, 70.0)
-			mat.initial_velocity_min = vel * 0.5
-			mat.initial_velocity_max = vel
-			
-			# 🌪 Mazs randomness
-			mat.gravity = Vector3(
-				randf_range(-10, 10),
-				randf_range(120, 200),
-				0
-			)
 
-	else:
-		dust.emitting = false
+			dust.position.x = -dir * 10
+			mat.direction = Vector3(-dir, -0.3, 0)
+
+			mat.spread = 20.0
+			mat.initial_velocity_min = 20.0
+			mat.initial_velocity_max = 40.0
+			mat.gravity = Vector3(0, 150, 0)

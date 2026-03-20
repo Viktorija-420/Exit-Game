@@ -213,6 +213,8 @@ particle_flag_disable_z = true
 direction = Vector3(0, 1, 0)
 spread = 50.0
 gravity = Vector3(0, 200, 0)
+damping_min = 5.0
+damping_max = 10.0
 scale_min = 0.5
 scale_max = 1.1999999
 
@@ -256,7 +258,7 @@ position = Vector2(-12, 23)
 emitting = false
 amount = 15
 texture = ExtResource("31_634y6")
-lifetime = 0.3
+lifetime = 0.5
 process_material = SubResource("ParticleProcessMaterial_efrwb")
 
 [connection signal="body_entered" from="Player_hitbox" to="." method="_on_player_hitbox_body_entered"]

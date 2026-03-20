@@ -132,7 +132,7 @@ texture = ExtResource("4_waa4j")
 
 [node name="Collect" type="Area2D" parent="."]
 
-[node name="Sprite2D2" type="Sprite2D" parent="Collect"]
+[node name="Sprite2D" type="Sprite2D" parent="Collect"]
 position = Vector2(196.15643, 588.5343)
 scale = Vector2(2.742621, 2.6564867)
 texture = ExtResource("5_ok7cu")
