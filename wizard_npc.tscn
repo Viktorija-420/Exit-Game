@@ -95,10 +95,26 @@ visible = false
 position = Vector2(0, -9.536743e-07)
 scale = Vector2(5.069444, 5.069443)
 sprite_frames = SubResource("SpriteFrames_5sh2j")
+autoplay = "default"
 frame_progress = 0.98598915
 
 [node name="PointLight2D" type="PointLight2D" parent="."]
-position = Vector2(74, 45)
-scale = Vector2(0.47805643, 0.47805643)
+position = Vector2(65.625, 37.244514)
+scale = Vector2(0.5305643, 0.52652824)
 color = Color(1, 1, 0.69803923, 1)
+energy = 1.52
+texture = ExtResource("12_n1uy3")
+
+[node name="Eye1" type="PointLight2D" parent="."]
+position = Vector2(-38, -34.880875)
+scale = Vector2(0.13087775, 0.13087778)
+color = Color(0.9757766, 0.5155369, 0.94797987, 1)
+energy = 2.57
+texture = ExtResource("12_n1uy3")
+
+[node name="Eye2" type="PointLight2D" parent="."]
+position = Vector2(-13.000006, -40)
+scale = Vector2(0.13087775, 0.13087778)
+color = Color(0.9764706, 0.5137255, 0.9490196, 1)
+energy = 2.57
 texture = ExtResource("12_n1uy3")
