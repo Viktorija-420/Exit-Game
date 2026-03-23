@@ -1,18 +1,36 @@
-[gd_scene load_steps=4 format=3 uid="uid://drse07k85mvc8"]
+[gd_scene load_steps=6 format=3 uid="uid://drse07k85mvc8"]
 
 [ext_resource type="Texture2D" uid="uid://d3fos0sh1mmyh" path="res://Assets/Items/postion.png" id="1_01648"]
-[ext_resource type="Script" uid="uid://brbox4ueiay3e" path="res://health_pickup.gd" id="1_awyve"]
+[ext_resource type="Script" uid="uid://brbox4ueiay3e" path="res://Scripts/health_pickup.gd" id="1_awyve"]
+[ext_resource type="FontFile" uid="uid://dir8slwrv7g00" path="res://Assets/OldeTome.ttf" id="2_jk1s8"]
+[ext_resource type="Texture2D" uid="uid://drq78ui5ehat5" path="res://Assets/Items/whitecircle.png" id="3_xl6eh"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_awyve"]
-size = Vector2(4, 6)
+size = Vector2(74, 71)
 
 [node name="HealthPickup" type="Area2D"]
 script = ExtResource("1_awyve")
 
+[node name="Label" type="Label" parent="."]
+offset_left = -15.0
+offset_top = 14.0
+offset_right = 93.0
+offset_bottom = 37.0
+theme_override_fonts/font = ExtResource("2_jk1s8")
+theme_override_font_sizes/font_size = 22
+text = "Healing effect"
+
 [node name="Sprite2D" type="Sprite2D" parent="."]
-position = Vector2(0, 1.5258789e-05)
-scale = Vector2(0.01, 0.01)
+position = Vector2(34, 61)
+scale = Vector2(0.07329268, 0.07329268)
 texture = ExtResource("1_01648")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(34, 59.5)
 shape = SubResource("RectangleShape2D_awyve")
+
+[node name="PointLight2D" type="PointLight2D" parent="."]
+position = Vector2(35, 59.5)
+scale = Vector2(0.2194357, 0.22812498)
+color = Color(0.49231714, 0.02888028, 0.532569, 1)
+texture = ExtResource("3_xl6eh")

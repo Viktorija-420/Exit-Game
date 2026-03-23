@@ -52,6 +52,8 @@ func _try_transition() -> void:
 		return
 
 	_transitioning = true
+	call_deferred("_reset_key_and_change_scene")
 
-	# change scene after the signal/physics step (safe)
-	get_tree().call_deferred("change_scene_to_file", next_level_scene)
+func _reset_key_and_change_scene() -> void:
+	Global.has_key = false
+	get_tree().change_scene_to_file(next_level_scene)

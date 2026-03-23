@@ -75,6 +75,11 @@ var _was_on_floor: bool = false
 @onready var landing_dust: GPUParticles2D = $LandingDUst
 
 # -------------------------
+# VOID
+# -------------------------
+@export var void_y_level: float = 1000.0
+
+# -------------------------
 # READY
 # -------------------------
 func _ready():
@@ -111,6 +116,7 @@ func _physics_process(delta: float):
 	enemy_attack()
 	_check_landing()
 	_update_dust()
+	_check_void_fall()
 
 # -------------------------
 # MOVEMENT FUNCTIONS
@@ -353,3 +359,8 @@ func _update_dust():
 			mat.initial_velocity_min = 20.0
 			mat.initial_velocity_max = 40.0
 			mat.gravity = Vector3(0, 150, 0)
+
+		
+func _check_void_fall():
+	if global_position.y > void_y_level and player_alive:
+		die()

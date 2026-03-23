@@ -4,6 +4,8 @@ extends Node2D
 @onready var pop_level: Panel = $CanvasLayer/Panel
 @onready var door: Area2D = $Door
 @onready var keys_anim: AnimatedSprite2D = $KeysAnimation
+@onready var fade_rect: ColorRect = $CanvasLayer/Fade   # <-- ADD THIS NODE\
+@export var fade_time: float = 0.3
 
 # -------------------- EXPORTS --------------------
 @export_file("*.tscn") var level2_scene: String
@@ -18,6 +20,12 @@ var _transitioning: bool = false
 # -------------------- READY --------------------
 func _ready() -> void:
 	show_popup()
+	
+	if fade_rect:
+		fade_rect.visible = true
+		fade_rect.modulate.a = 1.0
+		_fade_in()
+		
 	if door:
 		door.body_entered.connect(_on_door_entered)
 
@@ -71,8 +79,24 @@ func _start_level2_transition() -> void:
 		var t = create_tween()
 		t.tween_property(fade_node, "modulate:a", 1.0, 0.6)
 		t.tween_callback(func() -> void:
-			# Use the SceneManager singleton to safely change scene
 			SceneManager.change_scene_safe(level2_scene)
 		)
 	else:
 		SceneManager.change_scene_safe(level2_scene)
+		
+func _fade_out() -> void:
+	if not fade_rect:
+		return
+
+	fade_rect.visible = true
+	var t = create_tween()
+	t.tween_property(fade_rect, "modulate:a", 1.0, fade_time)
+	await t.finished
+
+func _fade_in() -> void:
+	if not fade_rect:
+		return
+
+	var t = create_tween()
+	t.tween_property(fade_rect, "modulate:a", 0.0, fade_time)
+	await t.finished
