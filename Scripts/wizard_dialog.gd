@@ -19,6 +19,8 @@ extends CanvasLayer
 @onready var option_button_1: Button = $Option1
 @onready var option_button_2: Button = $Option2
 
+@onready var dialog_bg: TextureRect = $Dialog
+
 # -------------------------
 # DIALOG DATA & STATE
 # -------------------------
@@ -30,7 +32,7 @@ var _dialog := [
 	
 	# BRANCHING POINT (Index 4)
 	{"name": "Player", "options": [
-		{"text": "I don't care about tea. How do I leave?", "next": 5},
+		{"text": "Okay, cool.. tell me how do I leave?", "next": 5},
 		{"text": "Is there an exit nearby?", "next": 6}
 	]},
 
@@ -87,6 +89,10 @@ func start_dialog() -> void:
 func _unhandled_input(event: InputEvent) -> void:
 	if not _dialog_active:
 		return
+		
+	if option_button_1.visible:
+		return
+		
 	if not event.is_action_pressed("ui_accept"):
 		return
 
@@ -107,20 +113,29 @@ func _play_line(index: int) -> void:
 
 	var entry = _dialog[index]
 	var speaker = str(entry.get("name", ""))
-	_set_speaker_portrait(speaker)
-	option_button_1.visible = false
-	option_button_2.visible = false
-	_finished_line = false
-	enter_label.visible = true
-
+	
+	# Pārbaudām, vai šī ir izvēļu rinda
 	if entry.has("options"):
+		dialog_bg.visible = false
+		text_label.visible = false
+		enter_label.visible = false    # Paslēpjam mirgojošo bultiņu
+		_set_speaker_portrait(speaker)      # Paslēpjam portretus
 		_show_options(entry.options)
 		return
 
+	# Ja tas ir parasts teksts, parādām visu atpakaļ
+	dialog_bg.visible = true
+	text_label.visible = true
+	_set_speaker_portrait(speaker)
+	
+	option_button_1.visible = false
+	option_button_2.visible = false
+	_finished_line = false
+	
 	_full_text = str(entry.get("text", ""))
 	text_label.text = ""
 	_start_typing()
-
+	
 func _set_speaker_portrait(speaker: String) -> void:
 	if wiz_portrait:
 		wiz_portrait.visible = (speaker.to_lower() == "wizard")
@@ -152,6 +167,7 @@ func _next_line() -> void:
 func _end_dialog() -> void:
 	_dialog_active = false
 	visible = false
+	dialog_bg.visible = true
 	enter_label.visible = true
 	text_label.text = ""
 	option_button_1.visible = false
@@ -187,6 +203,7 @@ func _show_options(options: Array) -> void:
 	option_button_1.text = options[0].text
 	option_button_2.text = options[1].text
 
+	option_button_1.grab_focus()
 	# 1. Disconnect previous connections to avoid stacking calls
 	# We use 'is_connected' with the Signal object itself in Godot 4
 	for connection in option_button_1.pressed.get_connections():
@@ -201,5 +218,9 @@ func _show_options(options: Array) -> void:
 func _on_option_selected(next_index: int) -> void:
 	option_button_1.visible = false
 	option_button_2.visible = false
+	
+	dialog_bg.visible = true
+	
 	_line_index = next_index
 	_play_line(_line_index)
+	

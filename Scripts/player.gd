@@ -94,6 +94,14 @@ func _ready():
 # MAIN LOOP
 # -------------------------
 func _physics_process(delta: float):
+	if controls_enabled:
+		_update_camera_shake(delta)
+		_update_camera_follow(delta)
+
+	if not controls_enabled or not player_alive:
+		move_and_slide() 
+		return
+		
 	_update_camera_shake(delta)
 	_update_camera_follow(delta)
 
@@ -166,7 +174,10 @@ func _update_animation():
 		return
 
 	if _shielding and is_on_floor():
-		anim.play("shield")
+		if abs(velocity.x) > 1:
+			anim.play("shield")        # Kustas ar vairogu
+		else:
+			anim.play("shieldNoWalk")  # Stāv uz vietas ar vairogu
 		return
 
 	if not is_on_floor():
@@ -364,3 +375,35 @@ func _update_dust():
 func _check_void_fall():
 	if global_position.y > void_y_level and player_alive:
 		die()
+
+func show_door_cutscene(door_pos: Vector2) -> void:
+	if not cam: return
+	
+	# Saglabājam oriģinālo zoom līmeni, lai zinātu, kur atgriezties
+	var original_zoom = cam.zoom
+	# Cik tuvu gribam pievilkt (1.4 ir par 40% tuvāk)
+	var target_zoom = Vector2(1.4, 1.4) 
+	
+	var offset_to_door = door_pos - global_position
+	
+	await get_tree().create_timer(0.5).timeout
+	
+	# --- AIZEJAM LĪDZ DURVĪM UN PIEZOOMOJĀM ---
+	var tween = create_tween().set_parallel(true).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
+	
+	tween.tween_property(cam, "offset", offset_to_door, 1.5)
+	tween.tween_property(cam, "zoom", target_zoom, 1.5)
+	
+	# Gaidām, kamēr abas animācijas beidzas
+	await tween.finished
+	
+	# Pauze pie durvīm
+	await get_tree().create_timer(1.0).timeout
+	
+	# --- ATGRIEŽAMIES ATPAKAĻ UN ATZOOMOJĀM ---
+	var back_tween = create_tween().set_parallel(true).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
+	
+	back_tween.tween_property(cam, "offset", Vector2.ZERO, 1.0)
+	back_tween.tween_property(cam, "zoom", original_zoom, 1.0)
+	
+	await back_tween.finished

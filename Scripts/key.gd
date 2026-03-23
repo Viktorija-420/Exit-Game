@@ -57,9 +57,27 @@ func _on_body_exited(body: Node2D) -> void:
 
 
 func collect() -> void:
+	# 1. Atzīmējam, ka atslēga ir iegūta
 	Global.has_key = true
+	
+	# 2. Paslēpjam atslēgu un label, lai izskatās, ka tā ir paņemta
+	if label: label.visible = false
+	sprite.visible = false
+	if glow_light: glow_light.enabled = false
+	
+	# Atrodam spēlētāju un durvis
+	var player = get_tree().get_first_node_in_group("player")
+	var door = get_tree().current_scene.find_child("Door", true, false) # Meklē mezglu ar nosaukumu "Door"
 
-	if label:
-		label.visible = false
+	if player and door:
+		# Apturam spēlētāja kustību uz laiku
+		player.controls_enabled = false
+		
+		# Izsaucam kameras funkciju (šo tūlīt pievienosim player skriptā)
+		await player.show_door_cutscene(door.global_position)
+		
+		# Atļaujam spēlētājam atkal kustēties
+		player.controls_enabled = true
 
+	# Tagad varam droši izdzēst atslēgas objektu
 	queue_free()
