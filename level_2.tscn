@@ -1,5 +1,6 @@
-[gd_scene load_steps=22 format=3 uid="uid://dh814ja767ken"]
+[gd_scene load_steps=23 format=3 uid="uid://dh814ja767ken"]
 
+[ext_resource type="Script" uid="uid://bla3sskei8dyk" path="res://level_02.gd" id="1_78pok"]
 [ext_resource type="Texture2D" uid="uid://3odl545e1xpn" path="res://Assets/MapTiles/dungeon.png" id="1_n7ypv"]
 [ext_resource type="Texture2D" uid="uid://c4ltwlph3ml87" path="res://Assets/MapTiles/2DPlatformerDungeonTileset.png" id="2_0s5r2"]
 [ext_resource type="Texture2D" uid="uid://cvhaunj7tcldq" path="res://Assets/MapTiles/skelet2.png" id="3_7j8ne"]
@@ -351,6 +352,7 @@ sources/5 = SubResource("TileSetAtlasSource_s77qv")
 sources/3 = SubResource("TileSetAtlasSource_yl73a")
 
 [node name="Level2" type="Node2D"]
+script = ExtResource("1_78pok")
 
 [node name="CanvasModulate" type="CanvasModulate" parent="."]
 color = Color(0.51718444, 0.5171845, 0.5171844, 1)
@@ -390,7 +392,7 @@ position = Vector2(171, 327)
 scale = Vector2(0.665, 0.665)
 
 [node name="torch" parent="." instance=ExtResource("8_15wb7")]
-position = Vector2(152.00002, 105)
+position = Vector2(171, 110)
 scale = Vector2(0.67, 0.67)
 
 [node name="torch5" parent="." instance=ExtResource("8_15wb7")]
@@ -422,7 +424,7 @@ position = Vector2(220, 564)
 scale = Vector2(0.67, 0.67)
 
 [node name="torch2" parent="." instance=ExtResource("8_15wb7")]
-position = Vector2(-25, 110)
+position = Vector2(-36, 109.99999)
 scale = Vector2(0.67, 0.67)
 
 [node name="torch3" parent="." instance=ExtResource("8_15wb7")]
@@ -434,7 +436,7 @@ position = Vector2(-763, 110)
 scale = Vector2(0.67, 0.67)
 
 [node name="WizardNPC" parent="." instance=ExtResource("10_xbcdb")]
-position = Vector2(556, 390)
+position = Vector2(153, 178.99998)
 scale = Vector2(0.275, 0.275)
 dialog_scene = ExtResource("11_s77qv")
 idle_time_before_comment = 2.0
@@ -444,31 +446,28 @@ position = Vector2(671, -12)
 scale = Vector2(0.54, 0.54)
 
 [node name="Player" parent="." instance=ExtResource("9_ehv2h")]
-position = Vector2(-718, 173)
+position = Vector2(-718, 185)
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
-[node name="Panel" type="Panel" parent="CanvasLayer"]
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = 478.0
-offset_top = 12.0
-offset_right = -481.0
-offset_bottom = -569.0
-grow_horizontal = 2
-grow_vertical = 2
-
-[node name="popLevel" type="Label" parent="CanvasLayer/Panel"]
-layout_mode = 0
-offset_left = 22.0
-offset_top = 17.0
-offset_right = 167.0
-offset_bottom = 56.0
+[node name="popLevel" type="Label" parent="CanvasLayer"]
+offset_left = 500.0
+offset_top = 29.0
+offset_right = 667.0
+offset_bottom = 68.0
 theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
 theme_override_fonts/font = ExtResource("10_15wb7")
 theme_override_font_sizes/font_size = 40
 text = "Level Two"
+
+[node name="Fade" type="ColorRect" parent="CanvasLayer"]
+visible = false
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 1)
 
 [node name="UI" parent="." instance=ExtResource("11_eoq84")]
 fade_in_on_start = false
@@ -488,9 +487,6 @@ position = Vector2(255, 468)
 
 [node name="Spike7" parent="." instance=ExtResource("14_s77qv")]
 position = Vector2(-195, 199)
-
-[node name="Spike8" parent="." instance=ExtResource("14_s77qv")]
-position = Vector2(-165, 199)
 
 [node name="Spike9" parent="." instance=ExtResource("14_s77qv")]
 position = Vector2(285, 198)

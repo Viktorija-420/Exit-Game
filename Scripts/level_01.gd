@@ -1,7 +1,7 @@
 extends Node2D
 
 # -------------------- NODES --------------------
-@onready var pop_level: Panel = $CanvasLayer/Panel
+@onready var collect_label: Label = $CanvasLayer/popLevel
 @onready var door: Area2D = $Door
 @onready var keys_anim: AnimatedSprite2D = $KeysAnimation
 @onready var fade_rect: ColorRect = $CanvasLayer/Fade   # <-- ADD THIS NODE\
@@ -32,15 +32,15 @@ func _ready() -> void:
 # -------------------- POPUP PANEL & KEYS --------------------
 func show_popup() -> void:
 	# Show panel
-	pop_level.visible = true
-	pop_level.modulate.a = 0.0
+	collect_label.visible = true
+	collect_label.modulate.a = 0.0
 
 	var tween = create_tween()
-	tween.tween_property(pop_level, "modulate:a", 1.0, fade_in_time)
+	tween.tween_property(collect_label, "modulate:a", 1.0, fade_in_time)
 	tween.tween_interval(visible_time)
-	tween.tween_property(pop_level, "modulate:a", 0.0, fade_out_time)
+	tween.tween_property(collect_label, "modulate:a", 0.0, fade_out_time)
 	tween.tween_callback(func() -> void:
-		pop_level.visible = false
+		collect_label.visible = false
 	)
 
 	# Show keys animation

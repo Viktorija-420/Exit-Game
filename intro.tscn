@@ -1,6 +1,6 @@
 [gd_scene load_steps=6 format=3 uid="uid://coujl313hs2hr"]
 
-[ext_resource type="Script" uid="uid://nhjgryvgdmwp" path="res://intro.gd" id="1_s2ta7"]
+[ext_resource type="Script" uid="uid://nhjgryvgdmwp" path="res://Scripts/intro.gd" id="1_s2ta7"]
 [ext_resource type="Texture2D" uid="uid://cbicbc1or8t5i" path="res://Assets/BG/dialogUI2.png" id="2_7a8ye"]
 [ext_resource type="Texture2D" uid="uid://dictjayvt7p4q" path="res://Assets/BG/KnightInLevel1.png" id="2_y72e6"]
 [ext_resource type="FontFile" uid="uid://dir8slwrv7g00" path="res://Assets/OldeTome.ttf" id="3_0a7ni"]
@@ -11,7 +11,7 @@ script = ExtResource("1_s2ta7")
 first_level_scene = "uid://ef45daveb7mf"
 
 [node name="TextureRect3" type="TextureRect" parent="."]
-anchors_preset = -1
+anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 offset_left = -12.0
@@ -79,5 +79,5 @@ offset_right = 1092.0
 offset_bottom = 86.0
 theme_override_fonts/font = ExtResource("3_0a7ni")
 theme_override_font_sizes/font_size = 30
-text = "Press Enter to begin"
+text = "Press Enter to skip"
 autowrap_mode = 2

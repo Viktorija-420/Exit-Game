@@ -656,7 +656,7 @@ level2_scene = "uid://dh814ja767ken"
 [node name="Timer" type="Timer" parent="."]
 
 [node name="CanvasModulate" type="CanvasModulate" parent="."]
-color = Color(0.39308554, 0.39308554, 0.39308533, 1)
+color = Color(0.5176471, 0.5176471, 0.5176471, 1)
 
 [node name="ColorRect" type="ColorRect" parent="."]
 anchors_preset = 15
@@ -714,23 +714,11 @@ scale = Vector2(0.67, 0.67)
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
-[node name="Panel" type="Panel" parent="CanvasLayer"]
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = 478.0
-offset_top = 12.0
-offset_right = -481.0
-offset_bottom = -569.0
-grow_horizontal = 2
-grow_vertical = 2
-
-[node name="popLevel" type="Label" parent="CanvasLayer/Panel"]
-layout_mode = 0
-offset_left = 22.0
-offset_top = 17.0
-offset_right = 167.0
-offset_bottom = 56.0
+[node name="popLevel" type="Label" parent="CanvasLayer"]
+offset_left = 500.0
+offset_top = 29.0
+offset_right = 645.0
+offset_bottom = 68.0
 theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
 theme_override_fonts/font = ExtResource("20_wyb3m")
 theme_override_font_sizes/font_size = 40
@@ -750,10 +738,10 @@ rotation = -0.38397244
 scale = Vector2(0.63, 0.63)
 
 [node name="Player" parent="." instance=ExtResource("10_wyb3m")]
-position = Vector2(-449, 175)
+position = Vector2(-491, 184)
 
 [node name="KeysAnimation" type="AnimatedSprite2D" parent="."]
-modulate = Color(0.72464263, 0.72464263, 0.72464246, 1)
+self_modulate = Color(18.892157, 18.892157, 18.892157, 0.3372549)
 position = Vector2(-402.00003, 134)
 scale = Vector2(0.61702126, 0.6170212)
 sprite_frames = SubResource("SpriteFrames_xh3oe")

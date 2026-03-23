@@ -2,8 +2,8 @@ extends Node2D
 
 # --- Exported variables ---
 @export var dialog_scene: PackedScene
-@export var idle_time_before_comment: float = 5.0
-@export var cloud_duration: float = 3.0  # How long the cloud shows
+@export var idle_time_before_comment: float = 6.0
+@export var cloud_duration: float = 4.0  # How long the cloud shows
 
 # --- Onready nodes ---
 @onready var area: Area2D = $InteractionArea

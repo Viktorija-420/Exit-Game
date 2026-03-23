@@ -75,17 +75,17 @@ theme_override_font_sizes/font_size = 38
 text = "Press enter to skip"
 
 [node name="WizLabel" type="Sprite2D" parent="."]
-visible = false
 position = Vector2(979, 477)
 scale = Vector2(0.4587345, 0.4635394)
 texture = ExtResource("2_k4e77")
 
 [node name="PlayLabel" type="Sprite2D" parent="."]
+visible = false
 position = Vector2(189.00002, 431.00003)
 scale = Vector2(0.90692395, 0.9773867)
 texture = ExtResource("3_k4e77")
 
-[node name="Option1" type="Button" parent="."]
+[node name="Button" type="Button" parent="."]
 offset_left = 464.0
 offset_top = 401.0
 offset_right = 772.0
@@ -93,7 +93,7 @@ offset_bottom = 452.0
 theme_override_styles/normal = SubResource("StyleBoxTexture_56o21")
 theme_override_styles/hover = SubResource("StyleBoxTexture_skgbi")
 
-[node name="Option2" type="Button" parent="."]
+[node name="Button2" type="Button" parent="."]
 offset_left = 462.0
 offset_top = 471.0
 offset_right = 770.0

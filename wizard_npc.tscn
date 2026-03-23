@@ -29,6 +29,20 @@ _bundled = {
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_a0nak"]
 size = Vector2(288, 231)
 
+[sub_resource type="SpriteFrames" id="SpriteFrames_5sh2j"]
+animations = [{
+"frames": [{
+"duration": 4.0,
+"texture": ExtResource("10_hvquh")
+}, {
+"duration": 2.0,
+"texture": ExtResource("11_n1uy3")
+}],
+"loop": true,
+"name": &"default",
+"speed": 1.0
+}]
+
 [sub_resource type="SpriteFrames" id="SpriteFrames_n1uy3"]
 animations = [{
 "frames": [{
@@ -44,20 +58,6 @@ animations = [{
 "loop": true,
 "name": &"Angry",
 "speed": 5.0
-}]
-
-[sub_resource type="SpriteFrames" id="SpriteFrames_5sh2j"]
-animations = [{
-"frames": [{
-"duration": 4.0,
-"texture": ExtResource("10_hvquh")
-}, {
-"duration": 2.0,
-"texture": ExtResource("11_n1uy3")
-}],
-"loop": true,
-"name": &"default",
-"speed": 1.0
 }]
 
 [node name="WizardNPC" type="Node2D"]
@@ -79,15 +79,6 @@ theme_override_fonts/font = ExtResource("3_sjs3a")
 theme_override_font_sizes/font_size = 35
 text = "Press E to talk"
 
-[node name="GrumpyCloud" type="AnimatedSprite2D" parent="."]
-visible = false
-position = Vector2(12.5, -106.25)
-scale = Vector2(0.82894737, 0.60714287)
-sprite_frames = SubResource("SpriteFrames_n1uy3")
-animation = &"Angry"
-frame = 1
-frame_progress = 0.98169935
-
 [node name="WizardDialog" parent="." instance=ExtResource("9_subnk")]
 visible = false
 
@@ -97,6 +88,15 @@ scale = Vector2(5.069444, 5.069443)
 sprite_frames = SubResource("SpriteFrames_5sh2j")
 autoplay = "default"
 frame_progress = 0.98598915
+
+[node name="GrumpyCloud" type="AnimatedSprite2D" parent="."]
+position = Vector2(14, -112)
+rotation = -0.0726175
+scale = Vector2(1.2970588, 0.95)
+sprite_frames = SubResource("SpriteFrames_n1uy3")
+animation = &"Angry"
+frame = 2
+frame_progress = 0.31789953
 
 [node name="PointLight2D" type="PointLight2D" parent="."]
 position = Vector2(65.625, 37.244514)
