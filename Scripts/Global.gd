@@ -48,7 +48,7 @@ func reset_run() -> void:
 
 func restart_current_level() -> void:
 	reset_run()
-	get_tree().reload_current_scene()
+	get_tree().call_deferred("reload_current_scene")
 
 func gain_life(amount: int = 1) -> void:
 	max_lives = max_lives_cap
