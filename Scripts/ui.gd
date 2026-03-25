@@ -95,14 +95,18 @@ func _ready() -> void:
 		_must_get_heart("HeartsHolder/Hearts/heart1"),
 		_must_get_heart("HeartsHolder/Hearts/heart2"),
 		_must_get_heart("HeartsHolder/Hearts/heart3"),
-		_must_get_heart("HeartsHolder/Hearts/heart4")
+		_must_get_heart("HeartsHolder/Hearts/heart4"),
+		_must_get_heart("HeartsHolder/Hearts/heart5"),
+		_must_get_heart("HeartsHolder/Hearts/heart6")
 	]
 
 	var empty_hearts: Array[TextureRect] = [
 		_must_get_heart("HeartsHolder/HeartsEmpty/heart1"),
 		_must_get_heart("HeartsHolder/HeartsEmpty/heart2"),
 		_must_get_heart("HeartsHolder/HeartsEmpty/heart3"),
-		_must_get_heart("HeartsHolder/HeartsEmpty/heart4")
+		_must_get_heart("HeartsHolder/HeartsEmpty/heart4"),
+		_must_get_heart("HeartsHolder/HeartsEmpty/heart5"),
+		_must_get_heart("HeartsHolder/HeartsEmpty/heart6")
 	]
 
 	full_textures.clear()

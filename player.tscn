@@ -299,7 +299,7 @@ size = Vector2(21, 38)
 radius = 10.770329
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_iruf7"]
-radius = 21.0
+radius = 36.158188
 
 [sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_efrwb"]
 particle_flag_disable_z = true
@@ -349,7 +349,7 @@ shape = SubResource("CircleShape2D_hiqhm")
 
 [node name="Camera2D" type="Camera2D" parent="." groups=["player"]]
 position = Vector2(87, -24)
-zoom = Vector2(1.875, 1.875)
+zoom = Vector2(1.5, 1.5)
 position_smoothing_enabled = true
 position_smoothing_speed = 6.0
 drag_vertical_enabled = true

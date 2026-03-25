@@ -1,10 +1,13 @@
-[gd_scene load_steps=4 format=3 uid="uid://ctf1opklifh2j"]
+[gd_scene load_steps=5 format=3 uid="uid://ctf1opklifh2j"]
 
 [ext_resource type="Script" uid="uid://carul3u1od46m" path="res://Scripts/spike_1.gd" id="1_0co2y"]
 [ext_resource type="Texture2D" uid="uid://r3o2fjoj8rlt" path="res://Assets/Items/Spike.png" id="2_wk7ll"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_chua2"]
-size = Vector2(29.875, 26.25)
+size = Vector2(26, 13)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_0co2y"]
+size = Vector2(20.172665, 15.912294)
 
 [node name="Spike1" type="Area2D"]
 script = ExtResource("1_0co2y")
@@ -15,5 +18,11 @@ scale = Vector2(1.8750018, 1.6249973)
 texture = ExtResource("2_wk7ll")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(8.583069e-06, -3.71933e-05)
+position = Vector2(4.7683716e-07, 5.5)
 shape = SubResource("RectangleShape2D_chua2")
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="."]
+position = Vector2(1.1590097, -0.05996269)
+rotation = 0.72984314
+scale = Vector2(0.99999994, 0.99999994)
+shape = SubResource("RectangleShape2D_0co2y")

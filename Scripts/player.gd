@@ -105,9 +105,6 @@ func _physics_process(delta: float):
 	_update_camera_shake(delta)
 	_update_camera_follow(delta)
 
-	if not controls_enabled or not player_alive:
-		return
-
 	_apply_gravity(delta)
 
 	if _hurt:
@@ -201,11 +198,13 @@ func _on_anim_animation_finished():
 # COMBAT & DAMAGE
 # -------------------------
 func enemy_attack():
-	if enemy_inattack_range and enemy_attack_cooldown and not _hurt:
+	# Pievienojam papildus drošību, lai funkcija neizpildās paralēli
+	if enemy_inattack_range and enemy_attack_cooldown and not _hurt and player_alive:
 		enemy_attack_cooldown = false
 		hurt_and_reset(last_enemy_hit_position)
-		await get_tree().create_timer(1.2).timeout
-		enemy_attack_cooldown = true
+		
+		# Izmantojam vienreizēju taimeri koda iekšienē
+		get_tree().create_timer(1.2).timeout.connect(func(): enemy_attack_cooldown = true)
 
 func hurt_and_reset(from_x: float):
 	if _hurt or not player_alive:

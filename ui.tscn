@@ -106,6 +106,14 @@ texture = ExtResource("3_y4yjw")
 layout_mode = 2
 texture = ExtResource("3_y4yjw")
 
+[node name="heart5" type="TextureRect" parent="HeartsHolder/HeartsEmpty"]
+layout_mode = 2
+texture = ExtResource("3_y4yjw")
+
+[node name="heart6" type="TextureRect" parent="HeartsHolder/HeartsEmpty"]
+layout_mode = 2
+texture = ExtResource("3_y4yjw")
+
 [node name="Hearts" type="HBoxContainer" parent="HeartsHolder"]
 layout_mode = 0
 offset_left = 129.0
@@ -127,6 +135,14 @@ layout_mode = 2
 texture = ExtResource("4_waa4j")
 
 [node name="heart4" type="TextureRect" parent="HeartsHolder/Hearts"]
+layout_mode = 2
+texture = ExtResource("4_waa4j")
+
+[node name="heart5" type="TextureRect" parent="HeartsHolder/Hearts"]
+layout_mode = 2
+texture = ExtResource("4_waa4j")
+
+[node name="heart6" type="TextureRect" parent="HeartsHolder/Hearts"]
 layout_mode = 2
 texture = ExtResource("4_waa4j")
 

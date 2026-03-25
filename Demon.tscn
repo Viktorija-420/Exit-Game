@@ -1,0 +1,48 @@
+[gd_scene load_steps=9 format=3 uid="uid://bttxcebn3xh84"]
+
+[ext_resource type="Texture2D" uid="uid://detv6xb23orly" path="res://Assets/Players/Enemy/demon/DemonIdle2.png" id="1_idgk3"]
+[ext_resource type="Texture2D" uid="uid://dtqyobx0spc15" path="res://Assets/Players/Enemy/demon/DemonIdle3.png" id="2_eel2s"]
+[ext_resource type="Texture2D" uid="uid://dcu2ab06db446" path="res://Assets/Players/Enemy/demon/DemonIdle4.png" id="3_jtmfd"]
+[ext_resource type="Texture2D" uid="uid://kswwd085twaa" path="res://Assets/Players/Enemy/demon/DemonIdle5.png" id="4_olh8g"]
+[ext_resource type="Texture2D" uid="uid://d0f0b5000h1e7" path="res://Assets/Players/Enemy/demon/DemonIdle6.png" id="5_senbr"]
+[ext_resource type="Texture2D" uid="uid://dkaqanvevc8b0" path="res://Assets/Players/Enemy/demon/DemonIdle7.png" id="6_6b2u4"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_l26jj"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_idgk3")
+}, {
+"duration": 1.0,
+"texture": ExtResource("2_eel2s")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_jtmfd")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_olh8g")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_senbr")
+}, {
+"duration": 1.0,
+"texture": ExtResource("6_6b2u4")
+}],
+"loop": true,
+"name": &"default",
+"speed": 2.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_idgk3"]
+size = Vector2(104, 108)
+
+[node name="Demon" type="CharacterBody2D"]
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_l26jj")
+frame = 5
+frame_progress = 1.0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(5, 8)
+shape = SubResource("RectangleShape2D_idgk3")

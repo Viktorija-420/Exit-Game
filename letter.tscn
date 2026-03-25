@@ -1,6 +1,6 @@
 [gd_scene load_steps=42 format=3 uid="uid://bv1e7wgpkhu4n"]
 
-[ext_resource type="Script" uid="uid://b6se73s2pmmnr" path="res://letter.gd" id="1_5gbsb"]
+[ext_resource type="Script" uid="uid://b6se73s2pmmnr" path="res://Scripts/letter.gd" id="1_5gbsb"]
 [ext_resource type="Texture2D" uid="uid://d2mml855r0np3" path="res://Assets/Items/letter.png" id="1_r6swm"]
 [ext_resource type="Texture2D" uid="uid://drq78ui5ehat5" path="res://Assets/Items/whitecircle.png" id="2_r0ivh"]
 [ext_resource type="PackedScene" uid="uid://drov3lxat1oof" path="res://diamonds_a_cards.tscn" id="3_57kop"]
