@@ -14,6 +14,8 @@ var _glow_time: float = 0.0
 
 var player_near: bool = false
 
+@onready var drink: AudioStreamPlayer2D = $Drink
+
 func _ready() -> void:
 	# ✅ Grab the shared Collect label from the level UI automatically
 	var root := get_tree().current_scene
@@ -33,7 +35,6 @@ func _ready() -> void:
 
 func _process(delta: float) -> void:
 	if player_near and Input.is_action_just_pressed("Collect"):
-		print("COLLECT PRESSED")
 		collect()
 		
 	if light:
@@ -55,10 +56,20 @@ func _on_body_exited(body: Node2D) -> void:
 			label.visible = false
 
 func collect() -> void:
+	drink.play()
 	print("COLLECT FUNCTION")
+
+	
+	# Hide the visuals so it looks like it's picked up
+	if anim: anim.visible = false
+	if light: light.enabled = false
+	if label: label.visible = false
+	
+	# Stop the player from picking it up twice
+	player_near = false 
+	
+	await drink.finished
 	Global.gain_life(heal_amount)
 
-	if label:
-		label.visible = false
-
-	call_deferred("queue_free")
+	# Wait for the sound to finish, THEN delete
+	queue_free()

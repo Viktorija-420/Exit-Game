@@ -43,6 +43,9 @@ var blink_time: float = 0.0
 @export var collect_label_path: NodePath
 @onready var label: CanvasItem = get_node_or_null(collect_label_path) as CanvasItem
 
+@onready var letter_collect_sound: AudioStreamPlayer2D = $CollectLetter
+@onready var type_sound: AudioStreamPlayer2D = $Type
+
 func _ready():
 	if label:
 		label.visible = false
@@ -101,6 +104,7 @@ func _process(_delta: float) -> void:
 	var ui_open = letter_container and letter_container.visible
 	if player_near and not ui_open:
 		if Input.is_action_just_pressed("Collect"):
+			letter_collect_sound.play()
 			pickup()
 		return # Exit here because we aren't in "View Mode" yet
 
@@ -216,22 +220,45 @@ func close_letter_view():
 	if subview:
 		subview.visible = false
 	_dragging = false
+	_typing = false # This signals we are done
+	type_sound.stop() # Kill the sound immediately
 	get_tree().call_group("ui", "hide_for_letter", false)
 	get_tree().paused = false
 
 func _start_typewriter_sequence() -> void:
 	_typing = true
 	await _type_text(title_label, _full_title)
+	
+	# Check if we should continue to the main text
+	if not _typing: return 
+	
 	await get_tree().create_timer(pause_between_title_text).timeout
+	
+	if not _typing: return
+	
 	await _type_text(text_label, _full_text)
 	_typing = false
 
 func _type_text(target_label: Label, full_text: String) -> void:
 	target_label.text = ""
+	
 	for i in range(full_text.length()):
+		# --- ADD THIS CHECK ---
+		# If the UI was closed, _typing becomes false. Stop everything immediately.
+		if not _typing:
+			type_sound.stop()
+			return 
+		
 		target_label.text = full_text.substr(0, i + 1)
+		
+		if full_text[i] != " ":
+			type_sound.pitch_scale = randf_range(0.9, 1.1)
+			type_sound.play()
+			
 		await get_tree().create_timer(type_speed).timeout
 
+	type_sound.stop()
+	
 func _on_exit_btn_pressed() -> void:
 	if letter_container and letter_container.has_node("ExitBTN"):
 		var exit_btn = letter_container.get_node("ExitBTN") as Button

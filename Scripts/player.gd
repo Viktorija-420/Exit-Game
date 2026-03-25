@@ -80,6 +80,15 @@ var _was_on_floor: bool = false
 @export var void_y_level: float = 1000.0
 
 # -------------------------
+# SOUND
+# -------------------------
+@onready var hit_sound: AudioStreamPlayer2D = $HitSound
+@onready var walk_sound: AudioStreamPlayer2D = $WalkSound
+@onready var jump_grunt: AudioStreamPlayer2D = $JumpGrunt
+@onready var land_sound: AudioStreamPlayer2D = $LandSound
+@onready var hurt_sound: AudioStreamPlayer2D = $Hurt
+
+# -------------------------
 # READY
 # -------------------------
 func _ready():
@@ -140,6 +149,7 @@ func _handle_movement():
 func _handle_jump():
 	if Input.is_action_just_pressed("Up") and is_on_floor() and not _hurt:
 		velocity.y = jump_force
+		jump_grunt.play()
 
 func _apply_gravity(delta: float):
 	if not is_on_floor() or _hurt:
@@ -150,6 +160,7 @@ func _handle_attack_input():
 		_attacking = true
 		Global.player_current_attack = true 
 		anim.play("attack")
+		hit_sound.play()
 
 # -------------------------
 # LETTER PICKUP INPUT
@@ -165,10 +176,12 @@ func _update_animation():
 	if not anim: return
 	
 	if _hurt:
+		walk_sound.stop()
 		anim.play("hurt")
 		return
 	
 	if _attacking:
+		walk_sound.stop()
 		return
 
 	if _shielding and is_on_floor():
@@ -187,8 +200,14 @@ func _update_animation():
 
 	if abs(velocity.x) > 1:
 		anim.play("walk")
+		if not walk_sound.playing:
+			walk_sound.play()
 	else:
-		anim.play("idle")
+		if not is_on_floor() or abs(velocity.x) <= 1:
+			anim.play("idle") # Or "fall"/"jump" depending on your logic
+		
+		# STOP SOUND IF STANDING STILL OR IN AIR
+		walk_sound.stop()
 
 func _on_anim_animation_finished():
 	if anim.animation == "attack":
@@ -211,6 +230,7 @@ func hurt_and_reset(from_x: float):
 	if _hurt or not player_alive:
 		return
 	
+	hurt_sound.play()
 	start_camera_shake(shake_strength)
 	Global.lose_life(1)
 	
@@ -287,6 +307,7 @@ func _update_camera_follow(delta: float):
 
 func _check_landing():
 	if not _was_on_floor and is_on_floor():
+		land_sound.play()
 		
 		if landing_dust:
 			landing_dust.restart()

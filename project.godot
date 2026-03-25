@@ -19,6 +19,11 @@ config/icon="res://icon.svg"
 
 Global="*res://Scripts/Global.gd"
 SceneManager="*res://Scripts/SceneManager.gd"
+Music="*res://BGMusic.tscn"
+
+[display]
+
+window/stretch/mode="canvas_items"
 
 [input]
 

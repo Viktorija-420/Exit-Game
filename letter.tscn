@@ -1,4 +1,4 @@
-[gd_scene load_steps=42 format=3 uid="uid://bv1e7wgpkhu4n"]
+[gd_scene load_steps=44 format=3 uid="uid://bv1e7wgpkhu4n"]
 
 [ext_resource type="Script" uid="uid://b6se73s2pmmnr" path="res://Scripts/letter.gd" id="1_5gbsb"]
 [ext_resource type="Texture2D" uid="uid://d2mml855r0np3" path="res://Assets/Items/letter.png" id="1_r6swm"]
@@ -10,6 +10,8 @@
 [ext_resource type="Texture2D" uid="uid://bfe5per67cay4" path="res://Assets/Items/button/button_small1.png" id="7_q62lq"]
 [ext_resource type="Texture2D" uid="uid://gha3ugnkhq8v" path="res://Assets/Items/button/button_smallPressed.png" id="8_r0ivh"]
 [ext_resource type="Texture2D" uid="uid://btylnllwvnf42" path="res://Assets/Items/button/button_smallHover.png" id="9_fmnkl"]
+[ext_resource type="AudioStream" uid="uid://du8k8m34teni0" path="res://Assets/Sound/PaperCollect.mp3" id="11_fmnkl"]
+[ext_resource type="AudioStream" uid="uid://mj00j6jbtx4b" path="res://Assets/Sound/Typing.mp3" id="12_u7clh"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_5gbsb"]
 size = Vector2(71.5, 48)
@@ -352,6 +354,12 @@ theme_override_styles/normal = SubResource("StyleBoxTexture_u7clh")
 theme_override_styles/pressed_mirrored = SubResource("StyleBoxTexture_sfgjp")
 theme_override_styles/hover = SubResource("StyleBoxTexture_uqeau")
 text = "ESC"
+
+[node name="CollectLetter" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("11_fmnkl")
+
+[node name="Type" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("12_u7clh")
 
 [connection signal="body_entered" from="." to="." method="_on_body_entered"]
 [connection signal="body_exited" from="." to="." method="_on_body_exited"]

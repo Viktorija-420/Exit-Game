@@ -9,6 +9,8 @@ extends Area2D
 @onready var sprite: Sprite2D = $Sprite2D
 @onready var glow_light: PointLight2D = $PointLight2D
 
+@onready var key_collect_sound: AudioStreamPlayer2D = $Collect
+
 var player_near: bool = false
 var blink_time: float = 0.0
 
@@ -26,6 +28,7 @@ func _process(delta: float) -> void:
 
 	# Handle collecting
 	if player_near and Input.is_action_just_pressed("Collect"):
+		key_collect_sound.play()
 		collect()
 
 	# Blink glow ON / OFF

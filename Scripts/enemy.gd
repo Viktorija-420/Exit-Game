@@ -22,6 +22,9 @@ var _retreat_dir = 0
 @onready var hearts_container = $Hearts 
 @onready var anim = $Anim
 
+# --- SOUNDS ---
+@onready var enemy_hit_sound: AudioStreamPlayer2D = $EnemyAttack
+
 func _ready():
 	update_hearts() 
 	if not anim.animation_finished.is_connected(_on_anim_finished):
@@ -62,6 +65,7 @@ func _play_standard_idle():
 func _lunge_at_player():
 	if not player or _is_retreating: return
 	anim.play("Attack")
+	enemy_hit_sound.play()
 	var dir = sign(player.global_position.x - global_position.x)
 	anim.flip_h = dir < 0
 	velocity.x = dir * lunge_speed

@@ -23,6 +23,7 @@ func _ready() -> void:
 	show_popup()
 	
 	if fade_rect:
+		fade_rect.mouse_filter = Control.MOUSE_FILTER_IGNORE
 		fade_rect.visible = true
 		fade_rect.modulate.a = 1.0
 		_fade_in()

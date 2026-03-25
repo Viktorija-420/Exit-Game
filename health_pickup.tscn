@@ -1,15 +1,20 @@
-[gd_scene load_steps=6 format=3 uid="uid://drse07k85mvc8"]
+[gd_scene load_steps=7 format=3 uid="uid://drse07k85mvc8"]
 
 [ext_resource type="Texture2D" uid="uid://d3fos0sh1mmyh" path="res://Assets/Items/postion.png" id="1_01648"]
 [ext_resource type="Script" uid="uid://brbox4ueiay3e" path="res://Scripts/health_pickup.gd" id="1_awyve"]
 [ext_resource type="FontFile" uid="uid://dir8slwrv7g00" path="res://Assets/OldeTome.ttf" id="2_jk1s8"]
 [ext_resource type="Texture2D" uid="uid://drq78ui5ehat5" path="res://Assets/Items/whitecircle.png" id="3_xl6eh"]
+[ext_resource type="AudioStream" uid="uid://co0q7lv4jj84a" path="res://Assets/Sound/potion.mp3" id="5_ssuja"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_awyve"]
 size = Vector2(74, 71)
 
 [node name="HealthPickup" type="Area2D"]
 script = ExtResource("1_awyve")
+heal_amount = null
+glow_min_energy = null
+glow_max_energy = null
+glow_speed = null
 
 [node name="Label" type="Label" parent="."]
 offset_left = -15.0
@@ -34,3 +39,7 @@ position = Vector2(35, 59.5)
 scale = Vector2(0.2194357, 0.22812498)
 color = Color(0.49231714, 0.02888028, 0.532569, 1)
 texture = ExtResource("3_xl6eh")
+
+[node name="Drink" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("5_ssuja")
+volume_db = 24.0

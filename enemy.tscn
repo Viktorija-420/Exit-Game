@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=3 uid="uid://cvmqthsogd2xy"]
+[gd_scene load_steps=15 format=3 uid="uid://cvmqthsogd2xy"]
 
 [ext_resource type="Script" uid="uid://cg176lwqccdwf" path="res://Scripts/enemy.gd" id="1_4gyqm"]
 [ext_resource type="PackedScene" uid="uid://cyt7gfuawb7cr" path="res://small_enemy.tscn" id="2_e1ltt"]
@@ -9,6 +9,7 @@
 [ext_resource type="Texture2D" uid="uid://r7yghpbvc5c3" path="res://Assets/Players/Enemy/idle1.png" id="5_pwjut"]
 [ext_resource type="Texture2D" uid="uid://crvo8ri10l2yh" path="res://Assets/Players/Enemy/idle2.png" id="6_n0g06"]
 [ext_resource type="Texture2D" uid="uid://dix32aay2bq2p" path="res://Assets/Players/Enemy/walkSide1.png" id="7_ar8e5"]
+[ext_resource type="AudioStream" uid="uid://dlta2hgt5gdl0" path="res://Assets/Sound/MonsterWREW.mp3" id="10_dxifv"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_doop2"]
 animations = [{
@@ -99,6 +100,10 @@ texture = ExtResource("3_qi2p4")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Enemy_hitbox"]
 shape = SubResource("CircleShape2D_e1ltt")
+
+[node name="EnemyAttack" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("10_dxifv")
+volume_db = -5.005
 
 [connection signal="body_entered" from="DetectionArea" to="." method="_on_detection_area_body_entered"]
 [connection signal="body_exited" from="DetectionArea" to="." method="_on_detection_area_body_exited"]

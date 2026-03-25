@@ -18,8 +18,8 @@ extends CanvasLayer
 @onready var player_portrait: CanvasItem = get_node_or_null("PlayLabel")
 @onready var option_button_1: Button = $Option1
 @onready var option_button_2: Button = $Option2
-
 @onready var dialog_bg: TextureRect = $Dialog
+@onready var talk_sound: AudioStreamPlayer2D = $TalkSound
 
 # -------------------------
 # DIALOG DATA & STATE
@@ -30,20 +30,14 @@ var _dialog := [
 	{"name": "Player", "text": "Who are you? Some kind of... janitor?"},
 	{"name": "Wizard", "text": "I am the Wizard of the Void. I keep this place in order"},
 	
-	# BRANCHING POINT (Index 4)
 	{"name": "Player", "options": [
 		{"text": "Okay, cool.. tell me how do I leave?", "next": 5},
 		{"text": "Is there an exit nearby?", "next": 6}
 	]},
 
-	# OPTION 1: AGGRESSIVE/DIRECT (Index 5)
 	{"name": "Wizard", "text": "Leave? You speak as if there is a door to go to.", "next": 8},
-
-	# OPTION 2: CURIOUS/POLITE (Index 6)
 	{"name": "Wizard", "text": "There was a door once. Now there is no exit."},
 	{"name": "Wizard", "text": "You can't leave..", "next": 8},
-
-	# CONCLUSION (Index 8)
 	{"name": "Wizard", "text": "Now. Please leave me be."}
 ]
 
@@ -52,15 +46,24 @@ var _typing := false
 var _finished_line := false
 var _full_text := ""
 var _dialog_active := false
-var _blink_task = null
+
+func _ready() -> void:
+	process_mode = Node.PROCESS_MODE_ALWAYS
+	if talk_sound:
+		talk_sound.process_mode = Node.PROCESS_MODE_ALWAYS
 
 # -------------------------
 # PUBLIC METHODS
 # -------------------------
 func start_dialog() -> void:
+	get_tree().paused = true
+	if Global.has_method("set_music_paused"):
+		Global.set_music_paused(true)
+	
 	_dialog_active = true
 	visible = true
-	enter_label.visible = true
+	
+	enter_label.visible = false
 	text_label.text = ""
 	option_button_1.visible = false
 	option_button_2.visible = false
@@ -79,7 +82,7 @@ func start_dialog() -> void:
 	if player and player.has_method("set_controls_enabled"):
 		player.set_controls_enabled(false)
 
-	var t := create_tween()
+	var t := create_tween().set_pause_mode(Tween.TWEEN_PAUSE_PROCESS)
 	t.tween_property(fade, "modulate:a", 0.0, fade_in_time)
 	t.tween_callback(func(): _play_line(_line_index))
 
@@ -87,21 +90,14 @@ func start_dialog() -> void:
 # INPUT HANDLING
 # -------------------------
 func _unhandled_input(event: InputEvent) -> void:
-	if not _dialog_active:
-		return
+	if not _dialog_active: return
+	if option_button_1.visible: return
 		
-	if option_button_1.visible:
-		return
-		
-	if not event.is_action_pressed("ui_accept"):
-		return
-
-	if _typing:
-		_finish_typing()
-		return
-
-	if _finished_line:
-		_next_line()
+	if event.is_action_pressed("ui_accept"):
+		if _typing:
+			_finish_typing()
+		elif _finished_line:
+			_next_line()
 
 # -------------------------
 # DIALOG FLOW
@@ -111,19 +107,18 @@ func _play_line(index: int) -> void:
 		_end_dialog()
 		return
 
+	_line_index = index
 	var entry = _dialog[index]
 	var speaker = str(entry.get("name", ""))
 	
-	# Pārbaudām, vai šī ir izvēļu rinda
 	if entry.has("options"):
 		dialog_bg.visible = false
 		text_label.visible = false
-		enter_label.visible = false    # Paslēpjam mirgojošo bultiņu
-		_set_speaker_portrait(speaker)      # Paslēpjam portretus
+		enter_label.visible = false
+		_set_speaker_portrait(speaker)
 		_show_options(entry.options)
 		return
 
-	# Ja tas ir parasts teksts, parādām visu atpakaļ
 	dialog_bg.visible = true
 	text_label.visible = true
 	_set_speaker_portrait(speaker)
@@ -137,46 +132,63 @@ func _play_line(index: int) -> void:
 	_start_typing()
 	
 func _set_speaker_portrait(speaker: String) -> void:
-	if wiz_portrait:
-		wiz_portrait.visible = (speaker.to_lower() == "wizard")
-	if player_portrait:
-		player_portrait.visible = (speaker.to_lower() == "player")
+	var s_lower = speaker.to_lower()
+	if wiz_portrait: wiz_portrait.visible = (s_lower == "wizard")
+	if player_portrait: player_portrait.visible = (s_lower == "player")
 
 func _start_typing() -> void:
 	_typing = true
+	enter_label.visible = false
+	
+	var entry = _dialog[_line_index]
+	var speaker_name = str(entry.get("name", "")).to_lower()
+
 	for i in range(_full_text.length()):
-		if not _typing:
+		if not _typing or not _dialog_active:
+			if talk_sound: talk_sound.stop()
 			return
+			
 		text_label.text = _full_text.substr(0, i + 1)
-		await get_tree().create_timer(type_speed).timeout
+		
+		# Pārbaudām, vai ir jāspēlē skaņa (izlaižam atstarpes)
+		if _full_text[i] != " " and talk_sound:
+			# Iestatām pitch atkarībā no runātāja
+			if speaker_name == "wizard":
+				talk_sound.pitch_scale = randf_range(0.8, 1.0) # Zemāka balss burvim
+			elif speaker_name == "player":
+				talk_sound.pitch_scale = randf_range(1.1, 1.3) # Augstāka balss spēlētājam
+			
+			talk_sound.play()
+			
+		await get_tree().create_timer(type_speed, true, false, true).timeout
 
 	_typing = false
+	if talk_sound: talk_sound.stop()
 	_finished_line = true
 	enter_label.visible = true
 
 func _finish_typing() -> void:
-	text_label.text = _full_text
 	_typing = false
+	if talk_sound: talk_sound.stop()
+	text_label.text = _full_text
 	_finished_line = true
 	enter_label.visible = true
 
 func _next_line() -> void:
-	_line_index += 1
-	_play_line(_line_index)
+	if _dialog[_line_index].has("next"):
+		_play_line(_dialog[_line_index].next)
+	else:
+		_play_line(_line_index + 1)
 
 func _end_dialog() -> void:
+	get_tree().paused = false
+	if Global.has_method("set_music_paused"):
+		Global.set_music_paused(false)
+		
 	_dialog_active = false
 	visible = false
-	dialog_bg.visible = true
-	enter_label.visible = true
-	text_label.text = ""
-	option_button_1.visible = false
-	option_button_2.visible = false
-	if fade:
-		fade.visible = false
-
-	if _blink_task and _blink_task.is_valid():
-		_blink_task = null
+	
+	if talk_sound: talk_sound.stop()
 
 	var player = get_tree().current_scene.get_node_or_null("Player")
 	if player and player.has_method("set_controls_enabled"):
@@ -187,13 +199,12 @@ func _end_dialog() -> void:
 # -------------------------
 func _blink_enter_label() -> void:
 	while _dialog_active:
-		enter_label.visible = not enter_label.visible
-		await get_tree().create_timer(enter_blink_speed).timeout
-		enter_label.visible = true
+		if _finished_line:
+			enter_label.visible = !enter_label.visible
+		else:
+			enter_label.visible = false
+		await get_tree().create_timer(enter_blink_speed, true, false, true).timeout
 
-# -------------------------
-# OPTIONS HANDLING
-# -------------------------
 # -------------------------
 # OPTIONS HANDLING
 # -------------------------
@@ -202,25 +213,18 @@ func _show_options(options: Array) -> void:
 	option_button_2.visible = true
 	option_button_1.text = options[0].text
 	option_button_2.text = options[1].text
-
 	option_button_1.grab_focus()
-	# 1. Disconnect previous connections to avoid stacking calls
-	# We use 'is_connected' with the Signal object itself in Godot 4
-	for connection in option_button_1.pressed.get_connections():
-		option_button_1.pressed.disconnect(connection.callable)
-	for connection in option_button_2.pressed.get_connections():
-		option_button_2.pressed.disconnect(connection.callable)
 
-	# 2. Connect using the new Callable.bind() syntax
+	if option_button_1.pressed.is_connected(_on_option_selected):
+		option_button_1.pressed.disconnect(_on_option_selected)
+	if option_button_2.pressed.is_connected(_on_option_selected):
+		option_button_2.pressed.disconnect(_on_option_selected)
+		
 	option_button_1.pressed.connect(_on_option_selected.bind(options[0].next))
 	option_button_2.pressed.connect(_on_option_selected.bind(options[1].next))
 	
 func _on_option_selected(next_index: int) -> void:
 	option_button_1.visible = false
 	option_button_2.visible = false
-	
 	dialog_bg.visible = true
-	
-	_line_index = next_index
-	_play_line(_line_index)
-	
+	_play_line(next_index)

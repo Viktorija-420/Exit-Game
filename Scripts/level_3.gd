@@ -34,7 +34,7 @@ func show_popup() -> void:
 	if not pop_level: 
 		return
 		
-	pop_level.text = "Level 3" # Make sure this is set
+	pop_level.text = "Level Three"
 	pop_level.visible = true
 	pop_level.modulate.a = 0.0
 	

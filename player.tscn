@@ -1,4 +1,4 @@
-[gd_scene load_steps=61 format=3 uid="uid://bni1x4r8t3keq"]
+[gd_scene load_steps=66 format=3 uid="uid://bni1x4r8t3keq"]
 
 [ext_resource type="Script" uid="uid://dpiemskwt7yt2" path="res://Scripts/player.gd" id="1_dw050"]
 [ext_resource type="Texture2D" uid="uid://cs5xb0uakotwt" path="res://Assets/Players/PlayerAssets/Player/Attack/Attack1.png" id="3_iruf7"]
@@ -35,6 +35,11 @@
 [ext_resource type="Texture2D" uid="uid://ktklwb8nty0t" path="res://Assets/Items/pixil-frame-0 (1).png" id="31_634y6"]
 [ext_resource type="Texture2D" uid="uid://drq78ui5ehat5" path="res://Assets/Items/whitecircle.png" id="32_efrwb"]
 [ext_resource type="FontFile" uid="uid://dir8slwrv7g00" path="res://Assets/OldeTome.ttf" id="35_hl5qd"]
+[ext_resource type="AudioStream" uid="uid://bt7nyf5ylehpl" path="res://Assets/Sound/SwordSwing.mp3" id="36_ek41f"]
+[ext_resource type="AudioStream" uid="uid://dr3ecviwcyxnf" path="res://Assets/Sound/Walk.mp3" id="37_khis8"]
+[ext_resource type="AudioStream" uid="uid://dvqqeatnknobx" path="res://Assets/Sound/action_jump.mp3" id="38_331ug"]
+[ext_resource type="AudioStream" uid="uid://bojqngctybxx" path="res://Assets/Sound/land.mp3" id="39_331ug"]
+[ext_resource type="AudioStream" uid="uid://bj7w82tcgtm5i" path="res://Assets/Sound/umph_zqa4Xk0k.mp3" id="40_331ug"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_efrwb"]
 atlas = ExtResource("12_j5n4i")
@@ -404,6 +409,25 @@ theme_override_font_sizes/font_size = 18
 horizontal_alignment = 1
 vertical_alignment = 1
 autowrap_mode = 2
+
+[node name="HitSound" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("36_ek41f")
+volume_db = -10.011
+
+[node name="WalkSound" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("37_khis8")
+volume_db = 5.0
+
+[node name="JumpGrunt" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("38_331ug")
+
+[node name="LandSound" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("39_331ug")
+volume_db = -10.0
+
+[node name="Hurt" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("40_331ug")
+volume_db = 3.0
 
 [connection signal="body_entered" from="Player_hitbox" to="." method="_on_player_hitbox_body_entered"]
 [connection signal="body_exited" from="Player_hitbox" to="." method="_on_player_hitbox_body_exited"]

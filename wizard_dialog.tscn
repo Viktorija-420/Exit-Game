@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=3 uid="uid://ekh7h6u3yy4n"]
+[gd_scene load_steps=17 format=3 uid="uid://ekh7h6u3yy4n"]
 
 [ext_resource type="Script" uid="uid://bhit0jjeo00vb" path="res://Scripts/wizard_dialog.gd" id="1_7d1oq"]
 [ext_resource type="Texture2D" uid="uid://c158p5l6o44p3" path="res://Assets/BG/pixel_art_large (1).png" id="2_5i0x1"]
@@ -8,6 +8,7 @@
 [ext_resource type="FontFile" uid="uid://dir8slwrv7g00" path="res://Assets/OldeTome.ttf" id="3_tid73"]
 [ext_resource type="Texture2D" uid="uid://c8l6b3nww3413" path="res://Assets/Items/button/input.png" id="7_k0r86"]
 [ext_resource type="Texture2D" uid="uid://b7wdpoue828fd" path="res://Assets/Items/button/input2.png" id="8_5i0x1"]
+[ext_resource type="AudioStream" uid="uid://cysmvmufvagwo" path="res://Assets/Sound/Talking.mp3" id="9_56o21"]
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_56o21"]
 texture = ExtResource("7_k0r86")
@@ -43,7 +44,7 @@ color = Color(0, 0, 0, 1)
 
 [node name="TextureRect" type="TextureRect" parent="."]
 modulate = Color(0.72464263, 0.7246426, 0.7246426, 1)
-anchors_preset = -1
+anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 offset_left = -1.0
@@ -137,3 +138,8 @@ theme_override_font_sizes/font_size = 30
 theme_override_styles/normal = SubResource("StyleBoxTexture_56o21")
 theme_override_styles/hover = SubResource("StyleBoxTexture_skgbi")
 autowrap_mode = 2
+
+[node name="TalkSound" type="AudioStreamPlayer2D" parent="."]
+process_mode = 3
+stream = ExtResource("9_56o21")
+max_polyphony = 4
