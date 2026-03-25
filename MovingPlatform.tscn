@@ -1,0 +1,25 @@
+[gd_scene load_steps=5 format=3 uid="uid://b76ct3phqfhh3"]
+
+[ext_resource type="Script" uid="uid://blafls2lw10ul" path="res://moving_platform.gd" id="1_0ltmk"]
+[ext_resource type="Texture2D" uid="uid://q47il1qksigp" path="res://Assets/MapTiles/Platform.png" id="1_k63f6"]
+[ext_resource type="Texture2D" uid="uid://drq78ui5ehat5" path="res://Assets/Items/whitecircle.png" id="3_3v42y"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_0ltmk"]
+size = Vector2(286, 35)
+
+[node name="AnimatableBody2D" type="AnimatableBody2D"]
+script = ExtResource("1_0ltmk")
+
+[node name="PointLight2D" type="PointLight2D" parent="."]
+position = Vector2(1.4999962, 0)
+scale = Vector2(2.1912224, 0.428125)
+color = Color(0.50928617, 0.50928617, 0.50928617, 1)
+texture = ExtResource("3_3v42y")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+scale = Vector2(1.5333333, 1.5333333)
+texture = ExtResource("1_k63f6")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, -4.5)
+shape = SubResource("RectangleShape2D_0ltmk")

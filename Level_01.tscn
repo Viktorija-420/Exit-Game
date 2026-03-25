@@ -687,6 +687,7 @@ layer_1/tile_data = PackedInt32Array(458730, 196610, 1, -131094, 196610, 1342177
 
 [node name="Door" parent="." instance=ExtResource("6_vwmhs")]
 position = Vector2(75, 163)
+next_level_scene = "uid://dh814ja767ken"
 
 [node name="Key" parent="." instance=ExtResource("10_trksy")]
 position = Vector2(19, 327)

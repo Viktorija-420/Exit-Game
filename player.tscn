@@ -1,4 +1,4 @@
-[gd_scene load_steps=60 format=3 uid="uid://bni1x4r8t3keq"]
+[gd_scene load_steps=61 format=3 uid="uid://bni1x4r8t3keq"]
 
 [ext_resource type="Script" uid="uid://dpiemskwt7yt2" path="res://Scripts/player.gd" id="1_dw050"]
 [ext_resource type="Texture2D" uid="uid://cs5xb0uakotwt" path="res://Assets/Players/PlayerAssets/Player/Attack/Attack1.png" id="3_iruf7"]
@@ -34,6 +34,7 @@
 [ext_resource type="Texture2D" uid="uid://bfpx7luxf0plb" path="res://Assets/Players/PlayerAssets/Player/Shield/Shield Raise.png" id="26_tkwlq"]
 [ext_resource type="Texture2D" uid="uid://ktklwb8nty0t" path="res://Assets/Items/pixil-frame-0 (1).png" id="31_634y6"]
 [ext_resource type="Texture2D" uid="uid://drq78ui5ehat5" path="res://Assets/Items/whitecircle.png" id="32_efrwb"]
+[ext_resource type="FontFile" uid="uid://dir8slwrv7g00" path="res://Assets/OldeTome.ttf" id="35_hl5qd"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_efrwb"]
 atlas = ExtResource("12_j5n4i")
@@ -386,12 +387,23 @@ explosiveness = 1.0
 process_material = SubResource("ParticleProcessMaterial_634y6")
 
 [node name="PointLight2D" type="PointLight2D" parent="."]
-position = Vector2(-5, 4.999973)
-scale = Vector2(0.57627434, 0.5762744)
+position = Vector2(-1.0000057, -23.999998)
+scale = Vector2(0.6799867, 0.7193871)
 energy = 0.58
 shadow_enabled = true
 shadow_color = Color(0, 0, 0, 0.59607846)
 texture = ExtResource("32_efrwb")
+
+[node name="DoorLabel" type="Label" parent="."]
+offset_left = -12.0
+offset_top = -48.0
+offset_right = 173.0
+offset_bottom = -24.0
+theme_override_fonts/font = ExtResource("35_hl5qd")
+theme_override_font_sizes/font_size = 18
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 2
 
 [connection signal="body_entered" from="Player_hitbox" to="." method="_on_player_hitbox_body_entered"]
 [connection signal="body_exited" from="Player_hitbox" to="." method="_on_player_hitbox_body_exited"]

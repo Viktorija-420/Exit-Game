@@ -1,0 +1,19 @@
+[gd_scene load_steps=4 format=3 uid="uid://c5e6vacdoq3wc"]
+
+[ext_resource type="Texture2D" uid="uid://60t8agd5r3d" path="res://Assets/MapTiles/doorIdle.png" id="1_l13ep"]
+[ext_resource type="Script" uid="uid://begwhtggjfymi" path="res://Scripts/start_door.gd" id="1_uypw0"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_uypw0"]
+size = Vector2(54, 53)
+
+[node name="StartDoor" type="Area2D"]
+script = ExtResource("1_uypw0")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(-1.1920929e-07, 0)
+scale = Vector2(1.1048849, 1.104885)
+texture = ExtResource("1_l13ep")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, 7.5)
+shape = SubResource("RectangleShape2D_uypw0")

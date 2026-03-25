@@ -1,6 +1,6 @@
 extends Area2D
 
-@export_file("*.tscn") var next_level_scene: String = "res://MainMenu.tscn"
+@export_file("*.tscn") var next_level_scene: String = ""
 
 @onready var anim: AnimatedSprite2D = $Sprite2D
 @onready var trigger_shape: CollisionShape2D = $TriggerShape

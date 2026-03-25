@@ -99,6 +99,7 @@ func _physics_process(delta: float):
 		_update_camera_follow(delta)
 
 	if not controls_enabled or not player_alive:
+		velocity.x = 0
 		move_and_slide() 
 		return
 		

@@ -6,7 +6,7 @@ extends Node2D
 @onready var door: Area2D = $Door # Make sure you have an Area2D named 'Door' in Level 2!
 
 # -------------------- EXPORTS --------------------
-@export_file("*.tscn") var level3_scene: String # Path to your Level 3
+@export_file("res://level_3.tscn") var level3_scene: String # Path to your Level 3
 
 @export var fade_in_time: float = 0.6
 @export var visible_time: float = 1.5
@@ -49,21 +49,34 @@ func show_popup() -> void:
 
 # -------------------- DOOR ENTER & TRANSITION --------------------
 func _on_door_entered(body: Node2D) -> void:
+	print("Something touched the door: ", body.name) # Debug 1
+	
 	if _transitioning: return
 
-	# Change this condition if Level 2 doesn't require a key!
-	if body.is_in_group("player") and Global.has_key:
-		_transitioning = true
-		_start_level_transition()
+	if body.is_in_group("player"):
+		print("Player is at the door! Has key: ", Global.has_key) # Debug 2
+		if Global.has_key:
+			_transitioning = true
+			_start_level_transition()
+		else:
+			print("Access denied: You need the key!")
 
 func _start_level_transition() -> void:
+	print("Level 2: Transition triggered!")
+	_transitioning = true
+
 	if fade_rect:
 		fade_rect.visible = true
 		fade_rect.modulate.a = 0.0
+		
 		var t = create_tween()
 		t.tween_property(fade_rect, "modulate:a", 1.0, 0.6)
-		t.tween_callback(func(): 
-			SceneManager.change_scene_safe(level3_scene)
+		
+		# Instead of 'await', we use a direct connection
+		t.finished.connect(func():
+			print("Level 2: Fade complete. Switching NOW.")
+			get_tree().change_scene_to_file("res://level_3.tscn")
 		)
 	else:
-		SceneManager.change_scene_safe(level3_scene)
+		print("Level 2: No fade rect found, switching immediately.")
+		get_tree().change_scene_to_file("res://level_3.tscn")
