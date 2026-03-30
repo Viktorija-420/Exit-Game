@@ -1,7 +1,8 @@
 extends CharacterBody2D
 
 @export var speed = 160 
-@export var death_gravity = 1000.0 
+@export var death_gravity = 1000.0
+@onready var squeak: AudioStreamPlayer2D = $Squeak
 var player = null
 var _is_bursting = false
 var _hover_offset = Vector2.ZERO
@@ -49,6 +50,7 @@ func _physics_process(delta):
 
 func take_damage():
 	if _is_dead: return
+	squeak.play()
 	_is_dead = true
 	
 	# 1. DISABLE PLAYER COLLISION

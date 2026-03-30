@@ -24,6 +24,7 @@ var _retreat_dir = 0
 
 # --- SOUNDS ---
 @onready var enemy_hit_sound: AudioStreamPlayer2D = $EnemyAttack
+var is_harmful: bool
 
 func _ready():
 	update_hearts() 
@@ -64,6 +65,7 @@ func _play_standard_idle():
 
 func _lunge_at_player():
 	if not player or _is_retreating: return
+	is_harmful = true
 	anim.play("Attack")
 	enemy_hit_sound.play()
 	var dir = sign(player.global_position.x - global_position.x)
@@ -76,6 +78,7 @@ func _on_anim_finished():
 		_start_retreat()
 
 func _start_retreat():
+	is_harmful = false
 	if _is_retreating: return
 	if player:
 		_retreat_dir = -sign(player.global_position.x - global_position.x)

@@ -11,10 +11,6 @@ size = Vector2(74, 71)
 
 [node name="HealthPickup" type="Area2D"]
 script = ExtResource("1_awyve")
-heal_amount = null
-glow_min_energy = null
-glow_max_energy = null
-glow_speed = null
 
 [node name="Label" type="Label" parent="."]
 offset_left = -15.0

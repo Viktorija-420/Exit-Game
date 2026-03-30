@@ -1,10 +1,12 @@
-[gd_scene load_steps=8 format=3 uid="uid://by34ttobbn6b6"]
+[gd_scene load_steps=10 format=3 uid="uid://by34ttobbn6b6"]
 
 [ext_resource type="Script" uid="uid://c5nb8ctl1gn3" path="res://Scripts/door.gd" id="1_y5njw"]
 [ext_resource type="Texture2D" uid="uid://60t8agd5r3d" path="res://Assets/MapTiles/doorIdle.png" id="2_4xadh"]
 [ext_resource type="Texture2D" uid="uid://yocrtunwedb7" path="res://Assets/MapTiles/door1.png" id="3_6hwww"]
 [ext_resource type="Texture2D" uid="uid://dcey8ctubf6w5" path="res://Assets/MapTiles/door2.png" id="4_v1oua"]
 [ext_resource type="Texture2D" uid="uid://8dq61xtywlbk" path="res://Assets/MapTiles/door3.png" id="5_ptf7r"]
+[ext_resource type="AudioStream" uid="uid://d1e7k1cisbfk3" path="res://Assets/Sound/creaky_door.mp3" id="6_6hwww"]
+[ext_resource type="AudioStream" uid="uid://vd4ki3x7o7d" path="res://Assets/Sound/locked_door.mp3" id="7_v1oua"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_2gcrv"]
 animations = [{
@@ -17,21 +19,21 @@ animations = [{
 "speed": 5.0
 }, {
 "frames": [{
-"duration": 2.0,
+"duration": 1.0,
 "texture": ExtResource("2_4xadh")
 }, {
-"duration": 2.0,
+"duration": 1.0,
 "texture": ExtResource("3_6hwww")
 }, {
-"duration": 1.02,
+"duration": 1.0,
 "texture": ExtResource("4_v1oua")
 }, {
-"duration": 7.0,
+"duration": 1.0,
 "texture": ExtResource("5_ptf7r")
 }],
-"loop": true,
+"loop": false,
 "name": &"DoorAnim",
-"speed": 8.0
+"speed": 5.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -51,9 +53,19 @@ script = ExtResource("1_y5njw")
 [node name="Sprite2D" type="AnimatedSprite2D" parent="."]
 scale = Vector2(1.592, 1.5)
 sprite_frames = SubResource("SpriteFrames_2gcrv")
-animation = &"Closed"
+animation = &"DoorAnim"
+frame = 3
+frame_progress = 1.0
 metadata/_edit_lock_ = true
 
 [node name="TriggerShape" type="CollisionShape2D" parent="."]
 shape = SubResource("RectangleShape2D_hym0u")
 metadata/_edit_lock_ = true
+
+[node name="DoorOpen" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("6_6hwww")
+volume_db = -10.0
+
+[node name="DoorLocked" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("7_v1oua")
+volume_db = -10.0

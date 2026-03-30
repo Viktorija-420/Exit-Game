@@ -14,6 +14,7 @@ var controls_enabled: bool = true
 var enemy_inattack_range: bool = false
 var enemy_attack_cooldown: bool = true
 var last_enemy_hit_position: float = 0.0 
+var current_enemy = null
 
 var current_letter: Node = null
 
@@ -22,6 +23,7 @@ var current_letter: Node = null
 # -------------------------
 @onready var anim: AnimatedSprite2D = $Anim
 @onready var cam: Camera2D = $Camera2D
+@onready var door_label: Label = $DoorLabel
 
 # -------------------------
 # SETTINGS
@@ -87,6 +89,7 @@ var _was_on_floor: bool = false
 @onready var jump_grunt: AudioStreamPlayer2D = $JumpGrunt
 @onready var land_sound: AudioStreamPlayer2D = $LandSound
 @onready var hurt_sound: AudioStreamPlayer2D = $Hurt
+@onready var block_sound: AudioStreamPlayer2D = $Block
 
 # -------------------------
 # READY
@@ -218,13 +221,20 @@ func _on_anim_animation_finished():
 # COMBAT & DAMAGE
 # -------------------------
 func enemy_attack():
-	# Pievienojam papildus drošību, lai funkcija neizpildās paralēli
+	
 	if enemy_inattack_range and enemy_attack_cooldown and not _hurt and player_alive:
-		enemy_attack_cooldown = false
-		hurt_and_reset(last_enemy_hit_position)
-		
-		# Izmantojam vienreizēju taimeri koda iekšienē
-		get_tree().create_timer(1.2).timeout.connect(func(): enemy_attack_cooldown = true)
+		if current_enemy and current_enemy.is_harmful: 
+			# --- ADD THIS CHECK HERE ---
+			if _shielding:
+				if not block_sound.playing:
+					block_sound.play()
+					# Optional: Add a tiny camera shake for feedback
+					start_camera_shake(2.0)
+				return 
+			
+			enemy_attack_cooldown = false
+			hurt_and_reset(last_enemy_hit_position)
+			get_tree().create_timer(1.2).timeout.connect(func(): enemy_attack_cooldown = true)
 
 func hurt_and_reset(from_x: float):
 	if _hurt or not player_alive:
@@ -334,6 +344,7 @@ func _on_player_hitbox_body_entered(body):
 	
 	if body.has_method("enemy"): 
 		enemy_inattack_range = true
+		current_enemy = body # Store the reference!
 		last_enemy_hit_position = body.global_position.x
 
 	# Letter detection
@@ -341,16 +352,17 @@ func _on_player_hitbox_body_entered(body):
 		current_letter = body
 		if body.has_node("Popup"):
 			body.get_node("Popup").visible = true
-
-func _on_player_hitbox_body_exited(body):
-	if body.has_method("enemy"):
-		enemy_inattack_range = false
-	
-	if body.has_method("letter"):
-		if body.has_node("Popup"):
-			body.get_node("Popup").visible = false
-		if current_letter == body:
-			current_letter = null
+			
+	if body.is_in_group("door"):
+# Check if the door is locked (you need to make sure your Door scene is in the "door" group)
+# and check the Global variable for the key
+		if not Global.has_key:
+			door_label.text = "I need a key first"
+			door_label.visible = true
+		else:
+			# If they have the key, you might want to show a different prompt or nothing
+			door_label.text = "Press E to Enter" 
+			door_label.visible = true
 
 # -------------------------
 # LETTER PICKUP
@@ -400,30 +412,31 @@ func _check_void_fall():
 func show_door_cutscene(door_pos: Vector2) -> void:
 	if not cam: return
 	
-	# Saglabājam oriģinālo zoom līmeni, lai zinātu, kur atgriezties
 	var original_zoom = cam.zoom
-	# Cik tuvu gribam pievilkt (1.4 ir par 40% tuvāk)
 	var target_zoom = Vector2(1.4, 1.4) 
-	
 	var offset_to_door = door_pos - global_position
 	
 	await get_tree().create_timer(0.5).timeout
 	
-	# --- AIZEJAM LĪDZ DURVĪM UN PIEZOOMOJĀM ---
+	# --- 1. CAMERA MOVES TO DOOR ---
 	var tween = create_tween().set_parallel(true).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
-	
 	tween.tween_property(cam, "offset", offset_to_door, 1.5)
 	tween.tween_property(cam, "zoom", target_zoom, 1.5)
 	
-	# Gaidām, kamēr abas animācijas beidzas
 	await tween.finished
 	
-	# Pauze pie durvīm
-	await get_tree().create_timer(1.0).timeout
+	# --- 2. TRIGGER DOOR ANIMATION ---
+	# We search for the door at that position to play the animation
+	for door in get_tree().get_nodes_in_group("door"):
+		if door.global_position.distance_to(door_pos) < 10:
+			if door.has_method("play_open_animation"):
+				door.play_open_animation() # Call the new function we'll add below
 	
-	# --- ATGRIEŽAMIES ATPAKAĻ UN ATZOOMOJĀM ---
+	# Pause so player can see the door opening
+	await get_tree().create_timer(1.5).timeout
+	
+	# --- 3. CAMERA RETURNS ---
 	var back_tween = create_tween().set_parallel(true).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
-	
 	back_tween.tween_property(cam, "offset", Vector2.ZERO, 1.0)
 	back_tween.tween_property(cam, "zoom", original_zoom, 1.0)
 	

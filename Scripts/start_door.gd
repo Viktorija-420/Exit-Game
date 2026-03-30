@@ -1,48 +1,73 @@
 extends Area2D
+@onready var close_door: AudioStreamPlayer2D = $DoorClose
+@onready var locked_door: AudioStreamPlayer2D = $LockedDoor
 
 # The list of possible messages
 var messages = [
 	"Can't go through this door...",
-	"I went through this door already",
+	"Can't go back",
 	"I will NOT go to the previous level"
 ]
 
-# We use this to prevent the text from re-triggering while it's already typing
+@onready var anim: AnimatedSprite2D = $AnimatedSprite2D
+
 var is_typing: bool = false
+var door_locked: bool = false # Prevents messages until the door is finished closing
 
 func _ready():
-	# Connect the signal that detects when something enters the door area
+	
+	await get_tree().create_timer(0.1).timeout
+	# 1. When the level starts, play the closing animation
+	if anim and anim.sprite_frames.has_animation("StartDoorClose"):
+		close_door.play()
+		anim.play("StartDoorClose")
+		# Optional: Wait for animation to finish before allowing text triggers
+		anim.animation_finished.connect(_on_close_animation_finished)
+	else:
+		door_locked = true # Fallback if no animation exists
+
 	body_entered.connect(_on_body_entered)
 
+func _on_close_animation_finished():
+	# Once the door is visually closed, we allow the "I can't go back" logic
+	door_locked = true
+	# Disconnect so it only runs once at the start of the level
+	if anim.animation_finished.is_connected(_on_close_animation_finished):
+		anim.animation_finished.disconnect(_on_close_animation_finished)
+
 func _on_body_entered(body):
-	# Check if the body that entered is the player and we aren't already showing text
-	if body.is_in_group("player") and not is_typing:
+# Only show messages if the player entered and the door is locked/closed
+	if body.is_in_group("player") and not is_typing and door_locked:
+		# --- PLAY LOCKED SOUND HERE ---
+		if locked_door and not locked_door.playing:
+			locked_door.play()
+			
 		show_message_on_player(body)
 
 func show_message_on_player(player):
+	# Using get_node_or_null to prevent crashes if the label is missing
 	var label = player.get_node_or_null("DoorLabel")
 	
 	if label:
 		is_typing = true
 		
-		# 1. Setup the text
+		# Pick a random message
 		label.text = messages[randi() % messages.size()]
-		label.visible_ratio = 0.0 # Start with 0% of text visible
+		label.visible_ratio = 0.0 
 		label.visible = true
 		
-		# 2. Create the typewriter animation
-		var duration = label.text.length() * 0.05 # Adjust 0.05 for speed (smaller is faster)
+		# Create the typewriter animation
+		var duration = label.text.length() * 0.05 
 		var tween = create_tween()
 		
-		# Animate the visible_ratio from 0 to 1
+		# Animate the text appearing
 		tween.tween_property(label, "visible_ratio", 1.0, duration)
 		
-		# 3. Wait for the typing to finish
+		# Wait for typing to finish, then wait 1.5s, then hide
 		await tween.finished
-		
-		# 4. Wait a bit so the player can read the full message
 		await get_tree().create_timer(1.5).timeout
 		
-		# 5. Hide and reset
 		label.visible = false
+		# Adding a small cooldown before they can trigger the message/sound again
+		await get_tree().create_timer(0.5).timeout 
 		is_typing = false
