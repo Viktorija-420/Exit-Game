@@ -65,7 +65,9 @@ metadata/_edit_lock_ = true
 [node name="DoorOpen" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource("6_6hwww")
 volume_db = -10.0
+bus = &"SFX"
 
 [node name="DoorLocked" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource("7_v1oua")
 volume_db = -10.0
+bus = &"SFX"

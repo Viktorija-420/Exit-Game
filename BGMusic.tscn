@@ -6,4 +6,5 @@
 [node name="BGmusic" type="AudioStreamPlayer2D"]
 stream = ExtResource("1_auuaj")
 autoplay = true
+bus = &"Music"
 script = ExtResource("2_443ge")

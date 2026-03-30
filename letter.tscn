@@ -357,9 +357,11 @@ text = "ESC"
 
 [node name="CollectLetter" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource("11_fmnkl")
+bus = &"SFX"
 
 [node name="Type" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource("12_u7clh")
+bus = &"SFX"
 
 [connection signal="body_entered" from="." to="." method="_on_body_entered"]
 [connection signal="body_exited" from="." to="." method="_on_body_exited"]

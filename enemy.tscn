@@ -104,6 +104,7 @@ shape = SubResource("CircleShape2D_e1ltt")
 [node name="EnemyAttack" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource("10_dxifv")
 volume_db = -5.005
+bus = &"SFX"
 
 [connection signal="body_entered" from="DetectionArea" to="." method="_on_detection_area_body_entered"]
 [connection signal="body_exited" from="DetectionArea" to="." method="_on_detection_area_body_exited"]

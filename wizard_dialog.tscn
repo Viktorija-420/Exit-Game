@@ -143,3 +143,4 @@ autowrap_mode = 2
 process_mode = 3
 stream = ExtResource("9_56o21")
 max_polyphony = 4
+bus = &"SFX"

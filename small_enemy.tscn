@@ -105,3 +105,4 @@ texture = ExtResource("8_h4okp")
 
 [node name="Squeak" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource("9_we8ff")
+bus = &"SFX"
