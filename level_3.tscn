@@ -1,4 +1,4 @@
-[gd_scene load_steps=24 format=3 uid="uid://c88tnubq81s3b"]
+[gd_scene load_steps=25 format=3 uid="uid://c88tnubq81s3b"]
 
 [ext_resource type="Texture2D" uid="uid://3odl545e1xpn" path="res://Assets/MapTiles/dungeon.png" id="1_ghrvs"]
 [ext_resource type="Script" uid="uid://bnflruri7q6qe" path="res://Scripts/level_3.gd" id="1_joegk"]
@@ -17,6 +17,7 @@
 [ext_resource type="PackedScene" uid="uid://ctf1opklifh2j" path="res://spike_1.tscn" id="13_ox7xt"]
 [ext_resource type="PackedScene" uid="uid://cvmqthsogd2xy" path="res://enemy.tscn" id="14_jvy75"]
 [ext_resource type="PackedScene" uid="uid://b76ct3phqfhh3" path="res://MovingPlatform.tscn" id="16_keufu"]
+[ext_resource type="Texture2D" uid="uid://ba27h2c4xmhbr" path="res://Assets/Items/arrowForWall2.png" id="18_m8gss"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_v4n82"]
 texture = ExtResource("1_ghrvs")
@@ -528,3 +529,30 @@ color = Color(0, 0, 0, 1)
 [node name="UI" parent="." instance=ExtResource("12_dhf26")]
 fade_in_on_start = false
 charge_fill_speed = 1.5
+
+[node name="ArrowForWall" type="Sprite2D" parent="."]
+position = Vector2(-109.30841, 161.84726)
+scale = Vector2(0.047784496, 0.05063708)
+texture = ExtResource("18_m8gss")
+
+[node name="ArrowForWall2" type="Sprite2D" parent="."]
+position = Vector2(421.00006, 361.00003)
+scale = Vector2(0.047784496, 0.05063708)
+texture = ExtResource("18_m8gss")
+
+[node name="ArrowForWall3" type="Sprite2D" parent="."]
+position = Vector2(1189, 468)
+scale = Vector2(0.047784496, 0.05063708)
+texture = ExtResource("18_m8gss")
+
+[node name="ArrowForWall4" type="Sprite2D" parent="."]
+position = Vector2(753.99994, 241.99994)
+rotation = 0.33684856
+scale = Vector2(0.047784496, 0.05063708)
+texture = ExtResource("18_m8gss")
+
+[node name="ArrowForWall5" type="Sprite2D" parent="."]
+position = Vector2(976, 113)
+rotation = -3.1573007
+scale = Vector2(0.047784496, 0.05063708)
+texture = ExtResource("18_m8gss")

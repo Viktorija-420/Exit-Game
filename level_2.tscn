@@ -1,4 +1,4 @@
-[gd_scene load_steps=24 format=3 uid="uid://dh814ja767ken"]
+[gd_scene load_steps=25 format=3 uid="uid://dh814ja767ken"]
 
 [ext_resource type="Script" uid="uid://bla3sskei8dyk" path="res://Scripts/level_02.gd" id="1_78pok"]
 [ext_resource type="Texture2D" uid="uid://3odl545e1xpn" path="res://Assets/MapTiles/dungeon.png" id="1_n7ypv"]
@@ -17,6 +17,7 @@
 [ext_resource type="PackedScene" uid="uid://ekh7h6u3yy4n" path="res://wizard_dialog.tscn" id="11_s77qv"]
 [ext_resource type="PackedScene" uid="uid://ctf1opklifh2j" path="res://spike_1.tscn" id="14_s77qv"]
 [ext_resource type="PackedScene" uid="uid://drse07k85mvc8" path="res://health_pickup.tscn" id="15_5hnhx"]
+[ext_resource type="Texture2D" uid="uid://ba27h2c4xmhbr" path="res://Assets/Items/arrowForWall2.png" id="18_jcnlr"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_78pok"]
 texture = ExtResource("1_n7ypv")
@@ -452,10 +453,6 @@ idle_time_before_comment = 2.0
 position = Vector2(888, 156)
 scale = Vector2(0.54, 0.54)
 
-[node name="HealthPickup2" parent="." instance=ExtResource("15_5hnhx")]
-position = Vector2(977.00006, 156)
-scale = Vector2(0.54, 0.54)
-
 [node name="Player" parent="." instance=ExtResource("9_ehv2h")]
 position = Vector2(-609, 180)
 
@@ -501,3 +498,26 @@ position = Vector2(-195, 199)
 
 [node name="Spike9" parent="." instance=ExtResource("14_s77qv")]
 position = Vector2(285, 198)
+
+[node name="ArrowForWall2" type="Sprite2D" parent="."]
+position = Vector2(-408.875, 157.4375)
+scale = Vector2(0.053823538, 0.052680753)
+texture = ExtResource("18_jcnlr")
+
+[node name="ArrowForWall3" type="Sprite2D" parent="."]
+position = Vector2(660, 132)
+rotation = 0.13962634
+scale = Vector2(0.053823538, 0.052680753)
+texture = ExtResource("18_jcnlr")
+
+[node name="ArrowForWall4" type="Sprite2D" parent="."]
+position = Vector2(386.00003, 354)
+rotation = -3.132866
+scale = Vector2(0.053823538, 0.052680753)
+texture = ExtResource("18_jcnlr")
+
+[node name="ArrowForWall5" type="Sprite2D" parent="."]
+position = Vector2(289.6264, 418.56628)
+rotation = -4.8799405
+scale = Vector2(0.026972217, 0.031063214)
+texture = ExtResource("18_jcnlr")
