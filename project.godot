@@ -28,6 +28,7 @@ Settings="*res://Settings.tscn"
 window/stretch/mode="canvas_items"
 window/stretch/aspect="expand"
 window/stretch/scale_mode="integer"
+mouse_cursor/custom_image="uid://do7w7nskxkstl"
 
 [input]
 
