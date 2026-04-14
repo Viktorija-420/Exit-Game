@@ -1,0 +1,30 @@
+[gd_scene load_steps=5 format=3 uid="uid://ci4ifqg7ovkkk"]
+
+[ext_resource type="Texture2D" uid="uid://dsw20re3byajn" path="res://Assets/Items/cards/spades-A Cards_0.png" id="1_fefu5"]
+[ext_resource type="Script" uid="uid://bp5dx5u30meee" path="res://Scripts/loot_item.gd" id="1_w7bvc"]
+[ext_resource type="PackedScene" uid="uid://cnowr4hhppq8j" path="res://letter_2.tscn" id="3_3ie7j"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_w7bvc"]
+radius = 21.470911
+
+[node name="LootItem" type="Area2D"]
+script = ExtResource("1_w7bvc")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(1.5258789e-05, 0)
+scale = Vector2(0.04, 0.04)
+texture = ExtResource("1_fefu5")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_w7bvc")
+
+[node name="Letter2" parent="." instance=ExtResource("3_3ie7j")]
+
+[node name="Type" parent="Letter2" index="1"]
+process_mode = 3
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]
+[connection signal="body_exited" from="." to="." method="_on_body_exited"]
+[connection signal="pressed" from="Letter2/LetterContainer/ExitBTN" to="." method="_on_exit_btn_pressed"]
+
+[editable path="Letter2"]

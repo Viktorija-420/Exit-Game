@@ -1,4 +1,4 @@
-[gd_scene load_steps=25 format=3 uid="uid://c88tnubq81s3b"]
+[gd_scene load_steps=26 format=3 uid="uid://c88tnubq81s3b"]
 
 [ext_resource type="Texture2D" uid="uid://3odl545e1xpn" path="res://Assets/MapTiles/dungeon.png" id="1_ghrvs"]
 [ext_resource type="Script" uid="uid://bnflruri7q6qe" path="res://Scripts/level_3.gd" id="1_joegk"]
@@ -18,6 +18,7 @@
 [ext_resource type="PackedScene" uid="uid://cvmqthsogd2xy" path="res://enemy.tscn" id="14_jvy75"]
 [ext_resource type="PackedScene" uid="uid://b76ct3phqfhh3" path="res://MovingPlatform.tscn" id="16_keufu"]
 [ext_resource type="Texture2D" uid="uid://ba27h2c4xmhbr" path="res://Assets/Items/arrowForWall2.png" id="18_m8gss"]
+[ext_resource type="PackedScene" uid="uid://b3s2hvqc1i32b" path="res://barrel_static.tscn" id="19_wnq0t"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_v4n82"]
 texture = ExtResource("1_ghrvs")
@@ -395,6 +396,10 @@ scale = Vector2(0.318175, 0.318175)
 [node name="AnimatableBody2D" parent="." instance=ExtResource("16_keufu")]
 position = Vector2(754, 494)
 scale = Vector2(0.445, 0.445)
+
+[node name="BarrelStatic" parent="." instance=ExtResource("19_wnq0t")]
+position = Vector2(-435.00003, 282)
+scale = Vector2(0.36, 0.36)
 
 [node name="Spike2" parent="." instance=ExtResource("13_ox7xt")]
 position = Vector2(436, 497)

@@ -164,6 +164,8 @@ func _handle_attack_input():
 		Global.player_current_attack = true 
 		anim.play("attack")
 		hit_sound.play()
+		
+		$Player_hitbox.monitoring = true
 
 # -------------------------
 # LETTER PICKUP INPUT
@@ -215,7 +217,9 @@ func _update_animation():
 func _on_anim_animation_finished():
 	if anim.animation == "attack":
 		_attacking = false
-		Global.player_current_attack = false 
+		Global.player_current_attack = false
+		
+		$Player_hitbox.monitoring = false
 
 # -------------------------
 # COMBAT & DAMAGE
@@ -338,6 +342,11 @@ func _start_throb():
 # SIGNALS
 # -------------------------
 func _on_player_hitbox_body_entered(body):
+	if _attacking and body.has_method("hit"):
+		body.hit()
+		return # Stop here so we don't trigger enemy logic on a barrel
+		
+		
 	if body.has_method("take_damage") and _attacking:
 		body.take_damage()
 		return 
