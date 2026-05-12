@@ -269,3 +269,21 @@ theme_override_styles/normal = SubResource("StyleBoxTexture_vkygq")
 theme_override_styles/pressed = SubResource("StyleBoxTexture_sosvr")
 theme_override_styles/hover = SubResource("StyleBoxTexture_ndy3v")
 text = "Rules"
+
+[node name="ExitButton" type="Button" parent="PauseMenu/Panel"]
+layout_mode = 0
+offset_left = 325.0
+offset_top = 345.0
+offset_right = 503.0
+offset_bottom = 402.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_focus_color = Color(0, 0, 0, 1)
+theme_override_colors/font_pressed_color = Color(0, 0, 0, 1)
+theme_override_colors/font_hover_color = Color(0, 0, 0, 1)
+theme_override_colors/font_hover_pressed_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("2_n5ude")
+theme_override_font_sizes/font_size = 28
+theme_override_styles/normal = SubResource("StyleBoxTexture_vkygq")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_sosvr")
+theme_override_styles/hover = SubResource("StyleBoxTexture_ndy3v")
+text = "Exit game"

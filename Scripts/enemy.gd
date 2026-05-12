@@ -2,6 +2,7 @@ extends CharacterBody2D
 
 # --- SPAWN SETTINGS ---
 @export var small_enemy_scene: PackedScene 
+var _is_attacking = false
 
 # --- MOVEMENT SETTINGS ---
 @export var speed = 50 
@@ -37,26 +38,38 @@ func _physics_process(delta: float) -> void:
 	
 	deal_with_damage()
 
-	if not _is_jolting:
-		if _is_retreating:
-			velocity.x = _retreat_dir * retreat_speed
-			anim.play("Walk")
-			anim.flip_h = velocity.x < 0
-		elif player_chase and player:
-			var dist = global_position.distance_to(player.global_position)
-			if dist < 120 and anim.animation != "Attack":
-				_lunge_at_player()
-			elif anim.animation != "Attack":
-				velocity.x = move_toward(velocity.x, 0, speed)
-				anim.play("Idle")
-				anim.flip_h = (player.global_position.x < global_position.x)
-		else:
-			_play_standard_idle()
-	else:
+	# PRIORITY 1: Taking Damage (Jolting)
+	if _is_jolting:
 		velocity.x = move_toward(velocity.x, 0, 500 * delta)
+	
+	# PRIORITY 2: Attacking (Lunge)
+	elif _is_attacking:
+		# During a lunge, we let the initial velocity carry them. 
+		# We slow it down slightly for friction or keep it constant.
+		velocity.x = move_toward(velocity.x, 0, 200 * delta)
+
+	# PRIORITY 3: Retreating
+	elif _is_retreating:
+		velocity.x = _retreat_dir * retreat_speed
+		anim.play("Walk")
+		anim.flip_h = velocity.x < 0
+
+	# PRIORITY 4: Chasing/Idle
+	elif player_chase and player:
+		var dist = global_position.distance_to(player.global_position)
+		if dist < 120:
+			_lunge_at_player()
+		else:
+			# Normal chase movement (Optional: add speed here if you want them to walk)
+			velocity.x = move_toward(velocity.x, 0, speed)
+			anim.play("Idle")
+			anim.flip_h = (player.global_position.x < global_position.x)
+	else:
+		_play_standard_idle()
 
 	move_and_slide()
-
+	
+	
 func _play_standard_idle():
 	if not _is_retreating:
 		velocity.x = move_toward(velocity.x, 0, speed)
@@ -64,17 +77,23 @@ func _play_standard_idle():
 			anim.play("Idle")
 
 func _lunge_at_player():
-	if not player or _is_retreating: return
+	if _is_attacking or _is_retreating or _is_jolting: return
+	
+	_is_attacking = true
 	is_harmful = true
 	anim.play("Attack")
 	enemy_hit_sound.play()
+	
 	var dir = sign(player.global_position.x - global_position.x)
 	anim.flip_h = dir < 0
+	
+	# Apply the burst of speed
 	velocity.x = dir * lunge_speed
-	velocity.y = -150 
+	velocity.y = -150
 
 func _on_anim_finished():
 	if anim.animation == "Attack":
+		_is_attacking = false # Clear the flag
 		_start_retreat()
 
 func _start_retreat():

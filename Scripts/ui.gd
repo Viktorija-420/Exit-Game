@@ -6,6 +6,7 @@ extends CanvasLayer
 @onready var main_menu_button: Button = get_node_or_null("PauseMenu/Panel/MainMenuButton") as Button
 @onready var settings_button: Button = get_node_or_null("PauseMenu/Panel/SettingButton") as Button
 @onready var rules_button: Button = get_node_or_null("PauseMenu/Panel/RulesButton") as Button
+@onready var exit_button: Button = get_node_or_null("PauseMenu/Panel/ExitButton") as Button # Added this
 
 @onready var pause_button: Button = get_node_or_null("PauseButton") as Button
 @onready var game_over_label: Label = get_node_or_null("GameOverLabel") as Label
@@ -59,6 +60,7 @@ func _ready() -> void:
 	_safe_connect_pressed(main_menu_button, _on_main_menu_pressed)
 	_safe_connect_pressed(settings_button, _on_settings_pressed)
 	_safe_connect_pressed(rules_button, _on_rules_pressed)
+	_safe_connect_pressed(exit_button, _on_exit_pressed) # Added this
 
 	# -------------------- Game Over Label --------------------
 	if game_over_label:
@@ -191,6 +193,9 @@ func _on_settings_pressed() -> void:
 
 func _on_rules_pressed() -> void:
 	print("Rules clicked (make a rules screen next)")
+
+func _on_exit_pressed() -> void:
+	get_tree().quit() # This closes the game application
 
 
 # -------------------- CHARGE BAR SIGNAL --------------------

@@ -20,7 +20,7 @@
 [ext_resource type="Texture2D" uid="uid://ba27h2c4xmhbr" path="res://Assets/Items/arrowForWall2.png" id="18_m8gss"]
 [ext_resource type="PackedScene" uid="uid://b3s2hvqc1i32b" path="res://barrel_static.tscn" id="19_wnq0t"]
 
-[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_v4n82"]
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_wnq0t"]
 texture = ExtResource("1_ghrvs")
 2:0/size_in_atlas = Vector2i(2, 2)
 2:0/0 = 0
@@ -186,7 +186,7 @@ texture = ExtResource("1_ghrvs")
 6:4/0 = 0
 6:4/0/physics_layer_0/polygon_0/points = PackedVector2Array(16, 16, 8, 16, -16, 16, -16, -16, 16, -16)
 
-[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_fo8ya"]
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_ra6nl"]
 texture = ExtResource("2_jvy75")
 texture_region_size = Vector2i(32, 32)
 0:0/0 = 0
@@ -245,7 +245,7 @@ texture_region_size = Vector2i(32, 32)
 5:3/0 = 0
 6:3/0 = 0
 
-[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_cqw4t"]
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_gxey3"]
 texture = ExtResource("3_g0tlw")
 texture_region_size = Vector2i(30, 30)
 1:0/0 = 0
@@ -253,7 +253,7 @@ texture_region_size = Vector2i(30, 30)
 0:1/0 = 0
 1:1/0 = 0
 
-[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_tndmk"]
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_4hpui"]
 texture = ExtResource("4_keufu")
 texture_region_size = Vector2i(30, 30)
 0:0/0 = 0
@@ -338,7 +338,7 @@ texture_region_size = Vector2i(30, 30)
 9:1/0 = 0
 10:1/0 = 0
 
-[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_kenis"]
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_g005c"]
 texture = ExtResource("5_joegk")
 texture_region_size = Vector2i(39, 35)
 0:0/0 = 0
@@ -348,11 +348,11 @@ texture_region_size = Vector2i(39, 35)
 tile_size = Vector2i(30, 30)
 physics_layer_0/collision_layer = 1
 physics_layer_1/collision_layer = 2
-sources/0 = SubResource("TileSetAtlasSource_v4n82")
-sources/2 = SubResource("TileSetAtlasSource_fo8ya")
-sources/4 = SubResource("TileSetAtlasSource_tndmk")
-sources/5 = SubResource("TileSetAtlasSource_kenis")
-sources/3 = SubResource("TileSetAtlasSource_cqw4t")
+sources/0 = SubResource("TileSetAtlasSource_wnq0t")
+sources/2 = SubResource("TileSetAtlasSource_ra6nl")
+sources/4 = SubResource("TileSetAtlasSource_4hpui")
+sources/5 = SubResource("TileSetAtlasSource_g005c")
+sources/3 = SubResource("TileSetAtlasSource_gxey3")
 
 [node name="Level3" type="Node2D"]
 script = ExtResource("1_joegk")
@@ -440,6 +440,7 @@ scale = Vector2(1.41, 1.41)
 
 [node name="Door" parent="." instance=ExtResource("6_m8gss")]
 position = Vector2(1189, 194)
+next_level_scene = "uid://fu344o754vd4"
 
 [node name="Key" parent="." instance=ExtResource("7_wnq0t")]
 position = Vector2(218, 172)
@@ -501,6 +502,33 @@ scale = Vector2(0.67, 0.67)
 position = Vector2(1101, 486)
 scale = Vector2(0.54, 0.54)
 
+[node name="ArrowForWall" type="Sprite2D" parent="."]
+position = Vector2(-109.30841, 161.84726)
+scale = Vector2(0.047784496, 0.05063708)
+texture = ExtResource("18_m8gss")
+
+[node name="ArrowForWall2" type="Sprite2D" parent="."]
+position = Vector2(421.00006, 361.00003)
+scale = Vector2(0.047784496, 0.05063708)
+texture = ExtResource("18_m8gss")
+
+[node name="ArrowForWall3" type="Sprite2D" parent="."]
+position = Vector2(1189, 468)
+scale = Vector2(0.047784496, 0.05063708)
+texture = ExtResource("18_m8gss")
+
+[node name="ArrowForWall4" type="Sprite2D" parent="."]
+position = Vector2(753.99994, 241.99994)
+rotation = 0.33684853
+scale = Vector2(0.0477845, 0.05063708)
+texture = ExtResource("18_m8gss")
+
+[node name="ArrowForWall5" type="Sprite2D" parent="."]
+position = Vector2(976, 113)
+rotation = 3.1258845
+scale = Vector2(0.047784496, 0.05063708)
+texture = ExtResource("18_m8gss")
+
 [node name="Enemy" parent="." instance=ExtResource("14_jvy75")]
 position = Vector2(341, 183)
 
@@ -521,6 +549,7 @@ theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
 theme_override_fonts/font = ExtResource("11_g005c")
 theme_override_font_sizes/font_size = 40
 text = "Level Three"
+metadata/_edit_use_anchors_ = true
 
 [node name="Fade" type="ColorRect" parent="CanvasLayer"]
 visible = false
@@ -534,30 +563,3 @@ color = Color(0, 0, 0, 1)
 [node name="UI" parent="." instance=ExtResource("12_dhf26")]
 fade_in_on_start = false
 charge_fill_speed = 1.5
-
-[node name="ArrowForWall" type="Sprite2D" parent="."]
-position = Vector2(-109.30841, 161.84726)
-scale = Vector2(0.047784496, 0.05063708)
-texture = ExtResource("18_m8gss")
-
-[node name="ArrowForWall2" type="Sprite2D" parent="."]
-position = Vector2(421.00006, 361.00003)
-scale = Vector2(0.047784496, 0.05063708)
-texture = ExtResource("18_m8gss")
-
-[node name="ArrowForWall3" type="Sprite2D" parent="."]
-position = Vector2(1189, 468)
-scale = Vector2(0.047784496, 0.05063708)
-texture = ExtResource("18_m8gss")
-
-[node name="ArrowForWall4" type="Sprite2D" parent="."]
-position = Vector2(753.99994, 241.99994)
-rotation = 0.33684856
-scale = Vector2(0.047784496, 0.05063708)
-texture = ExtResource("18_m8gss")
-
-[node name="ArrowForWall5" type="Sprite2D" parent="."]
-position = Vector2(976, 113)
-rotation = -3.1573007
-scale = Vector2(0.047784496, 0.05063708)
-texture = ExtResource("18_m8gss")

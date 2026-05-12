@@ -4,13 +4,16 @@ var player_current_attack = false
 signal lives_changed(lives: int)
 signal key_changed(has_key: bool)
 
-@export var max_lives: int = 5
+# --- SETTINGS ---
+@export var default_max_lives: int = 5
 @export var max_lives_cap: int = 6
 
+# --- STATE (These persist between levels) ---
+var max_lives: int = 5 
 var lives: int = 5
+var _has_key: bool = false
 var current_level: int = 1
 var text_box: String = ""
-var _has_key: bool = false
 
 var has_key: bool:
 	get: return _has_key
@@ -19,38 +22,38 @@ var has_key: bool:
 		key_changed.emit(_has_key)
 
 func _ready() -> void:
-	# Ensure the Global script itself can run while the game is paused
 	process_mode = Node.PROCESS_MODE_ALWAYS
-	# We assume 'Music' is another Autoload or a child node here
-	# Music.play_music("res://Assets/Sound/Game.mp3") 
-	reset_run()
+	# Initialize game state once
+	max_lives = default_max_lives
+	lives = max_lives
 
-func set_music_paused(is_paused: bool):
-	# FIX: Use the correct node name. 
-	# If your music is playing via the 'Music' autoload:
-	if is_instance_valid(Music):
-		# If 'Music' is an AudioStreamPlayer:
-		Music.stream_paused = is_paused
-	# OR if you have a child node named 'BGMusic' inside this Global script:
-	elif has_node("BGMusic"):
-		$BGMusic.stream_paused = is_paused
-
-# --- Existing Functionality (Do not change) ---
 func lose_life(amount: int = 1) -> void:
 	lives = max(lives - amount, 0)
 	lives_changed.emit(lives)
 
+# Call this ONLY when starting a brand new game from the Main Menu
 func reset_run() -> void:
-	max_lives = 5
+	max_lives = default_max_lives
 	lives = max_lives
-	_has_key = false
+	has_key = false
 	lives_changed.emit(lives)
 
+# Call this when the player dies or goes to a new level
 func restart_current_level() -> void:
-	reset_run()
+	# Refill lives to whatever the CURRENT max is (5 or 6)
+	lives = max_lives 
+	has_key = false # Usually you lose keys on death, remove this line if you want to keep them
+	lives_changed.emit(lives)
 	get_tree().call_deferred("reload_current_scene")
 
+# Call this when the player drinks the potion
 func gain_life(amount: int = 1) -> void:
 	max_lives = max_lives_cap
-	lives = max_lives
+	lives = max_lives # Heals player to full
 	lives_changed.emit(lives)
+
+func set_music_paused(is_paused: bool):
+	if is_instance_valid(Music):
+		Music.stream_paused = is_paused
+	elif has_node("BGMusic"):
+		$BGMusic.stream_paused = is_paused
