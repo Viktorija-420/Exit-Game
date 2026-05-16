@@ -1,5 +1,6 @@
-[gd_scene load_steps=24 format=3 uid="uid://fu344o754vd4"]
+[gd_scene load_steps=26 format=3 uid="uid://fu344o754vd4"]
 
+[ext_resource type="Script" uid="uid://dpyu0vtkps75u" path="res://level_4.gd" id="1_2vyst"]
 [ext_resource type="Texture2D" uid="uid://3odl545e1xpn" path="res://Assets/MapTiles/dungeon.png" id="1_c8stx"]
 [ext_resource type="Texture2D" uid="uid://c4ltwlph3ml87" path="res://Assets/MapTiles/2DPlatformerDungeonTileset.png" id="2_aqy51"]
 [ext_resource type="Texture2D" uid="uid://cvhaunj7tcldq" path="res://Assets/MapTiles/skelet2.png" id="3_s24i2"]
@@ -17,8 +18,9 @@
 [ext_resource type="PackedScene" uid="uid://ctf1opklifh2j" path="res://spike_1.tscn" id="11_j0u7p"]
 [ext_resource type="FontFile" uid="uid://dir8slwrv7g00" path="res://Assets/OldeTome.ttf" id="12_rrs1j"]
 [ext_resource type="PackedScene" uid="uid://d31bn50tffcc2" path="res://ui.tscn" id="13_xxbfp"]
+[ext_resource type="FontFile" uid="uid://cio32jqgoodf7" path="res://Assets/BloodScratchPersonalUse.ttf" id="19_i4yqx"]
 
-[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_lj1an"]
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_lv3ay"]
 texture = ExtResource("1_c8stx")
 2:0/size_in_atlas = Vector2i(2, 2)
 2:0/0 = 0
@@ -184,7 +186,7 @@ texture = ExtResource("1_c8stx")
 6:4/0 = 0
 6:4/0/physics_layer_0/polygon_0/points = PackedVector2Array(16, 16, 8, 16, -16, 16, -16, -16, 16, -16)
 
-[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_rrs1j"]
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_2vyst"]
 texture = ExtResource("2_aqy51")
 texture_region_size = Vector2i(32, 32)
 0:0/0 = 0
@@ -243,7 +245,7 @@ texture_region_size = Vector2i(32, 32)
 5:3/0 = 0
 6:3/0 = 0
 
-[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_xxbfp"]
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_i4yqx"]
 texture = ExtResource("3_s24i2")
 texture_region_size = Vector2i(30, 30)
 1:0/0 = 0
@@ -251,7 +253,7 @@ texture_region_size = Vector2i(30, 30)
 0:1/0 = 0
 1:1/0 = 0
 
-[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_0yqnl"]
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_j0u7p"]
 texture = ExtResource("4_66w8i")
 texture_region_size = Vector2i(30, 30)
 0:0/0 = 0
@@ -336,7 +338,7 @@ texture_region_size = Vector2i(30, 30)
 9:1/0 = 0
 10:1/0 = 0
 
-[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_45t7y"]
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_at3ad"]
 texture = ExtResource("5_80qnk")
 texture_region_size = Vector2i(39, 35)
 0:0/0 = 0
@@ -346,13 +348,14 @@ texture_region_size = Vector2i(39, 35)
 tile_size = Vector2i(30, 30)
 physics_layer_0/collision_layer = 1
 physics_layer_1/collision_layer = 2
-sources/0 = SubResource("TileSetAtlasSource_lj1an")
-sources/2 = SubResource("TileSetAtlasSource_rrs1j")
-sources/4 = SubResource("TileSetAtlasSource_0yqnl")
-sources/5 = SubResource("TileSetAtlasSource_45t7y")
-sources/3 = SubResource("TileSetAtlasSource_xxbfp")
+sources/0 = SubResource("TileSetAtlasSource_lv3ay")
+sources/2 = SubResource("TileSetAtlasSource_2vyst")
+sources/4 = SubResource("TileSetAtlasSource_j0u7p")
+sources/5 = SubResource("TileSetAtlasSource_at3ad")
+sources/3 = SubResource("TileSetAtlasSource_i4yqx")
 
 [node name="level_4" type="Node2D"]
+script = ExtResource("1_2vyst")
 
 [node name="CanvasModulate" type="CanvasModulate" parent="."]
 color = Color(0.5176471, 0.5176471, 0.5176471, 1)
@@ -368,6 +371,8 @@ offset_bottom = 1301.0
 grow_horizontal = 2
 grow_vertical = 2
 color = Color(0, 0, 0, 1)
+metadata/_edit_use_anchors_ = true
+metadata/_edit_lock_ = true
 
 [node name="Fade" type="ColorRect" parent="."]
 anchors_preset = 15
@@ -376,6 +381,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 color = Color(0.033853278, 0.033853278, 0.033853274, 1)
+metadata/_edit_use_anchors_ = true
 
 [node name="TileMap" type="TileMap" parent="."]
 tile_set = SubResource("TileSet_lv3ay")
@@ -389,7 +395,25 @@ layer_3/name = "Layer3"
 layer_3/tile_data = PackedInt32Array(786429, 196610, 1342177281, 1048571, 196610, 1342177281, 1048567, 196610, 805306369, 917494, 196610, 805306369, 1048562, 196610, 1342177281, 917532, 196610, 805306369, 851995, 196610, 805306369, 852001, 196610, 536870913, 983072, 196610, 536870913, 1114141, 196610, 805306369, 852009, 131074, 1610612737, 655404, 131074, 1610612737, 852004, 131074, 1610612737, 917542, 131074, 1879048193, 786475, 131074, 1879048193, 655390, 458754, 2, 720928, 458754, 268435458, 589829, 5, 0, 589830, 65541, 0, 524328, 65541, 0, 589863, 131074, 1, 524329, 196610, 1, 589831, 196610, 1, 262200, 131074, 1, 393274, 131074, 1610612737, 589883, 131074, 1610612737, 393269, 131074, 1610612737, 589880, 131074, 1879048193, 327743, 131074, 1879048193, 524350, 131074, 1879048193, 458802, 131074, 1879048193, 524337, 393218, 0, 589873, 393218, 0, 458803, 393218, 0, 458818, 393216, 4, 524355, 393216, 4, 589892, 393216, 4, 655429, 393216, 4, 720965, 393216, 4, 589893, 393216, 4, 589894, 393216, 4, 524358, 524288, 4, 524359, 393216, 4, 458823, 393216, 4, 458824, 393216, 4, 524361, 393216, 4, 655434, 393216, 4, 589898, 393216, 4, 524362, 393216, 4, 524363, 393216, 4, 458827, 655360, 4, 524357, 655360, 4, 524356, 393216, 4, 458820, 393216, 4, 458819, 393216, 4, 458821, 393216, 4, 458822, 655360, 4, 393281, 393216, 4, 327753, 5, 0, 589897, 131074, 1610612737, 524360, 131074, 1610612737, 458817, 131074, 1610612737, 655428, 131074, 1610612737, 589895, 131074, 1879048193, 393290, 131074, 268435457, 327746, 131074, 268435457, 327757, 458756, 0, 524367, 458756, 0, 589905, 458756, 0, 852052, 458756, 0, 393293, 458756, 1, 458829, 458756, 1, 589903, 458756, 1, 655441, 458756, 1, 720977, 458756, 1, 786513, 458756, 1, 917588, 458756, 1, 983124, 458756, 1, 786381, 196610, 1342177281, 851924, 196610, 1073741825, 720850, 196610, 1879048193, 786390, 196610, 1879048193, 983024, 196610, 1610612737, 786423, 196610, 1610612737, 655389, 196610, 1, 1245250, 196610, 1, 786496, 131072, 2, 786495, 131072, 2, 720961, 131072, 2, 262092, 131072, 2, 327629, 131072, 2, 262091, 131072, 2, 196555, 131072, 2, 131018, 131072, 2, 65484, 131072, 2, 393266, 524288, 4, 458801, 655360, 4, 655364, 655360, 4, 655367, 655360, 4, 655369, 655360, 4, 655365, 524288, 4, 1114091, 524288, 4, 1114092, 524288, 4, 1114085, 524288, 4, 1114086, 655360, 4, 1114079, 655360, 4, 1114080, 524288, 4, 1179612, 524288, 4, 720846, 524288, 4, 720848, 524288, 4, 786387, 524288, 4, 786389, 524288, 4, 851926, 524288, 4, 1376204, 524288, 4, 1376206, 524288, 4, 1441744, 524288, 4, 1376210, 524288, 4, 1376213, 524288, 4, 1376215, 524288, 4, 1376216, 655360, 4, 1376217, 524288, 4, 1441753, 524288, 4)
 
 [node name="ArrowForWall" type="Sprite2D" parent="."]
-position = Vector2(97.76337, 218.43767)
+position = Vector2(-1159, 390)
+rotation = 3.8205256
+scale = Vector2(0.032015614, 0.033926845)
+texture = ExtResource("6_lv3ay")
+
+[node name="ArrowForWall2" type="Sprite2D" parent="."]
+position = Vector2(-547, 390.00003)
+scale = Vector2(0.032015614, 0.033926845)
+texture = ExtResource("6_lv3ay")
+
+[node name="ArrowForWall3" type="Sprite2D" parent="."]
+position = Vector2(1369, 180)
+rotation = -0.21991149
+scale = Vector2(0.032015614, 0.033926845)
+texture = ExtResource("6_lv3ay")
+
+[node name="ArrowForWall4" type="Sprite2D" parent="."]
+position = Vector2(2460, 489.99994)
+rotation = -3.673918
 scale = Vector2(0.032015614, 0.033926845)
 texture = ExtResource("6_lv3ay")
 
@@ -402,7 +426,47 @@ position = Vector2(1235, 233)
 scale = Vector2(0.36180001, 0.36180001)
 
 [node name="torch" parent="." instance=ExtResource("8_i4yqx")]
-position = Vector2(171, 110)
+position = Vector2(-1247, 495)
+scale = Vector2(0.67, 0.67)
+
+[node name="torch2" parent="." instance=ExtResource("8_i4yqx")]
+position = Vector2(-1363, 238)
+scale = Vector2(0.67, 0.67)
+
+[node name="torch3" parent="." instance=ExtResource("8_i4yqx")]
+position = Vector2(-729, 414)
+scale = Vector2(0.67, 0.67)
+
+[node name="torch4" parent="." instance=ExtResource("8_i4yqx")]
+position = Vector2(-232, 253.99997)
+scale = Vector2(0.67, 0.67)
+
+[node name="torch5" parent="." instance=ExtResource("8_i4yqx")]
+position = Vector2(227, 225)
+scale = Vector2(0.67, 0.67)
+
+[node name="torch6" parent="." instance=ExtResource("8_i4yqx")]
+position = Vector2(876, 239)
+scale = Vector2(0.67, 0.67)
+
+[node name="torch7" parent="." instance=ExtResource("8_i4yqx")]
+position = Vector2(1306, 156)
+scale = Vector2(0.67, 0.67)
+
+[node name="torch8" parent="." instance=ExtResource("8_i4yqx")]
+position = Vector2(1628, 64)
+scale = Vector2(0.67, 0.67)
+
+[node name="torch9" parent="." instance=ExtResource("8_i4yqx")]
+position = Vector2(2284, 117)
+scale = Vector2(0.67, 0.67)
+
+[node name="torch10" parent="." instance=ExtResource("8_i4yqx")]
+position = Vector2(2505, 343)
+scale = Vector2(0.67, 0.67)
+
+[node name="torch11" parent="." instance=ExtResource("8_i4yqx")]
+position = Vector2(2267, 520)
 scale = Vector2(0.67, 0.67)
 
 [node name="StartDoor" parent="." instance=ExtResource("8_s24i2")]
@@ -454,13 +518,13 @@ position = Vector2(-1471, 259)
 scale = Vector2(0.665, 0.665)
 
 [node name="Enemy2" parent="." instance=ExtResource("10_cicwn")]
-position = Vector2(-98, 280)
+position = Vector2(-180, 304)
 
 [node name="Enemy3" parent="." instance=ExtResource("10_cicwn")]
 position = Vector2(1832, 98)
 
 [node name="Player" parent="." instance=ExtResource("6_cicwn")]
-position = Vector2(-1270, 545)
+position = Vector2(-1282, 568)
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
@@ -487,3 +551,13 @@ color = Color(0, 0, 0, 1)
 [node name="UI" parent="." instance=ExtResource("13_xxbfp")]
 fade_in_on_start = false
 charge_fill_speed = 1.5
+
+[node name="Label" type="Label" parent="."]
+offset_left = 1159.0
+offset_top = 144.0
+offset_right = 1294.0
+offset_bottom = 235.0
+theme_override_colors/font_color = Color(0.32156864, 0, 0.05882353, 1)
+theme_override_fonts/font = ExtResource("19_i4yqx")
+theme_override_font_sizes/font_size = 76
+text = "help"

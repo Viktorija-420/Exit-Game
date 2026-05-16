@@ -129,7 +129,7 @@ func start_sequence():
 	await type_text(title_label, "Ace of Diamonds")
 	if is_typing:
 		await get_tree().create_timer(0.1, true, false, true).timeout
-		await type_text(text_label, "This card also has a number behind it.. These cards usefull. atleast for something")
+		await type_text(text_label, "What is the point of these cards? This one doesnt even have a number behind it..")
 	is_typing = false
 
 func type_text(label_node, full_string):
