@@ -1,7 +1,7 @@
-[gd_scene load_steps=21 format=3 uid="uid://bd5a2nj5aiikw"]
+[gd_scene load_steps=22 format=3 uid="uid://bd5a2nj5aiikw"]
 
 [ext_resource type="Texture2D" uid="uid://3odl545e1xpn" path="res://Assets/MapTiles/dungeon.png" id="1_o1gv2"]
-[ext_resource type="Script" uid="uid://b887o57kot5hp" path="res://level_10.gd" id="1_ruqkr"]
+[ext_resource type="Script" uid="uid://b887o57kot5hp" path="res://Scripts/level_10.gd" id="1_ruqkr"]
 [ext_resource type="Texture2D" uid="uid://c4ltwlph3ml87" path="res://Assets/MapTiles/2DPlatformerDungeonTileset.png" id="2_ruqkr"]
 [ext_resource type="Texture2D" uid="uid://cvhaunj7tcldq" path="res://Assets/MapTiles/skelet2.png" id="3_dr5ep"]
 [ext_resource type="Texture2D" uid="uid://cmxej4wwwmj3c" path="res://Assets/MapTiles/Dungeon D_cora2.png" id="4_elkj6"]
@@ -11,6 +11,7 @@
 [ext_resource type="PackedScene" uid="uid://c5e6vacdoq3wc" path="res://start_door.tscn" id="9_ida6o"]
 [ext_resource type="PackedScene" uid="uid://by34ttobbn6b6" path="res://door.tscn" id="10_eut6j"]
 [ext_resource type="PackedScene" uid="uid://l6cnneiy5m02" path="res://key.tscn" id="13_b6jit"]
+[ext_resource type="PackedScene" uid="uid://owcdohxei1cq" path="res://skeleton.tscn" id="15_1jiv0"]
 [ext_resource type="PackedScene" uid="uid://bni1x4r8t3keq" path="res://player.tscn" id="15_6bdll"]
 [ext_resource type="FontFile" uid="uid://dir8slwrv7g00" path="res://Assets/OldeTome.ttf" id="16_7r5tx"]
 [ext_resource type="PackedScene" uid="uid://d31bn50tffcc2" path="res://ui.tscn" id="17_dlp8v"]
@@ -428,12 +429,20 @@ scale = Vector2(0.665, 0.665)
 position = Vector2(1250, 396)
 scale = Vector2(0.665, 0.665)
 
+[node name="Skeleton" parent="." instance=ExtResource("15_1jiv0")]
+position = Vector2(563.00006, 426)
+scale = Vector2(1.795, 1.795)
+
 [node name="Player" parent="." instance=ExtResource("15_6bdll")]
 position = Vector2(178, 450)
+hurt_fall_time = 0.25
+hurt_knockup = -200.0
+hurt_push_x = 250.0
+hurt_throb_time = 0.1
+look_ahead_speed = 3.0
 metadata/_edit_lock_ = true
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
-visible = false
 
 [node name="popLevel" type="Label" parent="CanvasLayer"]
 offset_left = 500.0
@@ -456,6 +465,5 @@ grow_vertical = 2
 color = Color(0, 0, 0, 1)
 
 [node name="UI" parent="." instance=ExtResource("17_dlp8v")]
-visible = false
 fade_in_on_start = false
 charge_fill_speed = 1.5

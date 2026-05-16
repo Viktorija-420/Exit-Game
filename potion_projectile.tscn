@@ -1,0 +1,33 @@
+[gd_scene load_steps=4 format=3 uid="uid://ndk7lfaty40h"]
+
+[ext_resource type="Texture2D" uid="uid://4lbu41v4cvxh" path="res://Assets/Items/potion/pt1.png" id="1_0py50"]
+[ext_resource type="Script" uid="uid://b08dq1buvg8vw" path="res://potion_projectile.gd" id="1_2kc2x"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_2kc2x"]
+radius = 12.0
+
+[node name="PotionProjectile" type="Area2D"]
+collision_layer = 0
+script = ExtResource("1_2kc2x")
+initial_throw_force = -50.0
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(1.1920929e-07, 1.1920929e-07)
+scale = Vector2(0.051166676, 0.051166676)
+texture = ExtResource("1_0py50")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_2kc2x")
+
+[node name="SplashParticles" type="CPUParticles2D" parent="."]
+emitting = false
+amount = 17
+lifetime = 0.5
+one_shot = true
+explosiveness = 1.0
+direction = Vector2(0, -1)
+spread = 70.0
+gravity = Vector2(0, 500)
+initial_velocity_min = 100.0
+initial_velocity_max = 150.0
+color = Color(0.694115, 0.14019912, 0.1666224, 1)

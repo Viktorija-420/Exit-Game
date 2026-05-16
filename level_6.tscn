@@ -1,6 +1,6 @@
 [gd_scene load_steps=22 format=3 uid="uid://clsiicadferye"]
 
-[ext_resource type="Script" uid="uid://bmx1y27dkdjho" path="res://level_6.gd" id="1_0jxqs"]
+[ext_resource type="Script" uid="uid://bmx1y27dkdjho" path="res://Scripts/level_6.gd" id="1_0jxqs"]
 [ext_resource type="Texture2D" uid="uid://3odl545e1xpn" path="res://Assets/MapTiles/dungeon.png" id="2_eu30q"]
 [ext_resource type="Texture2D" uid="uid://c4ltwlph3ml87" path="res://Assets/MapTiles/2DPlatformerDungeonTileset.png" id="3_pvmaq"]
 [ext_resource type="Texture2D" uid="uid://cvhaunj7tcldq" path="res://Assets/MapTiles/skelet2.png" id="4_tgxug"]

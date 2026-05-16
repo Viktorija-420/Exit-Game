@@ -1,7 +1,7 @@
 [gd_scene load_steps=22 format=3 uid="uid://cho07w7hvt5gf"]
 
 [ext_resource type="Texture2D" uid="uid://3odl545e1xpn" path="res://Assets/MapTiles/dungeon.png" id="1_t0qt0"]
-[ext_resource type="Script" uid="uid://bnwh753w2teyd" path="res://level_9.gd" id="1_tyqkn"]
+[ext_resource type="Script" uid="uid://bnwh753w2teyd" path="res://Scripts/level_9.gd" id="1_tyqkn"]
 [ext_resource type="Texture2D" uid="uid://c4ltwlph3ml87" path="res://Assets/MapTiles/2DPlatformerDungeonTileset.png" id="2_tyqkn"]
 [ext_resource type="Texture2D" uid="uid://cvhaunj7tcldq" path="res://Assets/MapTiles/skelet2.png" id="3_kcu1q"]
 [ext_resource type="Texture2D" uid="uid://cmxej4wwwmj3c" path="res://Assets/MapTiles/Dungeon D_cora2.png" id="4_rsg4q"]
@@ -501,11 +501,17 @@ position = Vector2(1261, 568)
 scale = Vector2(0.665, 0.665)
 
 [node name="Key" parent="." instance=ExtResource("13_3hg4y")]
-position = Vector2(-1471, 259)
+position = Vector2(-57.000122, 422)
 scale = Vector2(0.665, 0.665)
 
 [node name="Enemy2" parent="." instance=ExtResource("14_pgjvu")]
 position = Vector2(-172, 848)
+
+[node name="Enemy9" parent="." instance=ExtResource("14_pgjvu")]
+position = Vector2(227, 537)
+
+[node name="Enemy10" parent="." instance=ExtResource("14_pgjvu")]
+position = Vector2(433, 547)
 
 [node name="Enemy3" parent="." instance=ExtResource("14_pgjvu")]
 position = Vector2(-571, 428)

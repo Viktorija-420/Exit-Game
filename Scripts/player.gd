@@ -34,9 +34,9 @@ var current_letter: Node = null
 @export var gravity: float = 1200.0 
 
 @export_group("Hurt & Jolt Settings")
-@export var hurt_fall_time: float = 0.40
-@export var hurt_knockup: float = -350.0 
-@export var hurt_push_x: float = 400.0
+@export var hurt_fall_time: float = 0.25      # Samazināts laiks, lai ātrāk atgūtu kontroli
+@export var hurt_knockup: float = -200.0      # Samazināts uzpūtiens uz augšu
+@export var hurt_push_x: float = 250.0       # Samazināts sānu grūdiens (jolt)
 @export var hurt_throb_scale: float = 1.18
 @export var hurt_throb_time: float = 0.10
 
@@ -64,7 +64,6 @@ var _was_on_floor: bool = false
 # -------------------------
 # SHIELD
 # -------------------------
-
 @export_group("Shield Settings")
 @export var shield_action: StringName = &"Shield"
 @export var shield_speed_mult: float = 0.55
@@ -72,7 +71,6 @@ var _was_on_floor: bool = false
 # -------------------------
 # DUST
 # -------------------------
-
 @onready var dust: GPUParticles2D = $Dust
 @onready var landing_dust: GPUParticles2D = $LandingDUst
 
@@ -165,7 +163,8 @@ func _handle_attack_input():
 		anim.play("attack")
 		hit_sound.play()
 		
-		$Player_hitbox.monitoring = true
+		if has_node("Player_hitbox"):
+			$Player_hitbox.monitoring = true
 
 # -------------------------
 # LETTER PICKUP INPUT
@@ -191,9 +190,9 @@ func _update_animation():
 
 	if _shielding and is_on_floor():
 		if abs(velocity.x) > 1:
-			anim.play("shield")        # Kustas ar vairogu
+			anim.play("shield")        
 		else:
-			anim.play("shieldNoWalk")  # Stāv uz vietas ar vairogu
+			anim.play("shieldNoWalk")  
 		return
 
 	if not is_on_floor():
@@ -209,42 +208,46 @@ func _update_animation():
 			walk_sound.play()
 	else:
 		if not is_on_floor() or abs(velocity.x) <= 1:
-			anim.play("idle") # Or "fall"/"jump" depending on your logic
-		
-		# STOP SOUND IF STANDING STILL OR IN AIR
+			anim.play("idle")
 		walk_sound.stop()
 
 func _on_anim_animation_finished():
 	if anim.animation == "attack":
 		_attacking = false
 		Global.player_current_attack = false
-		
-		$Player_hitbox.monitoring = false
+		if has_node("Player_hitbox"):
+			$Player_hitbox.monitoring = false
 
 # -------------------------
 # COMBAT & DAMAGE
 # -------------------------
 func enemy_attack():
-	
 	if enemy_inattack_range and enemy_attack_cooldown and not _hurt and player_alive:
 		if current_enemy and current_enemy.is_harmful: 
-			# --- ADD THIS CHECK HERE ---
-			if _shielding:
-				if not block_sound.playing:
-					block_sound.play()
-					# Optional: Add a tiny camera shake for feedback
-					start_camera_shake(2.0)
-				return 
+			take_damage(1, last_enemy_hit_position)
 			
 			enemy_attack_cooldown = false
-			hurt_and_reset(last_enemy_hit_position)
 			get_tree().create_timer(1.2).timeout.connect(func(): enemy_attack_cooldown = true)
+
+func take_damage(amount: int, from_x: float):
+	if _hurt or not player_alive:
+		return
+		
+	if _shielding:
+		if block_sound and not block_sound.playing:
+			block_sound.play()
+			start_camera_shake(2.0)
+		return
+
+	hurt_and_reset(from_x)
 
 func hurt_and_reset(from_x: float):
 	if _hurt or not player_alive:
 		return
 	
-	hurt_sound.play()
+	if hurt_sound:
+		hurt_sound.play()
+		
 	start_camera_shake(shake_strength)
 	Global.lose_life(1)
 	
@@ -269,7 +272,8 @@ func hurt_and_reset(from_x: float):
 func _process_hurt(delta: float):
 	_hurt_timer -= delta
 
-	var knockback_friction := 100
+	# Palielināta berze (Friction) no 100 uz 1200, lai spēlētājs uzreiz sabremzētos
+	var knockback_friction := 1200.0
 	if velocity.x > 0:
 		velocity.x = max(velocity.x - knockback_friction * delta, 0)
 	elif velocity.x < 0:
@@ -307,30 +311,20 @@ func _update_camera_shake(delta: float):
 		cam.offset = Vector2.ZERO
 
 func _update_camera_follow(delta: float):
-	if not cam:
-		return
-	
+	if not cam: return
 	var target = 0.0
-	
 	if abs(velocity.x) > 10:
 		target = sign(velocity.x) * look_ahead_distance
-	
 	_look_ahead = lerp(_look_ahead, target, look_ahead_speed * delta)
-	
 	cam.offset.x = _look_ahead
 
 func _check_landing():
 	if not _was_on_floor and is_on_floor():
-		land_sound.play()
-		
-		if landing_dust:
-			landing_dust.restart()
-			
-		# Tikko piezemējās
+		if land_sound: land_sound.play()
+		if landing_dust: landing_dust.restart()
 		if velocity.y > landing_velocity_threshold:
 			var strength = clamp(velocity.y / 180.0, 0, landing_shake_strength)
 			start_camera_shake(strength)
-	
 	_was_on_floor = is_on_floor()
 		
 func _start_throb():
@@ -344,8 +338,7 @@ func _start_throb():
 func _on_player_hitbox_body_entered(body):
 	if _attacking and body.has_method("hit"):
 		body.hit()
-		return # Stop here so we don't trigger enemy logic on a barrel
-		
+		return 
 		
 	if body.has_method("take_damage") and _attacking:
 		body.take_damage()
@@ -353,23 +346,19 @@ func _on_player_hitbox_body_entered(body):
 	
 	if body.has_method("enemy"): 
 		enemy_inattack_range = true
-		current_enemy = body # Store the reference!
+		current_enemy = body 
 		last_enemy_hit_position = body.global_position.x
 
-	# Letter detection
 	if body.has_method("letter"):
 		current_letter = body
 		if body.has_node("Popup"):
 			body.get_node("Popup").visible = true
 			
 	if body.is_in_group("door"):
-# Check if the door is locked (you need to make sure your Door scene is in the "door" group)
-# and check the Global variable for the key
 		if not Global.has_key:
 			door_label.text = "I need a key first"
 			door_label.visible = true
 		else:
-			# If they have the key, you might want to show a different prompt or nothing
 			door_label.text = "Press E to Enter" 
 			door_label.visible = true
 
@@ -389,13 +378,9 @@ func pickup_letter():
 # -------------------------
 # DUST
 # -------------------------
-
 func _update_dust():
-	if not dust:
-		return
-
+	if not dust: return
 	var moving = is_on_floor() and abs(velocity.x) > 20
-
 	var target_amount := 20.0 if moving else 0.0
 	dust.amount = max(1, int(move_toward(dust.amount, target_amount, 2.0)))
 	dust.emitting = dust.amount > 1
@@ -404,49 +389,37 @@ func _update_dust():
 		var mat := dust.process_material
 		if mat:
 			var dir = sign(velocity.x)
-
 			dust.position.x = -dir * 10
 			mat.direction = Vector3(-dir, -0.3, 0)
-
 			mat.spread = 20.0
 			mat.initial_velocity_min = 20.0
 			mat.initial_velocity_max = 40.0
 			mat.gravity = Vector3(0, 150, 0)
 
-		
 func _check_void_fall():
 	if global_position.y > void_y_level and player_alive:
 		die()
 
 func show_door_cutscene(door_pos: Vector2) -> void:
 	if not cam: return
-	
 	var original_zoom = cam.zoom
 	var target_zoom = Vector2(1.4, 1.4) 
 	var offset_to_door = door_pos - global_position
-	
 	await get_tree().create_timer(0.5).timeout
 	
-	# --- 1. CAMERA MOVES TO DOOR ---
 	var tween = create_tween().set_parallel(true).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
 	tween.tween_property(cam, "offset", offset_to_door, 1.5)
 	tween.tween_property(cam, "zoom", target_zoom, 1.5)
-	
 	await tween.finished
 	
-	# --- 2. TRIGGER DOOR ANIMATION ---
-	# We search for the door at that position to play the animation
 	for door in get_tree().get_nodes_in_group("door"):
 		if door.global_position.distance_to(door_pos) < 10:
 			if door.has_method("play_open_animation"):
-				door.play_open_animation() # Call the new function we'll add below
+				door.play_open_animation()
 	
-	# Pause so player can see the door opening
 	await get_tree().create_timer(1.5).timeout
 	
-	# --- 3. CAMERA RETURNS ---
 	var back_tween = create_tween().set_parallel(true).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
 	back_tween.tween_property(cam, "offset", Vector2.ZERO, 1.0)
 	back_tween.tween_property(cam, "zoom", original_zoom, 1.0)
-	
 	await back_tween.finished
