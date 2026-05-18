@@ -272,62 +272,62 @@ scale = Vector2(1.26, 1.26)
 sprite_frames = SubResource("SpriteFrames_sgdo7")
 animation = &"throw"
 
-[node name="Hearts" type="Node2D" parent="."]
+[node name="Hearts_skelet" type="Node2D" parent="."]
 
-[node name="Heart1" type="Sprite2D" parent="Hearts"]
+[node name="Heart1" type="Sprite2D" parent="Hearts_skelet"]
 position = Vector2(-19.76, -49.72)
 scale = Vector2(0.07, 0.07)
 texture = ExtResource("5_uaaco")
 
-[node name="Heart2" type="Sprite2D" parent="Hearts"]
+[node name="Heart2" type="Sprite2D" parent="Hearts_skelet"]
 position = Vector2(-9.760002, -49.72)
 scale = Vector2(0.07, 0.07)
 texture = ExtResource("5_uaaco")
 
-[node name="Heart3" type="Sprite2D" parent="Hearts"]
+[node name="Heart3" type="Sprite2D" parent="Hearts_skelet"]
 position = Vector2(0.23999786, -49.719997)
 scale = Vector2(0.07, 0.07)
 texture = ExtResource("5_uaaco")
 
-[node name="Heart4" type="Sprite2D" parent="Hearts"]
+[node name="Heart4" type="Sprite2D" parent="Hearts_skelet"]
 position = Vector2(10.239998, -49.72)
 scale = Vector2(0.07, 0.07)
 texture = ExtResource("5_uaaco")
 
-[node name="Heart5" type="Sprite2D" parent="Hearts"]
+[node name="Heart5" type="Sprite2D" parent="Hearts_skelet"]
 position = Vector2(20.239998, -49.72)
 scale = Vector2(0.07, 0.07)
 texture = ExtResource("5_uaaco")
 
-[node name="Heart6" type="Sprite2D" parent="Hearts"]
+[node name="Heart6" type="Sprite2D" parent="Hearts_skelet"]
 position = Vector2(-14.760002, -39.72)
 scale = Vector2(0.07, 0.07)
 texture = ExtResource("5_uaaco")
 
-[node name="Heart7" type="Sprite2D" parent="Hearts"]
+[node name="Heart7" type="Sprite2D" parent="Hearts_skelet"]
 position = Vector2(-4.760002, -39.72)
 scale = Vector2(0.07, 0.07)
 texture = ExtResource("5_uaaco")
 
-[node name="Heart8" type="Sprite2D" parent="Hearts"]
+[node name="Heart8" type="Sprite2D" parent="Hearts_skelet"]
 position = Vector2(5.2399974, -39.72)
 scale = Vector2(0.07, 0.07)
 texture = ExtResource("5_uaaco")
 
-[node name="Heart9" type="Sprite2D" parent="Hearts"]
+[node name="Heart9" type="Sprite2D" parent="Hearts_skelet"]
 position = Vector2(15.239996, -39.72)
 scale = Vector2(0.07, 0.07)
 texture = ExtResource("5_uaaco")
 
-[node name="Enemy_hitbox" type="Area2D" parent="."]
+[node name="skelet_enemy_hitbox" type="Area2D" parent="."]
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Enemy_hitbox"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="skelet_enemy_hitbox"]
 position = Vector2(0, -5)
 shape = SubResource("CircleShape2D_uaaco")
 
-[node name="DetectionArea" type="Area2D" parent="."]
+[node name="DetArea" type="Area2D" parent="."]
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="DetectionArea"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="DetArea"]
 shape = SubResource("CircleShape2D_ymvsc")
 
 [node name="BossTrigger" type="Area2D" parent="."]
@@ -347,4 +347,6 @@ horizontal_alignment = 1
 vertical_alignment = 1
 autowrap_mode = 2
 
+[connection signal="body_entered" from="DetArea" to="." method="_on_det_area_body_entered"]
+[connection signal="body_exited" from="DetArea" to="." method="_on_det_area_body_exited"]
 [connection signal="body_entered" from="BossTrigger" to="." method="_on_boss_trigger_body_entered"]

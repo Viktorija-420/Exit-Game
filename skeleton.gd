@@ -36,17 +36,18 @@ var attack_loop_active: bool = false
 var target_player: CharacterBody2D = null   # Keeps track of the player node
 
 # -------------------------
-# NODES
+# NODES (Salāgots ar attēlu)
 # -------------------------
 @onready var anim: AnimatedSprite2D = $Anim
 @onready var dialogue_label: Label = $DialogueLabel
-@onready var enemy_hitbox: Area2D = $Enemy_hitbox
-@onready var detection_area: Area2D = $DetectionArea
-@onready var hearts: Node2D = $Hearts
+@onready var enemy_hitbox: Area2D = $skelet_enemy_hitbox
+@onready var detection_area: Area2D = $DetArea
+@onready var hearts: Node2D = $Hearts_skelet
 
 # -------------------------
 # READY
 # -------------------------
+# Fixed _ready() inside skeleton.gd
 func _ready():
 	start_x = global_position.x
 	if dialogue_label:
@@ -59,12 +60,15 @@ func _ready():
 		enemy_hitbox.monitorable = false
 
 	if detection_area:
-		detection_area.body_entered.connect(_on_detection_area_body_entered)
-		detection_area.body_exited.connect(_on_detection_area_body_exited)
+		# Added !is_connected checks to prevent duplicate connection crashes
+		if not detection_area.body_entered.is_connected(_on_det_area_body_entered):
+			detection_area.body_entered.connect(_on_det_area_body_entered)
+		if not detection_area.body_exited.is_connected(_on_det_area_body_exited):
+			detection_area.body_exited.connect(_on_det_area_body_exited)
 		
 	if hearts:
 		hearts.visible = false
-
+		
 # -------------------------
 # MAIN LOOP
 # -------------------------
@@ -72,24 +76,24 @@ func _physics_process(delta: float):
 	match current_state:
 		State.PATROL:
 			velocity.x = direction * speed
-			_handle_patrol_boundaries()
-			_update_sprite_direction()
-			_safely_play_animation("walk")
+			_handle_boss_patrol_boundaries()
+			_update_boss_sprite_direction()
+			_safely_play_boss_animation("walk")
 			move_and_slide()
 			
 		State.CHASE:
-			_handle_chase_logic()
-			_update_sprite_direction()
-			_safely_play_animation("walk")
+			_handle_boss_chase_logic()
+			_update_boss_sprite_direction()
+			_safely_play_boss_animation("walk")
 			move_and_slide()
 			
 		State.THROW:
 			velocity.x = 0 
 			
 		State.DEFENSE:
-			_handle_defense_logic()
-			_update_sprite_direction() 
-			_safely_play_animation("walk")
+			_handle_boss_defense_logic()
+			_update_boss_sprite_direction() 
+			_safely_play_boss_animation("walk")
 			move_and_slide()
 			
 		State.INTRO:
@@ -107,7 +111,7 @@ func play_boss_intro() -> void:
 	
 	await get_tree().create_timer(2.0).timeout
 	if anim:
-		_safely_play_animation("idle_side")
+		_safely_play_boss_animation("idle_side")
 		anim.flip_h = true 
 		
 	if dialogue_label:
@@ -125,7 +129,7 @@ func play_boss_intro() -> void:
 	if dialogue_label:
 		dialogue_label.text = "RAAAGHHH!"
 	
-	_trigger_player_camera_shake(35.0) 
+	_trigger_boss_camera_shake(35.0) 
 	
 	await get_tree().create_timer(1.5).timeout
 	if dialogue_label:
@@ -142,12 +146,12 @@ func play_boss_intro() -> void:
 	is_intro_done = true
 	
 	if target_player:
-		_start_combat_decision_loop()
+		_start_boss_combat_loop()
 	else:
 		current_state = State.PATROL
-		_safely_play_animation("walk")
+		_safely_play_boss_animation("walk")
 
-func _trigger_player_camera_shake(intensity: float):
+func _trigger_boss_camera_shake(intensity: float):
 	var players = get_tree().get_nodes_in_group("player")
 	if players.size() > 0:
 		players[0].start_camera_shake(intensity)
@@ -155,14 +159,14 @@ func _trigger_player_camera_shake(intensity: float):
 # -------------------------
 # MOVEMENT AI CALCULATIONS
 # -------------------------
-func _handle_patrol_boundaries():
+func _handle_boss_patrol_boundaries():
 	var distance_from_start = global_position.x - start_x
 	if direction == 1 and distance_from_start >= (movement_range / 2.0):
 		direction = -1
 	elif direction == -1 and distance_from_start <= -(movement_range / 2.0):
 		direction = 1
 
-func _handle_chase_logic():
+func _handle_boss_chase_logic():
 	if not target_player: return
 	
 	var direction_to_player = target_player.global_position.x - global_position.x
@@ -173,19 +177,19 @@ func _handle_chase_logic():
 		
 	velocity.x = direction * chase_speed
 
-func _handle_defense_logic():
+func _handle_boss_defense_logic():
 	if not target_player: return
 	direction = 1 if (global_position.x - target_player.global_position.x) > 0 else -1
 	velocity.x = direction * defense_speed
 
-func _update_sprite_direction():
+func _update_boss_sprite_direction():
 	if not anim: return
 	anim.flip_h = (direction == 1)
 
 # -------------------------
 # PERFECT ORDERED LOOP MECHANIC
 # -------------------------
-func _start_combat_decision_loop():
+func _start_boss_combat_loop():
 	if attack_loop_active: return
 	attack_loop_active = true
 	
@@ -200,11 +204,11 @@ func _start_combat_decision_loop():
 		if anim:
 			anim.flip_h = (direction == 1)
 		
-		_safely_play_animation("throw") 
+		_safely_play_boss_animation("throw") 
 		await get_tree().create_timer(0.35).timeout
 		
 		if target_player and current_state == State.THROW:
-			_spawn_smart_projectile()
+			_spawn_boss_smart_projectile()
 			
 		await get_tree().create_timer(0.25).timeout
 		if not target_player or not is_intro_done: break
@@ -219,7 +223,7 @@ func _start_combat_decision_loop():
 # -------------------------
 # SMART AIM PROJECTILE SPARK
 # -------------------------
-func _spawn_smart_projectile():
+func _spawn_boss_smart_projectile():
 	var available_projectiles = []
 	if potion_1_scene: available_projectiles.append(potion_1_scene)
 	if potion_2_scene: available_projectiles.append(potion_2_scene)
@@ -259,7 +263,7 @@ func _spawn_smart_projectile():
 # -------------------------
 # SAFE ANIMATION HANDLER
 # -------------------------
-func _safely_play_animation(anim_name: String):
+func _safely_play_boss_animation(anim_name: String):
 	if not anim: return
 	if current_state == State.THROW and anim_name != "throw" and anim_name != "Throw":
 		return
@@ -281,15 +285,15 @@ func _safely_play_animation(anim_name: String):
 	anim.play(anim_name)
 
 # -------------------------
-# DETECTION SIGNALS
+# DETECTION SIGNALS (Pārsaukti)
 # -------------------------
-func _on_detection_area_body_entered(body: Node2D):
+func _on_det_area_body_entered(body: Node2D):
 	if body.is_in_group("player"):
 		target_player = body
 		if is_intro_done:
-			_start_combat_decision_loop()
+			_start_boss_combat_loop()
 
-func _on_detection_area_body_exited(body: Node2D):
+func _on_det_area_body_exited(body: Node2D):
 	if body == target_player:
 		target_player = null
 		if current_state != State.INTRO:
@@ -299,9 +303,9 @@ func _on_detection_area_body_exited(body: Node2D):
 # -------------------------
 # INTERACTION FALLBACKS
 # -------------------------
-func enemy():
+func boss_enemy():
 	return true
 
-func hit():
+func boss_hit():
 	if current_state != State.INTRO:
 		print("Skeleton boss took a hit!")

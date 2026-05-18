@@ -340,9 +340,24 @@ func _on_player_hitbox_body_entered(body):
 		body.hit()
 		return 
 		
-	if body.has_method("take_damage") and _attacking:
-		body.take_damage()
-		return 
+	if _attacking:
+		if body == self: 
+			return
+			
+		if body.has_method("is_bat") or body.has_method("take_damage") and not body.has_method("boss_enemy"):
+			if body.has_method("is_bat"):
+				body.take_damage()
+				return
+			
+		# If it's the Skeleton Boss (uses take_damage with 2 arguments)
+		if body.has_method("take_damage"):
+			body.take_damage(1, global_position.x)
+			return 
+			
+		# If it's the Small Enemy (we will add this custom hit function below)
+		if body.has_method("hit_enemy"):
+			body.hit_enemy()
+			return
 	
 	if body.has_method("enemy"): 
 		enemy_inattack_range = true
