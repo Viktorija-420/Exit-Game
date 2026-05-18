@@ -12,9 +12,13 @@ var velocity_y: float = 0.0
 
 # This variable is set dynamically by the skeleton when it instantiates the scene!
 var direction: int = 1
+var shooter: Node2D = null
 
 @onready var sprite: Sprite2D = $Sprite2D
 @onready var splash_particles: CPUParticles2D = $SplashParticles
+
+func set_shooter(node: Node2D):
+	shooter = node
 
 func _ready():
 	velocity_y = initial_throw_force
@@ -31,6 +35,10 @@ func _physics_process(delta: float):
 	global_position.y += velocity_y * delta
 
 func _on_body_entered(body: Node2D):
+	# Ignore collisions with the skeleton who threw this potion
+	if body == shooter:
+		return
+
 	if body.is_in_group("player"):
 		# Nododam bojājumu skaitu un potes atrašanās vietu knockback aprēķinam
 		if body.has_method("take_damage"):

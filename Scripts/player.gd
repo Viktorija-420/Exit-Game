@@ -18,6 +18,9 @@ var current_enemy = null
 
 var current_letter: Node = null
 
+# NEW: prevent dealing damage twice in one attack
+var _damage_dealt_this_attack: bool = false
+
 # -------------------------
 # NODES
 # -------------------------
@@ -34,9 +37,9 @@ var current_letter: Node = null
 @export var gravity: float = 1200.0 
 
 @export_group("Hurt & Jolt Settings")
-@export var hurt_fall_time: float = 0.25      # Samazināts laiks, lai ātrāk atgūtu kontroli
-@export var hurt_knockup: float = -200.0      # Samazināts uzpūtiens uz augšu
-@export var hurt_push_x: float = 250.0       # Samazināts sānu grūdiens (jolt)
+@export var hurt_fall_time: float = 0.25
+@export var hurt_knockup: float = -200.0
+@export var hurt_push_x: float = 250.0
 @export var hurt_throb_scale: float = 1.18
 @export var hurt_throb_time: float = 0.10
 
@@ -159,6 +162,7 @@ func _apply_gravity(delta: float):
 func _handle_attack_input():
 	if Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT) and not _attacking and not _shielding and not _hurt:
 		_attacking = true
+		_damage_dealt_this_attack = false   # NEW: reset damage flag for new attack
 		Global.player_current_attack = true 
 		anim.play("attack")
 		hit_sound.play()
@@ -214,6 +218,7 @@ func _update_animation():
 func _on_anim_animation_finished():
 	if anim.animation == "attack":
 		_attacking = false
+		_damage_dealt_this_attack = false   # NEW: reset flag when attack ends
 		Global.player_current_attack = false
 		if has_node("Player_hitbox"):
 			$Player_hitbox.monitoring = false
@@ -272,7 +277,6 @@ func hurt_and_reset(from_x: float):
 func _process_hurt(delta: float):
 	_hurt_timer -= delta
 
-	# Palielināta berze (Friction) no 100 uz 1200, lai spēlētājs uzreiz sabremzētos
 	var knockback_friction := 1200.0
 	if velocity.x > 0:
 		velocity.x = max(velocity.x - knockback_friction * delta, 0)
@@ -336,34 +340,28 @@ func _start_throb():
 # SIGNALS
 # -------------------------
 func _on_player_hitbox_body_entered(body):
-	if _attacking and body.has_method("hit"):
-		body.hit()
-		return 
-		
-	if _attacking:
-		if body == self: 
-			return
-			
-		if body.has_method("is_bat") or body.has_method("take_damage") and not body.has_method("boss_enemy"):
-			if body.has_method("is_bat"):
-				body.take_damage()
-				return
-			
-		# If it's the Skeleton Boss (uses take_damage with 2 arguments)
-		if body.has_method("take_damage"):
-			body.take_damage(1, global_position.x)
-			return 
-			
-		# If it's the Small Enemy (we will add this custom hit function below)
-		if body.has_method("hit_enemy"):
-			body.hit_enemy()
-			return
+	if not _attacking or _damage_dealt_this_attack:
+		return
+	
+	# Skip skeleton boss in body_entered – area_entered will handle it
+	if body.has_method("boss_enemy") or body.has_method("take_damage"):
+		return
+	
+	if body.has_method("is_bat"):
+		body.take_damage()
+		_damage_dealt_this_attack = true
+		return
+	
+	if body.has_method("hit_enemy"):
+		body.hit_enemy()
+		_damage_dealt_this_attack = true
+		return
 	
 	if body.has_method("enemy"): 
 		enemy_inattack_range = true
 		current_enemy = body 
 		last_enemy_hit_position = body.global_position.x
-
+	
 	if body.has_method("letter"):
 		current_letter = body
 		if body.has_node("Popup"):
@@ -376,6 +374,19 @@ func _on_player_hitbox_body_entered(body):
 		else:
 			door_label.text = "Press E to Enter" 
 			door_label.visible = true
+
+func _on_player_hitbox_area_entered(area: Area2D):
+	if not _attacking or _damage_dealt_this_attack:
+		return
+	
+	if area.name == "skelet_enemy_hitbox":
+		var skeleton = area.get_parent()
+		if skeleton.has_method("take_damage"):
+			skeleton.take_damage(1, global_position.x)
+			_damage_dealt_this_attack = true   # NEW: prevent multiple hits this attack
+			return
+	
+	# (Keep any other area handling if needed)
 
 # -------------------------
 # LETTER PICKUP

@@ -430,8 +430,9 @@ position = Vector2(1250, 396)
 scale = Vector2(0.665, 0.665)
 
 [node name="Skeleton" parent="." instance=ExtResource("15_1jiv0")]
-position = Vector2(563.00006, 426)
+position = Vector2(565, 428)
 scale = Vector2(1.795, 1.795)
+phase_2_camera_offset = Vector2(0, -60)
 
 [node name="Player" parent="." instance=ExtResource("15_6bdll")]
 position = Vector2(178, 450)
