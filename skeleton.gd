@@ -479,8 +479,7 @@ func _run_stationary_potion_phase():
 
 		if current_health <= 0 or is_final_phase_triggered: break
 
-	_exit_phase2_camera_mode()
-	_restore_default_player_camera_context()
+	# Camera stays in Phase 2 mode – do NOT exit here
 	is_in_stationary_phase = false
 
 	if is_final_phase_triggered:
@@ -790,16 +789,18 @@ func _start_final_phase():
 	can_take_damage = false          # Boss cannot be damaged during this sequence
 	attack_loop_active = false
 
-	# Interrupt any ongoing stationary phase
+	# Make player pass through skeleton (like ghosts pass through players)
+	if target_player:
+		add_collision_exception_with(target_player)
+
+	# Interrupt any ongoing stationary phase, but KEEP the phase‑2 camera active
 	is_in_stationary_phase = false
-	_exit_phase2_camera_mode()
-	_restore_default_player_camera_context()
 
 	current_state = State.FINAL_PHASE
 	velocity = Vector2.ZERO
 	_safely_play_boss_animation("idle_front")
 
-	# Dialogue sequence
+	# Dialogue sequence (camera stays zoomed out)
 	await _final_phase_dialogue()
 	if not is_inside_tree(): return
 
@@ -813,7 +814,6 @@ func _start_final_phase():
 	_spawn_ghosts()
 
 	# Boss stays idle, invincible until all ghosts are dead.
-	# When ghosts_alive reaches 0, _die() is called automatically.
 	current_state = State.FINAL_PHASE
 	_safely_play_boss_animation("idle_front")
 
@@ -839,7 +839,6 @@ func _jump_to_position(target_pos: Vector2):
 	var total_distance = start_pos.distance_to(target_pos)
 	var original_hearts_position = hearts.position if hearts else Vector2.ZERO
 
-	# Play jump animation
 	_safely_play_boss_animation("jump")
 	if anim:
 		anim.flip_h = (target_pos.x > start_pos.x)
@@ -850,7 +849,6 @@ func _jump_to_position(target_pos: Vector2):
 			anim.flip_h = (target_pos.x > global_position.x)
 		global_position = global_position.move_toward(target_pos, phase_move_speed * get_process_delta_time())
 
-		# Arc effect
 		var current_dist = global_position.distance_to(target_pos)
 		if total_distance > 0:
 			var arc_height = sin((current_dist / total_distance) * PI) * 120.0
@@ -858,7 +856,6 @@ func _jump_to_position(target_pos: Vector2):
 			if hearts:
 				hearts.position.y = original_hearts_position.y - arc_height
 
-	# Reset arc offset
 	if anim:
 		anim.position = Vector2.ZERO
 	if hearts:
@@ -877,12 +874,10 @@ func _spawn_ghosts():
 		ghost.global_position = global_position + offset
 		get_parent().add_child(ghost)
 		
-		# ---- ADD THESE LINES ----
 		# Ghost should pass through player and skeleton boss
 		if target_player:
 			ghost.add_collision_exception_with(target_player)
 		ghost.add_collision_exception_with(self)
-		# -------------------------
 		
 		ghosts_alive += 1
 		spawned_ghosts.append(ghost)
@@ -892,7 +887,6 @@ func _spawn_ghosts():
 
 func _on_ghost_died():
 	ghosts_alive -= 1
-	# Only call _die() if we are still alive and inside the tree
 	if ghosts_alive <= 0 and is_final_phase_active and is_inside_tree():
 		_die()
 
@@ -901,7 +895,7 @@ func _on_ghost_died():
 # -------------------------
 func _die():
 	if not is_inside_tree():
-		return  # Already removed or not in scene
+		return
 	
 	print("Skeleton boss defeated!")
 	is_intro_done = false
@@ -909,11 +903,9 @@ func _die():
 	is_in_stationary_phase = false
 	is_final_phase_active = false
 
-	# Clean up any remaining ghosts (just in case)
 	for g in spawned_ghosts:
 		if is_instance_valid(g) and not g.tree_exited.is_connected(_on_ghost_died):
 			g.queue_free()
-		
 
 	_exit_phase2_camera_mode()
 	_restore_default_player_camera_context()
@@ -922,7 +914,6 @@ func _die():
 		anim.play("dead")
 		await anim.animation_finished
 	else:
-		# Only use get_tree() if we are still inside the tree
 		if is_inside_tree():
 			await get_tree().create_timer(0.2).timeout
 
