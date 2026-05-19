@@ -1,4 +1,4 @@
-[gd_scene load_steps=66 format=3 uid="uid://owcdohxei1cq"]
+[gd_scene load_steps=67 format=3 uid="uid://owcdohxei1cq"]
 
 [ext_resource type="Texture2D" uid="uid://c105bdo0stgj1" path="res://Assets/Players/Enemy/skeleton/idle_front.png" id="1_sv33q"]
 [ext_resource type="Script" uid="uid://ebmf56mcj536" path="res://skeleton.gd" id="1_ymvsc"]
@@ -9,6 +9,7 @@
 [ext_resource type="Texture2D" uid="uid://c7up2u6rk2d6x" path="res://Assets/Players/Enemy/skeleton/Make_a_skeleton_with_a_witch_hat_in_idle_walking_when_it_got_hit_and_when_the_sk1-ezgif.com-gif-to-sprite-converter.png" id="4_ft6oh"]
 [ext_resource type="Texture2D" uid="uid://cilpeaias0s48" path="res://Assets/Players/Enemy/skeleton/skwl_walk.png" id="4_rwpf0"]
 [ext_resource type="PackedScene" uid="uid://cvmqthsogd2xy" path="res://enemy.tscn" id="4_sh88d"]
+[ext_resource type="PackedScene" uid="uid://l6cnneiy5m02" path="res://key.tscn" id="5_d56fl"]
 [ext_resource type="Texture2D" uid="uid://e7ht6r1t1ucn" path="res://Assets/Players/PlayerAssets/heartFull.png" id="5_uaaco"]
 [ext_resource type="FontFile" uid="uid://dir8slwrv7g00" path="res://Assets/OldeTome.ttf" id="7_rwpf0"]
 [ext_resource type="Texture2D" uid="uid://04ywk1pbfqmw" path="res://Assets/Players/Enemy/skeleton/jump-ezgif.com-gif-to-sprite-converter.png" id="7_x6jny"]
@@ -406,6 +407,7 @@ phase_left_position = Vector2(227, 421)
 phase_right_position = Vector2(946, 421)
 phase_2_zoom_out = Vector2(0.98, 0.9)
 ghost_enemy_scene = ExtResource("4_sh88d")
+key_scene = ExtResource("5_d56fl")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(1, 1)

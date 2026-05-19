@@ -426,7 +426,7 @@ position = Vector2(1018, 448)
 scale = Vector2(0.665, 0.665)
 
 [node name="Key" parent="." instance=ExtResource("13_b6jit")]
-position = Vector2(1250, 396)
+position = Vector2(605, 86.17)
 scale = Vector2(0.665, 0.665)
 
 [node name="Skeleton" parent="." instance=ExtResource("15_1jiv0")]

@@ -75,6 +75,12 @@ var is_final_phase_triggered: bool = false
 var is_final_phase_active: bool = false
 var spawned_ghosts: Array = []
 var ghosts_alive: int = 0
+var final_phase_ghosts_defeated: bool = false
+
+# Key drop
+@export_group("Key Drop")
+@export var key_scene: PackedScene   # Assign the key scene in the inspector
+var key_dropped: bool = false        # Prevent multiple drops
 
 var is_harmful: bool = false
 var direction: int = -1
@@ -788,6 +794,7 @@ func _start_final_phase():
 	is_final_phase_active = true
 	can_take_damage = false          # Boss cannot be damaged during this sequence
 	attack_loop_active = false
+	final_phase_ghosts_defeated = false
 
 	# Make player pass through skeleton (like ghosts pass through players)
 	if target_player:
@@ -887,9 +894,39 @@ func _spawn_ghosts():
 
 func _on_ghost_died():
 	ghosts_alive -= 1
-	if ghosts_alive <= 0 and is_final_phase_active and is_inside_tree():
-		_die()
+	if ghosts_alive <= 0 and is_final_phase_active and not final_phase_ghosts_defeated:
+		await _final_phase_post_ghosts_dialogue()
 
+func _final_phase_post_ghosts_dialogue():
+	if not is_inside_tree() or not dialogue_label:
+		return
+	
+	final_phase_ghosts_defeated = true
+	
+	dialogue_label.text = "Damn youre really wanna get out"
+	if not await _safe_await_timer(1.5): return
+	
+	dialogue_label.text = "Well good luck later on"
+	if not await _safe_await_timer(1.5): return
+	
+	dialogue_label.text = "but please"
+	if not await _safe_await_timer(1.0): return
+	
+	dialogue_label.text = "put me out of my missery now.."
+	if not await _safe_await_timer(1.8): return
+	
+	dialogue_label.text = ""
+	
+	# Boss becomes vulnerable – player can now land the killing blow
+	can_take_damage = true
+	
+	# Keep the boss idle and invincible otherwise (no movement, no attacks)
+	current_state = State.FINAL_PHASE
+	_safely_play_boss_animation("idle_front")
+
+# -------------------------
+# DEATH
+# -------------------------
 # -------------------------
 # DEATH
 # -------------------------
@@ -910,15 +947,34 @@ func _die():
 	_exit_phase2_camera_mode()
 	_restore_default_player_camera_context()
 
-	if anim and anim.sprite_frames.has_animation("dead"):
-		anim.play("dead")
-		await anim.animation_finished
-	else:
-		if is_inside_tree():
-			await get_tree().create_timer(0.2).timeout
+	# --- Drop the key (robust version) ---
+	if not key_dropped:
+		key_dropped = true
+		if key_scene == null:
+			print("ERROR...")
+		else:
+			var key = key_scene.instantiate()
+			get_tree().root.add_child(key)
+			key.global_position = Vector2(595, 88)   # <-- START POSITION
+			if key is RigidBody2D:
+				key.gravity_scale = 1.0
+				key.linear_velocity = Vector2(0, 50)
+			else:
+				var tween = create_tween()
+				tween.tween_property(key, "global_position:y", 463, 1.0)  # <-- END Y & DURATION
+				await get_tree().create_timer(0.1).timeout
+
+		# --- Death animation and removal ---
+		if anim and anim.sprite_frames.has_animation("dead"):
+			anim.play("dead")
+			await anim.animation_finished
+		else:
+			if is_inside_tree():
+				await get_tree().create_timer(0.2).timeout
 
 	if is_inside_tree():
 		queue_free()
+		
 		
 # -------------------------
 # INTERACTION FALLBACKS
