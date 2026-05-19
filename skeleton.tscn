@@ -396,11 +396,14 @@ size = Vector2(593, 137)
 [node name="Skeleton" type="CharacterBody2D"]
 script = ExtResource("1_ymvsc")
 speed = 90.0
-chase_speed = 150.0
+chase_speed = 200.0
+defense_speed = 150.0
 defense_duration = 1.5
 potion_1_scene = ExtResource("2_ew5mc")
 potion_2_scene = ExtResource("3_vqc8v")
-phase_2_zoom_out = Vector2(0.9, 0.9)
+phase_left_position = Vector2(227, 421)
+phase_right_position = Vector2(946, 421)
+phase_2_zoom_out = Vector2(0.98, 0.9)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(1, 1)

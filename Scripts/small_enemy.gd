@@ -1,18 +1,26 @@
 extends CharacterBody2D
 
-@export var speed = 160 
+@export var speed = 160
 @export var death_gravity = 1000.0
+
 @onready var squeak: AudioStreamPlayer2D = $Squeak
+
 var player = null
 var _is_bursting = false
 var _hover_offset = Vector2.ZERO
 var _time_passed = 0.0
 var _is_dead = false
 
+# How long after spawning the bat is immune (so the burst doesn't immediately
+# trigger the player's hitbox overlap before the bat flies away)
+@export var spawn_grace_period: float = 0.3
+var _grace_timer: float = 0.0
+
 func _ready():
 	scale = Vector2(0.2, 0.2)
 	player = get_tree().get_first_node_in_group("player")
 	_hover_offset = Vector2(randf_range(-40, 40), randf_range(-50, -10))
+	_grace_timer = spawn_grace_period
 
 func apply_burst(burst_vel: Vector2):
 	velocity = burst_vel
@@ -21,19 +29,21 @@ func apply_burst(burst_vel: Vector2):
 	_is_bursting = false
 
 func _physics_process(delta):
+	# Count down grace period
+	if _grace_timer > 0:
+		_grace_timer -= delta
+
 	if _is_dead:
-		# Only apply gravity if we aren't already resting on the floor
 		if not is_on_floor():
 			velocity.y += death_gravity * delta
 		else:
 			velocity.y = 0
-			velocity.x = move_toward(velocity.x, 0, 500 * delta) # Friction on floor
-		
+			velocity.x = move_toward(velocity.x, 0, 500 * delta)
 		move_and_slide()
-		return 
-	
+		return
+
 	_time_passed += delta
-	
+
 	if _is_bursting:
 		velocity = velocity.move_toward(Vector2.ZERO, 500 * delta)
 	elif player:
@@ -41,37 +51,38 @@ func _physics_process(delta):
 		var target_pos = player.global_position + _hover_offset + wobble
 		var direction = (target_pos - global_position).normalized()
 		velocity = velocity.move_toward(direction * speed, 1200 * delta)
-	
+
 	if $Anim.sprite_frames.has_animation("Attack"):
 		$Anim.play("Attack")
-	
+
 	$Anim.flip_h = velocity.x < 0
 	move_and_slide()
 
+	# Damage player on contact (outside grace period)
+	if _grace_timer <= 0 and player and not _is_dead:
+		if global_position.distance_to(player.global_position) < 20:
+			if player.has_method("take_damage"):
+				player.take_damage(1, global_position.x)
+
+# Called by the player's hitbox on left-click — one hit kills
 func take_damage():
-	if _is_dead: return
+	if _is_dead:
+		return
+
 	squeak.play()
 	_is_dead = true
-	
-	# 1. DISABLE PLAYER COLLISION
-	# This stops the player from getting stuck. 
-	# Layer 0/Mask 0 means it won't collide with anything anymore...
-	# HOWEVER, if you want it to still hit the floor, use collision_mask = 1 (or whatever your floor layer is)
-	collision_layer = 0
-	collision_mask = 1 # Keep this as your TileMap/Floor layer so it doesn't fall through the world
-	
-	# 2. STOP ANIMATION
-	if $Anim:
-		$Anim.stop() 
-		$Anim.z_index = -1 # Send it behind the player so it doesn't cover the player's feet
-	
-	# 3. SET VISUALS
-	modulate = Color.DARK_GRAY 
-	
-	# 4. SET INITIAL FALL ARC
-	velocity = Vector2(randf_range(-80, 80), -250)
-	
-	# 5. PHYSICS ROTATION (Optional touch: makes it look dead)
-	rotation = PI # Flips the bat upside down
 
+	# Stop colliding with the player but keep floor collision
+	collision_layer = 0
+	collision_mask = 1
+
+	if $Anim:
+		$Anim.stop()
+		$Anim.z_index = -1
+
+	modulate = Color.DARK_GRAY
+	velocity = Vector2(randf_range(-80, 80), -250)
+	rotation = PI
+
+# Lets the player script identify this as a bat / small enemy
 func is_bat(): return true
