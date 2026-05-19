@@ -21,38 +21,49 @@ var _retreat_dir = 0
 
 @onready var hearts_container = $Hearts
 @onready var anim = $Anim
+@onready var hurtbox: Area2D = $Hurtbox   # MUST exist in the scene
 
 # --- SOUNDS ---
 @onready var enemy_hit_sound: AudioStreamPlayer2D = $EnemyAttack
 
-# is_harmful controls whether touching the player deals damage.
-# It is ONLY true during the lunge window so the player is safe at all other times.
 var is_harmful: bool = false
 
 func _ready():
 	update_hearts()
 	if not anim.animation_finished.is_connected(_on_anim_finished):
 		anim.animation_finished.connect(_on_anim_finished)
+	
+	# Connect hurtbox signal
+	if hurtbox:
+		hurtbox.area_entered.connect(_on_hurtbox_area_entered)
+	
+	# Optional: Make ghost phase through player and skeleton (no collision pushing)
+	await get_tree().process_frame
+	var players = get_tree().get_nodes_in_group("player")
+	if players.size() > 0:
+		add_collision_exception_with(players[0])
+	var skeletons = get_tree().get_nodes_in_group("skeleton_boss")
+	if skeletons.size() > 0:
+		add_collision_exception_with(skeletons[0])
+
+# Called when player's attack area overlaps the hurtbox
+func _on_hurtbox_area_entered(area: Area2D):
+	if area.name == "Player_hitbox" and Global.player_current_attack and can_take_damage:
+		var player_node = area.get_parent()
+		take_damage(1, player_node.global_position.x)
 
 func _physics_process(delta: float) -> void:
 	if not is_on_floor():
 		velocity.y += gravity * delta
 
-	# PRIORITY 1: Taking Damage (Jolting)
 	if _is_jolting:
 		velocity.x = move_toward(velocity.x, 0, 500 * delta)
-
-	# PRIORITY 2: Attacking (Lunge)
 	elif _is_attacking:
 		velocity.x = move_toward(velocity.x, 0, 200 * delta)
-
-	# PRIORITY 3: Retreating
 	elif _is_retreating:
 		velocity.x = _retreat_dir * retreat_speed
 		anim.play("Walk")
 		anim.flip_h = velocity.x < 0
-
-	# PRIORITY 4: Chasing / Idle
 	elif player_chase and player:
 		var dist = global_position.distance_to(player.global_position)
 		if dist < 120:
@@ -77,7 +88,7 @@ func _lunge_at_player():
 		return
 
 	_is_attacking = true
-	is_harmful = true          # Only dangerous during the lunge
+	is_harmful = true
 	anim.play("Attack")
 	enemy_hit_sound.play()
 
@@ -89,7 +100,7 @@ func _lunge_at_player():
 func _on_anim_finished():
 	if anim.animation == "Attack":
 		_is_attacking = false
-		is_harmful = false     # No longer harmful once the attack animation ends
+		is_harmful = false
 		_start_retreat()
 
 func _start_retreat():
@@ -105,7 +116,6 @@ func _start_retreat():
 	velocity.x = 0
 	anim.play("Idle")
 
-# Called by the player's hitbox — left-click attack
 func take_damage(_amount: int, _from_x: float):
 	if not can_take_damage:
 		return
@@ -124,7 +134,7 @@ func update_hearts():
 func _start_damage_cooldown():
 	can_take_damage = false
 	_is_jolting = true
-	is_harmful = false         # Can't hurt the player while being knocked back
+	is_harmful = false
 	modulate = Color(10, 1, 1)
 
 	var knockback_dir = 1 if player and global_position.x > player.global_position.x else -1
@@ -163,12 +173,8 @@ func spawn_minions():
 		if bat.has_method("apply_burst"):
 			bat.apply_burst(burst_velocity)
 
-# Used by the player's contact-damage system to know this is a big enemy
 func enemy(): pass
 
-# -------------------------
-# SIGNALS
-# -------------------------
 func _on_detection_area_body_entered(body):
 	if body.is_in_group("player"):
 		player = body
@@ -179,8 +185,6 @@ func _on_detection_area_body_exited(body):
 		player = null
 		player_chase = false
 
-# Enemy's own body hitbox — this tells the PLAYER it is being touched.
-# The player's take_damage is called only when is_harmful is true (during lunge).
 func _on_enemy_hitbox_body_entered(body):
 	if body.is_in_group("player") and is_harmful:
 		body.take_damage(1, global_position.x)

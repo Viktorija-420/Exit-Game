@@ -3,7 +3,7 @@ extends CharacterBody2D
 # -------------------------
 # STATES
 # -------------------------
-enum State { INTRO, PATROL, CHASE, THROW, DEFENSE, RETREAT, STATIONARY_PHASE }
+enum State { INTRO, PATROL, CHASE, THROW, DEFENSE, RETREAT, STATIONARY_PHASE, FINAL_PHASE }
 var current_state: State = State.INTRO
 
 # -------------------------
@@ -66,6 +66,15 @@ var _is_jolting: bool = false
 @export var phase_2_zoom_out: Vector2 = Vector2(0.7, 0.7)
 @export var phase_2_zoom_speed: float = 2.5
 @export var phase_2_camera_offset: Vector2 = Vector2.ZERO
+
+# Final Phase (health <= 2)
+@export_group("Final Phase")
+@export var ghost_enemy_scene: PackedScene
+@export var final_center_position: Vector2 = Vector2(585, 420)   # middle of the map
+var is_final_phase_triggered: bool = false
+var is_final_phase_active: bool = false
+var spawned_ghosts: Array = []
+var ghosts_alive: int = 0
 
 var is_harmful: bool = false
 var direction: int = -1
@@ -161,7 +170,7 @@ func _unhandled_input(event: InputEvent) -> void:
 # MAIN LOOP
 # -------------------------
 func _physics_process(delta: float):
-	if not is_on_floor() and current_state != State.STATIONARY_PHASE:
+	if not is_on_floor() and current_state != State.STATIONARY_PHASE and current_state != State.FINAL_PHASE:
 		velocity.y += gravity_scale * delta
 
 	if _is_jolting:
@@ -207,7 +216,8 @@ func _physics_process(delta: float):
 				velocity.x = 0
 			move_and_slide()
 
-		State.INTRO, State.STATIONARY_PHASE:
+		State.INTRO, State.STATIONARY_PHASE, State.FINAL_PHASE:
+			# No movement during these states
 			pass
 
 # -------------------------
@@ -305,7 +315,7 @@ func _handle_boss_defense_logic():
 	velocity.x = direction * defense_speed
 
 func _update_boss_sprite_direction():
-	if not anim or _is_jolting or current_state == State.RETREAT or current_state == State.STATIONARY_PHASE:
+	if not anim or _is_jolting or current_state == State.RETREAT or current_state == State.STATIONARY_PHASE or current_state == State.FINAL_PHASE:
 		return
 	anim.flip_h = (direction == 1)
 
@@ -357,7 +367,7 @@ func _exit_phase2_camera_mode():
 	_teardown_phase2_camera_anchor()
 
 # -------------------------
-# PLAYER FREEZE HELPERS (Phase 2 jumps)
+# PLAYER FREEZE HELPERS (Phase 2 jumps & Final Phase)
 # -------------------------
 func _freeze_player_movement(freeze: bool):
 	if not target_player:
@@ -373,7 +383,6 @@ func _freeze_player_movement(freeze: bool):
 # -------------------------
 # SAFE AWAIT HELPERS
 # -------------------------
-# Returns false if node is no longer in tree after awaiting a frame
 func _safe_await_frame() -> bool:
 	if not is_inside_tree():
 		return false
@@ -402,10 +411,9 @@ func _run_stationary_potion_phase():
 
 	_enter_phase2_camera_mode()
 
-	# Store original hearts position so we can apply arc offset
 	var original_hearts_position: Vector2 = hearts.position if hearts else Vector2.ZERO
 
-	while current_health <= phase_trigger_health and current_health > 0:
+	while current_health <= phase_trigger_health and current_health > 0 and not is_final_phase_triggered:
 		var destination = phase_left_position if current_phase_side == "left" else phase_right_position
 		
 		_safely_play_boss_animation("jump")
@@ -418,7 +426,7 @@ func _run_stationary_potion_phase():
 		var total_distance = start_pos.distance_to(destination)
 
 		while global_position.distance_to(destination) > 5.0:
-			if current_health <= 0 or _is_jolting: break
+			if current_health <= 0 or _is_jolting or is_final_phase_triggered: break
 			if not await _safe_await_frame(): return
 
 			if anim:
@@ -442,11 +450,11 @@ func _run_stationary_potion_phase():
 
 		_freeze_player_movement(false)
 
-		if current_health <= 0: break
+		if current_health <= 0 or is_final_phase_triggered: break
 
 		hit_received_during_phase = false
 
-		while not hit_received_during_phase and current_health <= phase_trigger_health and current_health > 0:
+		while not hit_received_during_phase and current_health <= phase_trigger_health and current_health > 0 and not is_final_phase_triggered:
 			if _is_jolting:
 				if not await _safe_await_frame(): return
 				continue
@@ -469,11 +477,15 @@ func _run_stationary_potion_phase():
 				_safely_play_boss_animation("idle_front")
 			if not await _safe_await_frame(): return
 
-		if current_health <= 0: break
+		if current_health <= 0 or is_final_phase_triggered: break
 
 	_exit_phase2_camera_mode()
 	_restore_default_player_camera_context()
 	is_in_stationary_phase = false
+
+	if is_final_phase_triggered:
+		# Final phase already handles the rest
+		return
 
 	if target_player:
 		current_state = State.CHASE
@@ -496,7 +508,7 @@ func _start_boss_combat_loop():
 	if attack_loop_active or is_in_stationary_phase: return
 	attack_loop_active = true
 
-	while target_player and is_intro_done and not is_in_stationary_phase:
+	while target_player and is_intro_done and not is_in_stationary_phase and not is_final_phase_triggered:
 		await get_tree().process_frame
 
 		if _is_jolting:
@@ -504,7 +516,7 @@ func _start_boss_combat_loop():
 				await get_tree().process_frame
 			continue
 
-		if current_health <= phase_trigger_health:
+		if current_health <= phase_trigger_health or is_final_phase_triggered:
 			break
 
 		# --- CHASE ---
@@ -513,7 +525,7 @@ func _start_boss_combat_loop():
 		var close_range_triggered = false
 
 		while timer < chase_duration:
-			if not target_player or not is_intro_done or current_health <= phase_trigger_health: break
+			if not target_player or not is_intro_done or current_health <= phase_trigger_health or is_final_phase_triggered: break
 			if _is_jolting: break
 
 			var current_dist = abs(target_player.global_position.x - global_position.x)
@@ -524,7 +536,7 @@ func _start_boss_combat_loop():
 			await get_tree().process_frame
 			timer += get_physics_process_delta_time()
 
-		if not target_player or not is_intro_done or current_health <= phase_trigger_health: break
+		if not target_player or not is_intro_done or current_health <= phase_trigger_health or is_final_phase_triggered: break
 		if _is_jolting: continue
 
 		# --- ATTACK ---
@@ -554,13 +566,13 @@ func _start_boss_combat_loop():
 			var air_timer = 0.0
 			var max_air_time = 1.2
 			while air_timer < max_air_time:
-				if _is_jolting or not is_intro_done or current_health <= phase_trigger_health: break
+				if _is_jolting or not is_intro_done or current_health <= phase_trigger_health or is_final_phase_triggered: break
 				if is_on_floor(): break
 				await get_tree().process_frame
 				air_timer += get_physics_process_delta_time()
 
 			velocity.x = 0
-			if not target_player or not is_intro_done or _is_jolting or current_health <= phase_trigger_health: continue
+			if not target_player or not is_intro_done or _is_jolting or current_health <= phase_trigger_health or is_final_phase_triggered: continue
 
 			current_state = State.THROW
 			_safely_play_boss_animation("throw")
@@ -586,20 +598,20 @@ func _start_boss_combat_loop():
 
 			await get_tree().create_timer(0.25).timeout
 
-		if not target_player or not is_intro_done or current_health <= phase_trigger_health: break
+		if not target_player or not is_intro_done or current_health <= phase_trigger_health or is_final_phase_triggered: break
 		if _is_jolting: continue
 
 		# --- DEFENSE ---
 		current_state = State.DEFENSE
 		var def_timer = 0.0
 		while def_timer < defense_duration:
-			if _is_jolting or not target_player or current_health <= phase_trigger_health: break
+			if _is_jolting or not target_player or current_health <= phase_trigger_health or is_final_phase_triggered: break
 			await get_tree().process_frame
 			def_timer += get_physics_process_delta_time()
 
 	attack_loop_active = false
 
-	if current_health <= phase_trigger_health and current_health > 0 and is_intro_done:
+	if current_health <= phase_trigger_health and current_health > 0 and is_intro_done and not is_final_phase_triggered:
 		_run_stationary_potion_phase()
 	elif is_intro_done and not target_player:
 		current_state = State.PATROL
@@ -641,13 +653,11 @@ func _spawn_boss_smart_projectile(range_modifier: float = 0.0):
 	var calculated_velocity_y = (distance_y - (0.5 * p_gravity * flight_time * flight_time)) / flight_time
 	var calculated_speed = abs(distance_x / flight_time)
 
-	# ----- CEILING CLAMP (Y = 64) -----
 	const CEILING_Y: float = 75.0
 	if calculated_velocity_y < 0.0 and spawn_pos.y > CEILING_Y:
 		var max_upward_speed = sqrt(2.0 * p_gravity * (spawn_pos.y - CEILING_Y))
 		if -calculated_velocity_y > max_upward_speed:
 			calculated_velocity_y = -max_upward_speed
-	# ----------------------------------
 
 	projectile.direction = 1 if distance_x > 0 else -1
 	projectile.speed = calculated_speed
@@ -688,14 +698,14 @@ func _on_det_area_body_entered(body: Node2D):
 		target_player = body
 		if is_intro_done:
 			if current_health <= phase_trigger_health:
-				if not is_in_stationary_phase:
+				if not is_in_stationary_phase and not is_final_phase_triggered:
 					_run_stationary_potion_phase()
 			else:
 				_start_boss_combat_loop()
 
 func _on_det_area_body_exited(body: Node2D):
 	if body == target_player:
-		if is_in_stationary_phase:
+		if is_in_stationary_phase or is_final_phase_active:
 			return
 		target_player = null
 		if current_state != State.INTRO and not is_in_stationary_phase:
@@ -716,6 +726,11 @@ func take_damage(amount: int, from_x: float):
 
 	current_health -= amount
 	update_hearts()
+
+	# Trigger final phase when health becomes 2 or lower
+	if current_health <= 2 and not is_final_phase_triggered and is_intro_done:
+		_start_final_phase()
+		return   # Damage handling stops here, final phase takes over
 
 	if is_in_stationary_phase:
 		hit_received_during_phase = true
@@ -755,7 +770,7 @@ func _start_damage_cooldown(from_x: float):
 		can_take_damage = true
 
 		if not is_in_stationary_phase:
-			if current_health <= phase_trigger_health:
+			if current_health <= phase_trigger_health and not is_final_phase_triggered:
 				_run_stationary_potion_phase()
 			elif not attack_loop_active:
 				if target_player:
@@ -764,11 +779,141 @@ func _start_damage_cooldown(from_x: float):
 				else:
 					current_state = State.PATROL
 
+# -------------------------
+# FINAL PHASE (health <= 2)
+# -------------------------
+func _start_final_phase():
+	if is_final_phase_triggered or not is_intro_done:
+		return
+	is_final_phase_triggered = true
+	is_final_phase_active = true
+	can_take_damage = false          # Boss cannot be damaged during this sequence
+	attack_loop_active = false
+
+	# Interrupt any ongoing stationary phase
+	is_in_stationary_phase = false
+	_exit_phase2_camera_mode()
+	_restore_default_player_camera_context()
+
+	current_state = State.FINAL_PHASE
+	velocity = Vector2.ZERO
+	_safely_play_boss_animation("idle_front")
+
+	# Dialogue sequence
+	await _final_phase_dialogue()
+	if not is_inside_tree(): return
+
+	# Jump to the center (player movement frozen during jump)
+	_freeze_player_movement(true)
+	await _jump_to_position(final_center_position)
+	_freeze_player_movement(false)
+	if not is_inside_tree(): return
+
+	# Spawn three ghost enemies
+	_spawn_ghosts()
+
+	# Boss stays idle, invincible until all ghosts are dead.
+	# When ghosts_alive reaches 0, _die() is called automatically.
+	current_state = State.FINAL_PHASE
+	_safely_play_boss_animation("idle_front")
+
+func _final_phase_dialogue():
+	if not dialogue_label:
+		return
+	dialogue_label.text = "AHH okey man"
+	if not await _safe_await_timer(1.2): return
+	dialogue_label.text = "Lets calm down now"
+	if not await _safe_await_timer(1.2): return
+	dialogue_label.text = "leave me be"
+	if not await _safe_await_timer(2.0): return
+	dialogue_label.text = "AHAHA NEVERMIND."
+	if not await _safe_await_timer(1.2): return
+	dialogue_label.text = "THIS WHAT YOU GET"
+	if not await _safe_await_timer(1.2): return
+	dialogue_label.text = ""
+
+func _jump_to_position(target_pos: Vector2):
+	if not is_inside_tree():
+		return
+	var start_pos = global_position
+	var total_distance = start_pos.distance_to(target_pos)
+	var original_hearts_position = hearts.position if hearts else Vector2.ZERO
+
+	# Play jump animation
+	_safely_play_boss_animation("jump")
+	if anim:
+		anim.flip_h = (target_pos.x > start_pos.x)
+
+	while global_position.distance_to(target_pos) > 5.0:
+		if not await _safe_await_frame(): return
+		if anim:
+			anim.flip_h = (target_pos.x > global_position.x)
+		global_position = global_position.move_toward(target_pos, phase_move_speed * get_process_delta_time())
+
+		# Arc effect
+		var current_dist = global_position.distance_to(target_pos)
+		if total_distance > 0:
+			var arc_height = sin((current_dist / total_distance) * PI) * 120.0
+			anim.position.y = -arc_height
+			if hearts:
+				hearts.position.y = original_hearts_position.y - arc_height
+
+	# Reset arc offset
+	if anim:
+		anim.position = Vector2.ZERO
+	if hearts:
+		hearts.position = original_hearts_position
+	global_position = target_pos
+
+func _spawn_ghosts():
+	if not ghost_enemy_scene:
+		print("Ghost enemy scene not assigned!")
+		return
+	ghosts_alive = 0
+	spawned_ghosts.clear()
+	var offsets = [Vector2(-60, -20), Vector2(60, -20), Vector2(0, -40)]
+	for offset in offsets:
+		var ghost = ghost_enemy_scene.instantiate()
+		ghost.global_position = global_position + offset
+		get_parent().add_child(ghost)
+		
+		# ---- ADD THESE LINES ----
+		# Ghost should pass through player and skeleton boss
+		if target_player:
+			ghost.add_collision_exception_with(target_player)
+		ghost.add_collision_exception_with(self)
+		# -------------------------
+		
+		ghosts_alive += 1
+		spawned_ghosts.append(ghost)
+		if ghost.tree_exited.is_connected(_on_ghost_died):
+			ghost.tree_exited.disconnect(_on_ghost_died)
+		ghost.tree_exited.connect(_on_ghost_died)
+
+func _on_ghost_died():
+	ghosts_alive -= 1
+	# Only call _die() if we are still alive and inside the tree
+	if ghosts_alive <= 0 and is_final_phase_active and is_inside_tree():
+		_die()
+
+# -------------------------
+# DEATH
+# -------------------------
 func _die():
+	if not is_inside_tree():
+		return  # Already removed or not in scene
+	
 	print("Skeleton boss defeated!")
 	is_intro_done = false
 	attack_loop_active = false
 	is_in_stationary_phase = false
+	is_final_phase_active = false
+
+	# Clean up any remaining ghosts (just in case)
+	for g in spawned_ghosts:
+		if is_instance_valid(g) and not g.tree_exited.is_connected(_on_ghost_died):
+			g.queue_free()
+		
 
 	_exit_phase2_camera_mode()
 	_restore_default_player_camera_context()
@@ -777,10 +922,13 @@ func _die():
 		anim.play("dead")
 		await anim.animation_finished
 	else:
-		await get_tree().create_timer(0.2).timeout
+		# Only use get_tree() if we are still inside the tree
+		if is_inside_tree():
+			await get_tree().create_timer(0.2).timeout
 
-	queue_free()
-
+	if is_inside_tree():
+		queue_free()
+		
 # -------------------------
 # INTERACTION FALLBACKS
 # -------------------------
@@ -788,5 +936,5 @@ func boss_enemy():
 	return true
 
 func boss_hit():
-	if current_state != State.INTRO and can_take_damage:
+	if current_state != State.INTRO and can_take_damage and not is_final_phase_active:
 		take_damage(1, global_position.x - 1.0)

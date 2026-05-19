@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=3 uid="uid://cvmqthsogd2xy"]
+[gd_scene load_steps=16 format=3 uid="uid://cvmqthsogd2xy"]
 
 [ext_resource type="Script" uid="uid://cg176lwqccdwf" path="res://Scripts/enemy.gd" id="1_4gyqm"]
 [ext_resource type="PackedScene" uid="uid://cyt7gfuawb7cr" path="res://small_enemy.tscn" id="2_e1ltt"]
@@ -59,6 +59,9 @@ radius = 183.01093
 [sub_resource type="CircleShape2D" id="CircleShape2D_e1ltt"]
 radius = 36.05551
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_dxifv"]
+size = Vector2(41, 39)
+
 [node name="Enemy" type="CharacterBody2D"]
 script = ExtResource("1_4gyqm")
 small_enemy_scene = ExtResource("2_e1ltt")
@@ -100,6 +103,12 @@ texture = ExtResource("3_qi2p4")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Enemy_hitbox"]
 shape = SubResource("CircleShape2D_e1ltt")
+
+[node name="Hurtbox" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Hurtbox"]
+position = Vector2(-1.5, -1.5)
+shape = SubResource("RectangleShape2D_dxifv")
 
 [node name="EnemyAttack" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource("10_dxifv")

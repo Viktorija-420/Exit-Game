@@ -306,7 +306,7 @@ size = Vector2(21, 38)
 radius = 10.770329
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_iruf7"]
-radius = 36.158188
+radius = 38.43469
 
 [sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_efrwb"]
 particle_flag_disable_z = true
