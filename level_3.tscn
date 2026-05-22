@@ -565,6 +565,5 @@ grow_vertical = 2
 color = Color(0, 0, 0, 1)
 
 [node name="UI" parent="." instance=ExtResource("12_dhf26")]
-visible = false
 fade_in_on_start = false
 charge_fill_speed = 1.5

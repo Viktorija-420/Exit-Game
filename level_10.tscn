@@ -389,6 +389,10 @@ layer_2/name = "Layer2"
 layer_2/tile_data = PackedInt32Array(983048, 196610, 1, 983070, 196610, 268435457, 983072, 196610, 1, 983076, 196610, 268435457, 131074, 196610, 536870913, 131080, 196610, 536870913, 131079, 196610, 805306369, 131103, 196610, 536870913, 131102, 196610, 805306369, 131108, 196610, 805306369, 720907, 458756, 0, 786443, 458756, 1, 851979, 458756, 1, 917515, 458756, 3, 589844, 458756, 0, 720924, 458756, 0, 458787, 458756, 0, 655380, 458756, 1, 720916, 458756, 1, 786452, 458756, 1, 524323, 458756, 1, 589859, 458756, 1, 524293, 458756, 0)
 layer_3/name = "Layer3"
 
+[node name="Key" parent="." instance=ExtResource("13_b6jit")]
+position = Vector2(605, 86.17)
+scale = Vector2(0.665, 0.665)
+
 [node name="HealthPickup2" parent="." instance=ExtResource("7_x3x8n")]
 position = Vector2(258, 447)
 scale = Vector2(0.36180001, 0.36180001)
@@ -425,16 +429,15 @@ scale = Vector2(1.41, 1.41)
 position = Vector2(1018, 448)
 scale = Vector2(0.665, 0.665)
 
-[node name="Key" parent="." instance=ExtResource("13_b6jit")]
-position = Vector2(605, 86.17)
-scale = Vector2(0.665, 0.665)
-
 [node name="Skeleton" parent="." instance=ExtResource("15_1jiv0")]
 position = Vector2(595, 417)
 scale = Vector2(1.795, 1.795)
 phase_2_camera_offset = Vector2(0, -60)
+metadata/_edit_lock_ = true
 
 [node name="Player" parent="." instance=ExtResource("15_6bdll")]
+light_mask = 3
+visibility_layer = 3
 position = Vector2(178, 450)
 hurt_fall_time = 0.25
 hurt_knockup = -200.0

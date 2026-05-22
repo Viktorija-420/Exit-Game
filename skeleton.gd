@@ -954,14 +954,14 @@ func _die():
 			print("ERROR...")
 		else:
 			var key = key_scene.instantiate()
-			get_tree().root.add_child(key)
+			get_parent().add_child(key)
 			key.global_position = Vector2(595, 88)   # <-- START POSITION
 			if key is RigidBody2D:
 				key.gravity_scale = 1.0
 				key.linear_velocity = Vector2(0, 50)
 			else:
 				var tween = create_tween()
-				tween.tween_property(key, "global_position:y", 463, 1.0)  # <-- END Y & DURATION
+				tween.tween_property(key, "global_position:y", 1100, 1.0)  # <-- END Y & DURATION
 				await get_tree().create_timer(0.1).timeout
 
 		# --- Death animation and removal ---
