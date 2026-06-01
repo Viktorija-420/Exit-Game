@@ -25,6 +25,9 @@ var resolutions: Array[Vector2i] = [
 
 # --- Initialization ---
 func _ready() -> void:
+	# ✅ CRITICAL FIX: Nodrošina, ka iestatījumu izvēlne strādā, kad spēle ir nopauzēta
+	process_mode = Node.PROCESS_MODE_ALWAYS
+
 	# Locate and apply custom visual styling ONLY to the BackButton
 	if has_node("Panel/BackButton"):
 		_setup_button_visuals($Panel/BackButton)
@@ -193,5 +196,7 @@ func update_ui(m, mus, s, mute, qual, win, res):
 
 func _on_back_button_pressed() -> void:
 	save_settings()
-	if ResourceLoader.exists(main_menu_scene):
-		get_tree().change_scene_to_file(main_menu_scene)
+	# Atgriežas uz saglabāto ceļu (Main Menu VAI Level scēnu)
+	var destination = Global.settings_return_path if Global.settings_return_path != "" else main_menu_scene
+	if ResourceLoader.exists(destination):
+		get_tree().change_scene_to_file(destination)

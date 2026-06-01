@@ -147,6 +147,17 @@ func _ready() -> void:
 	
 	if collect_ui:
 		collect_ui.visible = false
+
+	# -------------------- PAUZES STĀVOKĻA ATJAUNOŠANA --------------------
+	# Ja mēs tikko atgriezāmies no Settings vai Rules un spēlei ir jābūt nopauzētai:
+	if Global and Global.was_paused:
+		get_tree().paused = true
+		if pause_menu:
+			pause_menu.visible = true
+		_update_pause_button_text()
+		if pause_button:
+			pause_button.move_to_front()
+		Global.was_paused = false # Atiestatām stāvokli drošībai
 		
 		
 func _process(delta: float) -> void:
@@ -207,16 +218,18 @@ func _on_main_menu_pressed() -> void:
 	get_tree().change_scene_to_file("res://MainMenu.tscn")
 
 func _on_settings_pressed() -> void:
-	if Global:
-		Global.settings_return_path = "res://MainMenu.tscn" # Put your level's exact path here
-	get_tree().paused = false # Unpause so the next scene can run
-	get_tree().change_scene_to_file("res://settings.tscn") # Put your settings path here
+	if Global and get_tree().current_scene:
+		# Saglabājam pašreizējā līmeņa scēnas faila ceļu un uzstādām, ka bijām pauzē
+		Global.settings_return_path = get_tree().current_scene.scene_file_path
+		Global.was_paused = true
+	get_tree().change_scene_to_file("res://settings.tscn")
 
 func _on_rules_pressed() -> void:
-	if Global:
-		Global.settings_return_path = "res://MainMenu.tscn" # Put your level's exact path here
-	get_tree().paused = false
-	get_tree().change_scene_to_file("res://Rules.tscn") # Put your rules path here)
+	if Global and get_tree().current_scene:
+		# Saglabājam pašreizējā līmeņa scēnas faila ceļu un uzstādām, ka bijām pauzē
+		Global.settings_return_path = get_tree().current_scene.scene_file_path
+		Global.was_paused = true
+	get_tree().change_scene_to_file("res://Rules.tscn")
 
 func _on_exit_pressed() -> void:
 	get_tree().quit()

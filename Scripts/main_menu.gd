@@ -86,9 +86,13 @@ func _on_play_pressed() -> void:
 	t.tween_callback(func(): get_tree().change_scene_to_file(intro_scene))
 
 func _on_rules_pressed() -> void:
+	Global.settings_return_path = "res://MainMenu.tscn"
+	Global.was_paused = false
 	get_tree().change_scene_to_file("res://Rules.tscn")
 
 func _on_settings_pressed() -> void:
+	Global.settings_return_path = "res://MainMenu.tscn"
+	Global.was_paused = false
 	get_tree().change_scene_to_file("res://Settings.tscn")
 
 func _on_quit_pressed() -> void:

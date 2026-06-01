@@ -13,7 +13,10 @@ var lives: int = 5
 var _has_key: bool = false
 var current_level: int = 1
 var text_box: String = ""
+
+# --- JAUNIE MAINĪGIE ATGRIEŠANĀS LOĢIKAI ---
 var settings_return_path: String = "res://MainMenu.tscn"
+var was_paused: bool = false # Atceras, vai mēs aizgājām no pauzes izvēlnes
 
 # Mainīgais ar getter/setter loģiku – automātiski izsauc signālu, kad mainās atslēgas statuss
 var has_key: bool:
@@ -53,5 +56,3 @@ func set_music_paused(is_paused: bool): # Fona mūzikas nopauzēšana vai atsāk
 		Music.stream_paused = is_paused
 	elif has_node("BGMusic"):
 		$BGMusic.stream_paused = is_paused
-		
-		
