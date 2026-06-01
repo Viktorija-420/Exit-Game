@@ -2,6 +2,11 @@ extends Node2D
 
 @export_file("*.tscn") var main_menu_scene := "res://MainMenu.tscn"
 
+# --- Custom Button Colors & Visual States ---
+const COLOR_NORMAL := Color(1.0, 1.0, 1.0, 1.0)       # Default white/unmodulated
+const COLOR_HOVER  := Color(0.75, 0.75, 0.75, 1.0)    # Greyish
+const COLOR_PRESSED := Color(0.85, 0.65, 0.75, 1.0)    # Pinkish-Grey
+
 # --- Variables ---
 @onready var master_bus = AudioServer.get_bus_index("Master")
 @onready var music_bus = AudioServer.get_bus_index("Music")
@@ -20,9 +25,56 @@ var resolutions: Array[Vector2i] = [
 
 # --- Initialization ---
 func _ready() -> void:
+	# Locate and apply custom visual styling ONLY to the BackButton
+	if has_node("Panel/BackButton"):
+		_setup_button_visuals($Panel/BackButton)
+	elif has_node("BackButton"):
+		_setup_button_visuals($BackButton)
+		
+	# Strip the default focus border from the mute checkbox so it doesn't show a white line when clicked
+	if has_node("Panel/MuteCheckBox"):
+		$Panel/MuteCheckBox.focus_mode = Control.FOCUS_NONE
+	elif has_node("MuteCheckBox"):
+		$MuteCheckBox.focus_mode = Control.FOCUS_NONE
+		
 	await get_tree().process_frame
 	load_settings()
 	print("--- All Settings Loaded & Applied ---")
+
+## Helper function to connect hover/press visual feedback and clear default styles
+func _setup_button_visuals(btn: Button) -> void:
+	# 1. Remove default Godot button theme visuals
+	btn.flat = true
+	btn.focus_mode = Control.FOCUS_NONE
+
+	# 2. Safely grab the child TextureRect (TextureRect2 from your hierarchy)
+	var tex_rect := btn.get_child(0) as TextureRect
+	if not tex_rect:
+		return
+
+	# Track hover state safely per-button
+	var is_hovered := false
+
+	# 3. Connect interactions to modulate BOTH the Button and its TextureRect child
+	btn.mouse_entered.connect(func(): 
+		is_hovered = true
+		tex_rect.modulate = COLOR_HOVER
+		btn.self_modulate = COLOR_HOVER
+	)
+	btn.mouse_exited.connect(func(): 
+		is_hovered = false
+		tex_rect.modulate = COLOR_NORMAL
+		btn.self_modulate = COLOR_NORMAL
+	)
+	btn.button_down.connect(func(): 
+		tex_rect.modulate = COLOR_PRESSED
+		btn.self_modulate = COLOR_PRESSED
+	)
+	btn.button_up.connect(func(): 
+		var target_color := COLOR_HOVER if is_hovered else COLOR_NORMAL
+		tex_rect.modulate = target_color
+		btn.self_modulate = target_color
+	)
 
 # --- Audio Logic ---
 func _on_master_slider_value_changed(value: float) -> void:
@@ -67,7 +119,6 @@ func _on_window_mode_dropdown_item_selected(index: int) -> void:
 func apply_window_mode(index: int):
 	if index == 0:
 		DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_WINDOWED)
-		# Ensure resolution is re-applied when going to windowed
 		var res_idx = $Panel/ResolutionDropdown.selected if has_node("Panel/ResolutionDropdown") else 2
 		apply_resolution(res_idx)
 	else:
@@ -80,20 +131,17 @@ func _on_resolution_dropdown_item_selected(index: int) -> void:
 func apply_resolution(index: int):
 	if index >= 0 and index < resolutions.size():
 		DisplayServer.window_set_size(resolutions[index])
-		# Center the window on the screen
 		var screen_center = DisplayServer.screen_get_position() + (DisplayServer.screen_get_size() / 2)
 		var window_size = DisplayServer.window_get_size()
 		DisplayServer.window_set_position(screen_center - (window_size / 2))
 
 # --- Save/Load System ---
 func save_settings():
-	# Audio
 	config.set_value("audio", "master_vol", db_to_linear(AudioServer.get_bus_volume_db(master_bus)))
 	config.set_value("audio", "music_vol", db_to_linear(AudioServer.get_bus_volume_db(music_bus)))
 	config.set_value("audio", "sfx_vol", db_to_linear(AudioServer.get_bus_volume_db(sfx_bus)))
 	config.set_value("audio", "mute", AudioServer.is_bus_mute(master_bus))
 	
-	# Video
 	if has_node("Panel/QualityDropdown"):
 		config.set_value("video", "quality_index", $Panel/QualityDropdown.selected)
 	if has_node("Panel/WindowModeDropdown"):
@@ -107,15 +155,13 @@ func load_settings():
 	var err = config.load(SAVE_PATH)
 	
 	if err != OK:
-		# APPLY DEFAULTS
 		apply_audio_values(0.5, 0.5, 0.5, false)
 		apply_video_settings(1)
 		apply_window_mode(0)
-		apply_resolution(2) # Default to 720p
+		apply_resolution(2)
 		update_ui(0.5, 0.5, 0.5, false, 1, 0, 2)
 		return 
 	
-	# LOAD FROM FILE
 	var m_vol = config.get_value("audio", "master_vol", 0.5)
 	var mus_vol = config.get_value("audio", "music_vol", 0.5)
 	var s_vol = config.get_value("audio", "sfx_vol", 0.5)

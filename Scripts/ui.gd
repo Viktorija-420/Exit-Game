@@ -1,12 +1,18 @@
 extends CanvasLayer
 
+# --- Custom Button Colors & Visual States ---
+const COLOR_NORMAL := Color(1.0, 1.0, 1.0, 1.0)       # Default white/unmodulated
+const COLOR_HOVER  := Color(0.75, 0.75, 0.75, 1.0)    # Greyish
+const COLOR_PRESSED := Color(0.85, 0.65, 0.75, 1.0)    # Pinkish-Grey
+
 # -------------------- NODES --------------------
 
 @onready var pause_menu: Control = get_node_or_null("PauseMenu") as Control
+@onready var blur_overlay: ColorRect = get_node_or_null("PauseMenu/BlurOverlay") as ColorRect
 @onready var main_menu_button: Button = get_node_or_null("PauseMenu/Panel/MainMenuButton") as Button
 @onready var settings_button: Button = get_node_or_null("PauseMenu/Panel/SettingButton") as Button
 @onready var rules_button: Button = get_node_or_null("PauseMenu/Panel/RulesButton") as Button
-@onready var exit_button: Button = get_node_or_null("PauseMenu/Panel/ExitButton") as Button # Added this
+@onready var exit_button: Button = get_node_or_null("PauseMenu/Panel/ExitButton") as Button
 
 @onready var pause_button: Button = get_node_or_null("PauseButton") as Button
 @onready var game_over_label: Label = get_node_or_null("GameOverLabel") as Label
@@ -49,33 +55,41 @@ func _ready() -> void:
 		pause_menu.process_mode = Node.PROCESS_MODE_ALWAYS
 		pause_menu.visible = false
 
-	# Pause button
+	if blur_overlay:
+		blur_overlay.process_mode = Node.PROCESS_MODE_ALWAYS
+		blur_overlay.mouse_filter = Control.MOUSE_FILTER_IGNORE
+
+	# Pause button setup
 	if pause_button:
 		pause_button.process_mode = Node.PROCESS_MODE_ALWAYS
-		pause_button.focus_mode = Control.FOCUS_NONE
+		_setup_button_visuals(pause_button)
+		# ✅ CRITICAL: Force the pause button to render on top of all layers
+		pause_button.move_to_front()
 		_safe_connect_pressed(pause_button, _on_pause_pressed)
 		_update_pause_button_text()
 
-	# Menu buttons
+	# Menu buttons with style handling
+	_setup_button_visuals(main_menu_button)
+	_setup_button_visuals(settings_button)
+	_setup_button_visuals(rules_button)
+	_setup_button_visuals(exit_button)
+
 	_safe_connect_pressed(main_menu_button, _on_main_menu_pressed)
 	_safe_connect_pressed(settings_button, _on_settings_pressed)
 	_safe_connect_pressed(rules_button, _on_rules_pressed)
-	_safe_connect_pressed(exit_button, _on_exit_pressed) # Added this
+	_safe_connect_pressed(exit_button, _on_exit_pressed)
 
 	# -------------------- Game Over Label --------------------
 	if game_over_label:
 		game_over_label.visible = false
 		game_over_label.process_mode = Node.PROCESS_MODE_ALWAYS
 
-	# -------------------- Fade Setup (IMPORTANT FIX) --------------------
+	# -------------------- Fade Setup --------------------
 	if fade:
 		fade.set_anchors_preset(Control.PRESET_FULL_RECT)
 		fade.z_index = 999
-
-		# ✅ CRITICAL: do NOT let Fade block button clicks (even when transparent)
 		fade.mouse_filter = Control.MOUSE_FILTER_IGNORE
 		fade.process_mode = Node.PROCESS_MODE_ALWAYS
-
 		fade.visible = true
 		fade.modulate.a = 1.0
 
@@ -128,7 +142,7 @@ func _ready() -> void:
 			Global.lives_changed.connect(_on_lives_changed)
 		_on_lives_changed(Global.lives)
 
-	# Connect to player signal a moment later (safer with instanced scenes)
+	# Connect to player signal a moment later
 	call_deferred("_connect_charge_bar_to_player")
 	
 	if collect_ui:
@@ -166,6 +180,10 @@ func _on_pause_pressed() -> void:
 		pause_menu.visible = now_paused
 
 	_update_pause_button_text()
+	
+	# ✅ Keeps the pause button physically pushed to the absolute front of the layer draw stack
+	if pause_button:
+		pause_button.move_to_front()
 
 func _on_resume_pressed() -> void:
 	get_tree().paused = false
@@ -189,13 +207,19 @@ func _on_main_menu_pressed() -> void:
 	get_tree().change_scene_to_file("res://MainMenu.tscn")
 
 func _on_settings_pressed() -> void:
-	print("Settings clicked (make a settings menu next)")
+	if Global:
+		Global.settings_return_path = "res://MainMenu.tscn" # Put your level's exact path here
+	get_tree().paused = false # Unpause so the next scene can run
+	get_tree().change_scene_to_file("res://settings.tscn") # Put your settings path here
 
 func _on_rules_pressed() -> void:
-	print("Rules clicked (make a rules screen next)")
+	if Global:
+		Global.settings_return_path = "res://MainMenu.tscn" # Put your level's exact path here
+	get_tree().paused = false
+	get_tree().change_scene_to_file("res://Rules.tscn") # Put your rules path here)
 
 func _on_exit_pressed() -> void:
-	get_tree().quit() # This closes the game application
+	get_tree().quit()
 
 
 # -------------------- CHARGE BAR SIGNAL --------------------
@@ -219,19 +243,16 @@ func _on_charge_progress_changed(progress: float, charging: bool) -> void:
 
 
 func _find_player() -> Node:
-	# 1) group
 	var players := get_tree().get_nodes_in_group("player")
 	if players.size() > 0:
 		return players[0]
 
-	# 2) name in current scene
 	var root := get_tree().current_scene
 	if root:
 		var p := root.get_node_or_null("Player")
 		if p:
 			return p
 
-	# 3) find any node that has the signal
 	if root:
 		return _find_node_with_signal(root, "charge_progress_changed")
 
@@ -282,14 +303,12 @@ func fade_in(time: float = 0.5) -> void:
 	if fade == null:
 		return
 
-	# Make sure fade never blocks clicks (redundant but safe)
 	fade.mouse_filter = Control.MOUSE_FILTER_IGNORE
-
 	fade.visible = true
 	fade.modulate.a = 1.0
 
 	_tween = create_tween()
-	_tween.set_pause_mode(Tween.TWEEN_PAUSE_PROCESS) # keep tween working even if paused
+	_tween.set_pause_mode(Tween.TWEEN_PAUSE_PROCESS)
 	_tween.tween_property(fade, "modulate:a", 0.0, time)
 
 	_tween.finished.connect(func() -> void:
@@ -304,7 +323,7 @@ func _kill_tween() -> void:
 	_tween = null
 
 
-# -------------------- HELPERS --------------------
+# -------------------- HELPERS & VISUAL STYLING --------------------
 
 func _safe_connect_pressed(btn: Button, callable: Callable) -> void:
 	if btn == null:
@@ -316,12 +335,56 @@ func _safe_connect_pressed(btn: Button, callable: Callable) -> void:
 		btn.pressed.connect(callable)
 
 
-# saistīts ar letter ui. pazūd šis ui
+## Clean up focus behaviors and hook up modulation transitions based on mouse input
+func _setup_button_visuals(btn: Button) -> void:
+	if btn == null: return
+
+	# 1. Clean up focus and button properties
+	btn.flat = true
+	btn.focus_mode = Control.FOCUS_NONE
+	
+	# Fix formatting issues that cut off text strings during theme switches:
+	btn.alignment = HORIZONTAL_ALIGNMENT_CENTER
+	btn.clip_text = false
+	
+	# Override Godot's built-in styles to prevent text shifting margins on hover/focus
+	btn.add_theme_stylebox_override("normal", StyleBoxEmpty.new())
+	btn.add_theme_stylebox_override("hover", StyleBoxEmpty.new())
+	btn.add_theme_stylebox_override("pressed", StyleBoxEmpty.new())
+	btn.add_theme_stylebox_override("focus", StyleBoxEmpty.new())
+
+	# 2. Look for the child TextureRect image safely
+	var tex_rect: TextureRect = null
+	if btn.get_child_count() > 0:
+		tex_rect = btn.get_child(0) as TextureRect
+
+	var is_hovered := false
+
+	# 3. Hook transitions up to signals
+	btn.mouse_entered.connect(func():
+		is_hovered = true
+		btn.self_modulate = COLOR_HOVER
+		if tex_rect: tex_rect.modulate = COLOR_HOVER
+	)
+	btn.mouse_exited.connect(func():
+		is_hovered = false
+		btn.self_modulate = COLOR_NORMAL
+		if tex_rect: tex_rect.modulate = COLOR_NORMAL
+	)
+	btn.button_down.connect(func():
+		btn.self_modulate = COLOR_PRESSED
+		if tex_rect: tex_rect.modulate = COLOR_PRESSED
+	)
+	btn.button_up.connect(func():
+		var target_color := COLOR_HOVER if is_hovered else COLOR_NORMAL
+		btn.self_modulate = target_color
+		if tex_rect: tex_rect.modulate = target_color
+	)
+
+
 func hide_for_letter(active: bool) -> void:
-	# Hide the whole UI layer
 	visible = not active
 
-	# Safety: always force pause menu hidden
 	if pause_menu:
 		pause_menu.visible = false
 

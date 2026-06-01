@@ -5,6 +5,7 @@
 [ext_resource type="Script" uid="uid://da1w631r0jhk5" path="res://Scripts/rules.gd" id="1_tu520"]
 [ext_resource type="FontFile" uid="uid://dir8slwrv7g00" path="res://Assets/OldeTome.ttf" id="2_ag8e4"]
 [ext_resource type="PackedScene" uid="uid://v4qdy2qaghr0" path="res://MainMenu.tscn" id="2_eojom"]
+[ext_resource type="Texture2D" uid="uid://b42lhjpblww12" path="res://Assets/MapTiles/white-line/3.png" id="6_h8jhf"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_tu520"]
 bg_color = Color(0, 0, 0, 0.6745098)
@@ -13,23 +14,7 @@ corner_radius_top_right = 8
 corner_radius_bottom_right = 8
 corner_radius_bottom_left = 8
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_eojom"]
-bg_color = Color(0.99607843, 0.85490197, 0.34901962, 1)
-corner_radius_top_left = 90
-corner_radius_bottom_left = 90
-corner_detail = 1
-shadow_color = Color(0, 0, 0, 1)
-shadow_size = 10
-shadow_offset = Vector2(6, 6)
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_h8jhf"]
-bg_color = Color(0.83608353, 0.6908568, 0.038750645, 1)
-corner_radius_top_left = 90
-corner_radius_bottom_left = 90
-corner_detail = 1
-shadow_color = Color(0, 0, 0, 1)
-shadow_size = 10
-shadow_offset = Vector2(6, 6)
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_vat8u"]
 
 [node name="Rules" type="Node2D"]
 script = ExtResource("1_tu520")
@@ -86,13 +71,20 @@ Complete all levels to win the game."
 
 [node name="Back" type="Button" parent="Menu/Panel"]
 layout_mode = 0
-offset_left = -126.0
-offset_top = -91.0
-offset_right = -11.0
-offset_bottom = -44.0
-theme_override_colors/font_color = Color(0, 0, 0, 1)
+offset_left = -115.0
+offset_top = -83.0
+offset_right = 4.0
+offset_bottom = -34.0
 theme_override_fonts/font = ExtResource("2_ag8e4")
 theme_override_font_sizes/font_size = 40
-theme_override_styles/normal = SubResource("StyleBoxFlat_eojom")
-theme_override_styles/hover = SubResource("StyleBoxFlat_h8jhf")
+theme_override_styles/normal = SubResource("StyleBoxEmpty_vat8u")
 text = "  Back"
+
+[node name="TextureRect" type="TextureRect" parent="Menu/Panel"]
+layout_mode = 0
+offset_left = -135.0
+offset_top = -113.0
+offset_right = 42.0
+offset_bottom = 64.0
+texture = ExtResource("6_h8jhf")
+expand_mode = 1

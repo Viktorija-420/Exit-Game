@@ -697,10 +697,6 @@ next_level_scene = "uid://dh814ja767ken"
 position = Vector2(19, 327)
 scale = Vector2(0.665, 0.665)
 
-[node name="UI" parent="." instance=ExtResource("18_ygfr6")]
-fade_in_on_start = false
-charge_fill_speed = 1.5
-
 [node name="torch" parent="." instance=ExtResource("11_ahj24")]
 position = Vector2(152.00002, 105)
 scale = Vector2(0.67, 0.67)
@@ -766,3 +762,7 @@ text = "Move with:"
 [node name="Skelet2" type="Sprite2D" parent="."]
 position = Vector2(24, 325)
 texture = SubResource("AtlasTexture_xh3oe")
+
+[node name="UI" parent="." instance=ExtResource("18_ygfr6")]
+fade_in_on_start = false
+charge_fill_speed = 1.5

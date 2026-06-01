@@ -1,59 +1,57 @@
 extends Node
 
 var player_current_attack = false
-signal lives_changed(lives: int)
-signal key_changed(has_key: bool)
+signal lives_changed(lives: int) # Signāls, kas paziņo citām ainām, ka mainījies dzīvību skaits
+signal key_changed(has_key: bool) # Signāls, kas paziņo, ka spēlētājs ir ieguvis atslēgu
 
-# --- SETTINGS ---
 @export var default_max_lives: int = 5
 @export var max_lives_cap: int = 6
 
-# --- STATE (These persist between levels) ---
+# Globālie spēles stāvokļa mainīgie, kas saglabājas, pārejot starp līmeņiem
 var max_lives: int = 5 
 var lives: int = 5
 var _has_key: bool = false
 var current_level: int = 1
 var text_box: String = ""
+var settings_return_path: String = "res://MainMenu.tscn"
 
+# Mainīgais ar getter/setter loģiku – automātiski izsauc signālu, kad mainās atslēgas statuss
 var has_key: bool:
 	get: return _has_key
 	set(value):
 		_has_key = value
 		key_changed.emit(_has_key)
 
-func _ready() -> void:
-	process_mode = Node.PROCESS_MODE_ALWAYS
-	# Initialize game state once
-	max_lives = default_max_lives
+func _ready() -> void: #Sākotnējā spēles stāvokļa inicializācija, kad spēle tiek ieslēgta
+	process_mode = Node.PROCESS_MODE_ALWAYS # Nodrošina, ka šis skripts turpina strādāt, pat ja spēle ir nopauzēta
+	max_lives = default_max_lives # Iestata sākuma dzīvības
 	lives = max_lives
 
-func lose_life(amount: int = 1) -> void:
-	lives = max(lives - amount, 0)
-	lives_changed.emit(lives)
+func lose_life(amount: int = 1) -> void: #Dzīvības atņemšana spēlētājam
+	lives = max(lives - amount, 0) # Samazina dzīvības
+	lives_changed.emit(lives) # Nosūta signālu UI, lai atjauninātu dzīvību indikatoru
 
-# Call this ONLY when starting a brand new game from the Main Menu
-func reset_run() -> void:
+func reset_run() -> void: # Pilnīga spēles stāvokļa atiestatīšana
 	max_lives = default_max_lives
 	lives = max_lives
 	has_key = false
 	lives_changed.emit(lives)
 
-# Call this when the player dies or goes to a new level
-func restart_current_level() -> void:
-	# Refill lives to whatever the CURRENT max is (5 or 6)
-	lives = max_lives 
-	has_key = false # Usually you lose keys on death, remove this line if you want to keep them
+func restart_current_level() -> void: #Pašreizējā līmeņa pārstartēšana, kad spēlētājs nomirst
+	lives = max_lives
+	has_key = false # Zaudē atslēgu pēc nāves
 	lives_changed.emit(lives)
-	get_tree().call_deferred("reload_current_scene")
+	get_tree().call_deferred("reload_current_scene") # Pārlādē pašreizējo līmeņa scēnu nākamajā kadrā
 
-# Call this when the player drinks the potion
-func gain_life(amount: int = 1) -> void:
+func gain_life(amount: int = 1) -> void: # Dzīvību papildināšana
 	max_lives = max_lives_cap
-	lives = max_lives # Heals player to full
+	lives = max_lives # Dziedē spēlētāju līdz pilnai dzīvībai
 	lives_changed.emit(lives)
 
-func set_music_paused(is_paused: bool):
+func set_music_paused(is_paused: bool): # Fona mūzikas nopauzēšana vai atsākšana
 	if is_instance_valid(Music):
 		Music.stream_paused = is_paused
 	elif has_node("BGMusic"):
 		$BGMusic.stream_paused = is_paused
+		
+		

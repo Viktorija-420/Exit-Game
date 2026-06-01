@@ -1,73 +1,59 @@
-[gd_scene load_steps=25 format=3 uid="uid://d31bn50tffcc2"]
+[gd_scene load_steps=17 format=3 uid="uid://d31bn50tffcc2"]
 
 [ext_resource type="Script" uid="uid://bjiaeadbwvdeh" path="res://Scripts/ui.gd" id="1_ibotj"]
 [ext_resource type="FontFile" uid="uid://dir8slwrv7g00" path="res://Assets/OldeTome.ttf" id="2_n5ude"]
+[ext_resource type="Texture2D" uid="uid://b42lhjpblww12" path="res://Assets/MapTiles/white-line/3.png" id="3_waa4j"]
 [ext_resource type="Texture2D" uid="uid://b467aun0salor" path="res://Assets/Players/PlayerAssets/heartEmpty.png" id="3_y4yjw"]
 [ext_resource type="Texture2D" uid="uid://e7ht6r1t1ucn" path="res://Assets/Players/PlayerAssets/heartFull.png" id="4_waa4j"]
-[ext_resource type="Texture2D" uid="uid://cwtdx2e0e8xrx" path="res://Assets/Items/button/button_default.png" id="5_ok7cu"]
-[ext_resource type="Texture2D" uid="uid://bfe5per67cay4" path="res://Assets/Items/button/button_small1.png" id="6_n5rqp"]
-[ext_resource type="Texture2D" uid="uid://gha3ugnkhq8v" path="res://Assets/Items/button/button_smallPressed.png" id="7_gs482"]
-[ext_resource type="Texture2D" uid="uid://btylnllwvnf42" path="res://Assets/Items/button/button_smallHover.png" id="8_cxd00"]
-[ext_resource type="Texture2D" uid="uid://bplkaj8764maa" path="res://Assets/BG/Panels/vig.jpg" id="9_e2l4f"]
-[ext_resource type="Texture2D" uid="uid://ywy0u1vq88m" path="res://Assets/Items/button/button_default3.png" id="10_n5rqp"]
-[ext_resource type="Texture2D" uid="uid://dsyb3gaxhe5ka" path="res://Assets/Items/button/button_default2.png" id="11_gs482"]
+[ext_resource type="Texture2D" uid="uid://dpfx50acle8ee" path="res://Assets/MapTiles/white-line/2.png" id="7_ok7cu"]
+[ext_resource type="PackedScene" uid="uid://bqck50ag1kimw" path="res://Rules.tscn" id="8_ok7cu"]
+[ext_resource type="Shader" uid="uid://cltsrbsrvicbr" path="res://ui.gdshader" id="9_e2l4f"]
+[ext_resource type="PackedScene" uid="uid://bhwfktc4xv6gw" path="res://settings.tscn" id="9_irxef"]
 
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_x2s2p"]
-texture = ExtResource("6_n5rqp")
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_irxef"]
 
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_v8jk5"]
-texture = ExtResource("7_gs482")
-
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_cka8k"]
-texture = ExtResource("8_cxd00")
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_n5rqp"]
+shader = ExtResource("9_e2l4f")
+shader_parameter/blur_amount = 2.5
+shader_parameter/mix_color = Color(0.15, 0.15, 0.15, 0.35)
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_gs482"]
 
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_cxd00"]
-texture = ExtResource("5_ok7cu")
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_e2l4f"]
 
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_etlur"]
-texture = ExtResource("10_n5rqp")
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_n5rqp"]
 
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_7rqds"]
-texture = ExtResource("11_gs482")
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_gs482"]
 
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_nvb2n"]
-texture = ExtResource("5_ok7cu")
-
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_os5c7"]
-texture = ExtResource("10_n5rqp")
-
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_b2p7n"]
-texture = ExtResource("11_gs482")
-
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_vkygq"]
-texture = ExtResource("5_ok7cu")
-
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_sosvr"]
-texture = ExtResource("10_n5rqp")
-
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_ndy3v"]
-texture = ExtResource("11_gs482")
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_cxd00"]
 
 [node name="UI" type="CanvasLayer" groups=["ui"]]
 process_mode = 3
 script = ExtResource("1_ibotj")
+
+[node name="TextureRect2" type="TextureRect" parent="."]
+offset_left = 31.0
+offset_top = -55.0
+offset_right = 385.0
+offset_bottom = 244.0
+texture = ExtResource("3_waa4j")
+expand_mode = 1
 
 [node name="Lives" type="Label" parent="."]
 anchors_preset = -1
 anchor_right = 0.056423612
 anchor_bottom = 0.024691353
 offset_left = 48.0
-offset_top = 35.0
+offset_top = 38.0
 offset_right = 88.0
-offset_bottom = 58.000004
+offset_bottom = 61.000004
 theme_override_fonts/font = ExtResource("2_n5ude")
 theme_override_font_sizes/font_size = 40
 text = "Lives: "
 metadata/_edit_use_anchors_ = true
 
 [node name="GameOverLabel" type="Label" parent="."]
+visible = false
 offset_left = 710.00006
 offset_top = 12.0
 offset_right = 978.0592
@@ -77,10 +63,10 @@ scale = Vector2(1.6526206, 5.7151217)
 [node name="HeartsHolder" type="Control" parent="."]
 layout_mode = 3
 anchors_preset = 0
-offset_left = 22.0
-offset_top = 24.0
-offset_right = 62.0
-offset_bottom = 64.0
+offset_left = 31.0
+offset_top = 26.0
+offset_right = 71.0
+offset_bottom = 66.0
 
 [node name="HeartsEmpty" type="HBoxContainer" parent="HeartsHolder"]
 layout_mode = 0
@@ -148,142 +134,172 @@ texture = ExtResource("4_waa4j")
 
 [node name="Collect" type="Area2D" parent="."]
 
-[node name="Sprite2D" type="Sprite2D" parent="Collect"]
-position = Vector2(196.15643, 588.5343)
-scale = Vector2(2.742621, 2.6564867)
-texture = ExtResource("5_ok7cu")
-
 [node name="Label" type="Label" parent="Collect"]
-offset_left = 65.31291
-offset_top = 573.0686
-offset_right = 336.31293
-offset_bottom = 603.0686
-theme_override_colors/font_color = Color(0, 0, 0, 1)
+offset_left = 62.0
+offset_top = 541.0
+offset_right = 416.0
+offset_bottom = 580.0
 theme_override_fonts/font = ExtResource("2_n5ude")
-theme_override_font_sizes/font_size = 30
+theme_override_font_sizes/font_size = 40
 text = "Collect the item with E"
 
+[node name="TextureRect" type="TextureRect" parent="Collect"]
+offset_left = 31.0
+offset_top = 397.0
+offset_right = 431.0
+offset_bottom = 797.0
+texture = ExtResource("3_waa4j")
+metadata/_edit_lock_ = true
+
 [node name="PauseButton" type="Button" parent="."]
-offset_left = 1004.0
-offset_top = 12.0
-offset_right = 1130.0
-offset_bottom = 72.0
-theme_override_colors/font_color = Color(0, 0, 0, 1)
-theme_override_colors/font_pressed_color = Color(0, 0, 0, 1)
-theme_override_colors/font_hover_color = Color(0, 0, 0, 1)
+offset_left = 944.0
+offset_top = 40.0
+offset_right = 1083.0
+offset_bottom = 98.0
 theme_override_fonts/font = ExtResource("2_n5ude")
-theme_override_font_sizes/font_size = 30
-theme_override_styles/normal = SubResource("StyleBoxTexture_x2s2p")
-theme_override_styles/pressed = SubResource("StyleBoxTexture_v8jk5")
-theme_override_styles/hover = SubResource("StyleBoxTexture_cka8k")
+theme_override_font_sizes/font_size = 40
+theme_override_styles/normal = SubResource("StyleBoxEmpty_irxef")
 text = "Pause"
 
+[node name="TextureRect" type="TextureRect" parent="PauseButton"]
+layout_mode = 0
+offset_left = -26.0
+offset_top = -28.0
+offset_right = 157.0
+offset_bottom = 155.0
+texture = ExtResource("3_waa4j")
+expand_mode = 1
+
 [node name="PauseMenu" type="Control" parent="."]
-visible = false
 layout_mode = 3
 anchors_preset = 0
 offset_right = 40.0
 offset_bottom = 40.0
 
-[node name="Panel" type="Panel" parent="PauseMenu"]
-layout_mode = 0
-offset_left = 188.0
-offset_top = 88.0
-offset_right = 1032.0
-offset_bottom = 554.0
-theme_override_styles/panel = SubResource("StyleBoxTexture_gs482")
-
-[node name="ColorRect" type="ColorRect" parent="PauseMenu/Panel"]
-layout_mode = 0
-offset_right = 844.0
-offset_bottom = 466.0
+[node name="BlurOverlay" type="ColorRect" parent="PauseMenu"]
+material = SubResource("ShaderMaterial_n5rqp")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = 1113.0
+offset_bottom = 613.0
+grow_horizontal = 2
+grow_vertical = 2
 color = Color(0, 0, 0, 1)
 
-[node name="TextureRect" type="TextureRect" parent="PauseMenu/Panel"]
-modulate = Color(1, 1, 1, 0.45490196)
+[node name="Panel" type="Panel" parent="PauseMenu"]
 layout_mode = 0
-offset_right = 844.0
-offset_bottom = 466.0
-texture = ExtResource("9_e2l4f")
-expand_mode = 1
+offset_left = 151.0
+offset_top = 183.0
+offset_right = 995.0
+offset_bottom = 649.0
+theme_override_styles/panel = SubResource("StyleBoxTexture_gs482")
 
 [node name="Label" type="Label" parent="PauseMenu/Panel"]
 layout_mode = 0
-offset_left = 345.0
-offset_top = 26.0
-offset_right = 487.0
-offset_bottom = 77.0
-theme_override_colors/font_color = Color(0.74138474, 0.7413847, 0.74138457, 1)
+offset_left = 339.0
+offset_top = 35.0
+offset_right = 481.0
+offset_bottom = 86.0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
 theme_override_fonts/font = ExtResource("2_n5ude")
 theme_override_font_sizes/font_size = 52
 text = "Paused"
 horizontal_alignment = 1
 vertical_alignment = 1
 
+[node name="TextureRect3" type="TextureRect" parent="PauseMenu/Panel"]
+layout_mode = 0
+offset_left = 250.0
+offset_top = -183.0
+offset_right = 570.0
+offset_bottom = 137.0
+texture = ExtResource("7_ok7cu")
+expand_mode = 1
+
 [node name="MainMenuButton" type="Button" parent="PauseMenu/Panel"]
 layout_mode = 0
-offset_left = 325.0
-offset_top = 124.0
-offset_right = 503.0
-offset_bottom = 181.0
-theme_override_colors/font_color = Color(0, 0, 0, 1)
-theme_override_colors/font_pressed_color = Color(0, 0, 0, 1)
-theme_override_colors/font_hover_color = Color(0, 0, 0, 1)
+offset_left = 114.0
+offset_top = 106.0
+offset_right = 292.0
+offset_bottom = 163.0
 theme_override_fonts/font = ExtResource("2_n5ude")
-theme_override_font_sizes/font_size = 28
-theme_override_styles/normal = SubResource("StyleBoxTexture_cxd00")
-theme_override_styles/pressed = SubResource("StyleBoxTexture_etlur")
-theme_override_styles/hover = SubResource("StyleBoxTexture_7rqds")
+theme_override_font_sizes/font_size = 40
+theme_override_styles/normal = SubResource("StyleBoxEmpty_e2l4f")
 text = "Main Menu"
+
+[node name="TextureRect2" type="TextureRect" parent="PauseMenu/Panel/MainMenuButton"]
+layout_mode = 0
+offset_left = -38.0
+offset_top = -55.0
+offset_right = 202.0
+offset_bottom = 185.0
+texture = ExtResource("3_waa4j")
+expand_mode = 1
 
 [node name="SettingButton" type="Button" parent="PauseMenu/Panel"]
 layout_mode = 0
-offset_left = 325.0
-offset_top = 198.0
-offset_right = 503.0
-offset_bottom = 255.0
-theme_override_colors/font_color = Color(0, 0, 0, 1)
-theme_override_colors/font_pressed_color = Color(0, 0, 0, 1)
-theme_override_colors/font_hover_color = Color(0, 0, 0, 1)
+offset_left = 500.0
+offset_top = 106.0
+offset_right = 678.0
+offset_bottom = 163.0
 theme_override_fonts/font = ExtResource("2_n5ude")
-theme_override_font_sizes/font_size = 28
-theme_override_styles/normal = SubResource("StyleBoxTexture_nvb2n")
-theme_override_styles/pressed = SubResource("StyleBoxTexture_os5c7")
-theme_override_styles/hover = SubResource("StyleBoxTexture_b2p7n")
+theme_override_font_sizes/font_size = 40
+theme_override_styles/normal = SubResource("StyleBoxEmpty_n5rqp")
 text = "Settings"
+
+[node name="TextureRect3" type="TextureRect" parent="PauseMenu/Panel/SettingButton"]
+layout_mode = 0
+offset_left = -32.0
+offset_top = -57.0
+offset_right = 208.0
+offset_bottom = 183.0
+texture = ExtResource("3_waa4j")
+expand_mode = 1
 
 [node name="RulesButton" type="Button" parent="PauseMenu/Panel"]
 layout_mode = 0
-offset_left = 325.0
-offset_top = 273.0
-offset_right = 503.0
-offset_bottom = 330.0
-theme_override_colors/font_color = Color(0, 0, 0, 1)
-theme_override_colors/font_focus_color = Color(0, 0, 0, 1)
-theme_override_colors/font_pressed_color = Color(0, 0, 0, 1)
-theme_override_colors/font_hover_color = Color(0, 0, 0, 1)
-theme_override_colors/font_hover_pressed_color = Color(0, 0, 0, 1)
+offset_left = 114.0
+offset_top = 214.0
+offset_right = 292.0
+offset_bottom = 271.0
 theme_override_fonts/font = ExtResource("2_n5ude")
-theme_override_font_sizes/font_size = 28
-theme_override_styles/normal = SubResource("StyleBoxTexture_vkygq")
-theme_override_styles/pressed = SubResource("StyleBoxTexture_sosvr")
-theme_override_styles/hover = SubResource("StyleBoxTexture_ndy3v")
+theme_override_font_sizes/font_size = 40
+theme_override_styles/normal = SubResource("StyleBoxEmpty_gs482")
 text = "Rules"
+
+[node name="TextureRect4" type="TextureRect" parent="PauseMenu/Panel/RulesButton"]
+layout_mode = 0
+offset_left = -38.0
+offset_top = -57.0
+offset_right = 202.0
+offset_bottom = 183.0
+texture = ExtResource("3_waa4j")
+expand_mode = 1
 
 [node name="ExitButton" type="Button" parent="PauseMenu/Panel"]
 layout_mode = 0
-offset_left = 325.0
-offset_top = 345.0
-offset_right = 503.0
-offset_bottom = 402.0
-theme_override_colors/font_color = Color(0, 0, 0, 1)
-theme_override_colors/font_focus_color = Color(0, 0, 0, 1)
-theme_override_colors/font_pressed_color = Color(0, 0, 0, 1)
-theme_override_colors/font_hover_color = Color(0, 0, 0, 1)
-theme_override_colors/font_hover_pressed_color = Color(0, 0, 0, 1)
+offset_left = 500.0
+offset_top = 214.0
+offset_right = 678.0
+offset_bottom = 271.0
 theme_override_fonts/font = ExtResource("2_n5ude")
-theme_override_font_sizes/font_size = 28
-theme_override_styles/normal = SubResource("StyleBoxTexture_vkygq")
-theme_override_styles/pressed = SubResource("StyleBoxTexture_sosvr")
-theme_override_styles/hover = SubResource("StyleBoxTexture_ndy3v")
+theme_override_font_sizes/font_size = 40
+theme_override_styles/normal = SubResource("StyleBoxEmpty_cxd00")
 text = "Exit game"
+
+[node name="TextureRect5" type="TextureRect" parent="PauseMenu/Panel/ExitButton"]
+layout_mode = 0
+offset_left = -32.0
+offset_top = -57.0
+offset_right = 208.0
+offset_bottom = 183.0
+texture = ExtResource("3_waa4j")
+expand_mode = 1
+
+[node name="Rules" parent="." instance=ExtResource("8_ok7cu")]
+visible = false
+
+[node name="Settings" parent="." instance=ExtResource("9_irxef")]
+visible = false

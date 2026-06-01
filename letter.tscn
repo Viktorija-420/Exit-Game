@@ -1,4 +1,4 @@
-[gd_scene load_steps=44 format=3 uid="uid://bv1e7wgpkhu4n"]
+[gd_scene load_steps=41 format=3 uid="uid://bv1e7wgpkhu4n"]
 
 [ext_resource type="Script" uid="uid://b6se73s2pmmnr" path="res://Scripts/letter.gd" id="1_5gbsb"]
 [ext_resource type="Texture2D" uid="uid://d2mml855r0np3" path="res://Assets/Items/letter.png" id="1_r6swm"]
@@ -7,9 +7,8 @@
 [ext_resource type="Texture2D" uid="uid://bplkaj8764maa" path="res://Assets/BG/Panels/vig.jpg" id="3_kv2n4"]
 [ext_resource type="FontFile" uid="uid://dir8slwrv7g00" path="res://Assets/OldeTome.ttf" id="4_v0q87"]
 [ext_resource type="Texture2D" uid="uid://cpa81pw6ss17j" path="res://Assets/Items/mouse/mouseSprite.png" id="5_45yc0"]
-[ext_resource type="Texture2D" uid="uid://bfe5per67cay4" path="res://Assets/Items/button/button_small1.png" id="7_q62lq"]
-[ext_resource type="Texture2D" uid="uid://gha3ugnkhq8v" path="res://Assets/Items/button/button_smallPressed.png" id="8_r0ivh"]
-[ext_resource type="Texture2D" uid="uid://btylnllwvnf42" path="res://Assets/Items/button/button_smallHover.png" id="9_fmnkl"]
+[ext_resource type="Texture2D" uid="uid://bt7ojegjnqcbx" path="res://Assets/MapTiles/white-line/4.png" id="6_fmnkl"]
+[ext_resource type="Texture2D" uid="uid://b42lhjpblww12" path="res://Assets/MapTiles/white-line/3.png" id="8_r0ivh"]
 [ext_resource type="AudioStream" uid="uid://du8k8m34teni0" path="res://Assets/Sound/PaperCollect.mp3" id="11_fmnkl"]
 [ext_resource type="AudioStream" uid="uid://mj00j6jbtx4b" path="res://Assets/Sound/Typing.mp3" id="12_u7clh"]
 
@@ -206,18 +205,7 @@ animations = [{
 "speed": 8.0
 }]
 
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_u7clh"]
-texture = ExtResource("7_q62lq")
-
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_sfgjp"]
-content_margin_left = 0.0
-content_margin_top = 0.0
-content_margin_right = 0.0
-content_margin_bottom = 0.0
-texture = ExtResource("8_r0ivh")
-
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_uqeau"]
-texture = ExtResource("9_fmnkl")
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_fmnkl"]
 
 [node name="Letter" type="Area2D"]
 script = ExtResource("1_5gbsb")
@@ -281,20 +269,29 @@ Use the mouse to zoom and scroll."
 
 [node name="Title" type="Label" parent="CanvasLayer/LetterContainer"]
 layout_mode = 0
-offset_left = 753.0
-offset_top = 88.0
-offset_right = 1066.0
-offset_bottom = 137.0
+offset_left = 750.0
+offset_top = 60.0
+offset_right = 1063.0
+offset_bottom = 109.0
 theme_override_fonts/font = ExtResource("4_v0q87")
 theme_override_font_sizes/font_size = 50
 text = "Ace of Diamonds"
 
+[node name="TextureRect2" type="TextureRect" parent="CanvasLayer/LetterContainer/Title"]
+layout_mode = 0
+offset_left = -48.0
+offset_top = -113.0
+offset_right = 352.0
+offset_bottom = 287.0
+texture = ExtResource("6_fmnkl")
+metadata/_edit_lock_ = true
+
 [node name="Text" type="Label" parent="CanvasLayer/LetterContainer"]
 layout_mode = 0
 offset_left = 716.0
-offset_top = 198.0
+offset_top = 216.0
 offset_right = 1131.0
-offset_bottom = 381.0
+offset_bottom = 399.0
 theme_override_fonts/font = ExtResource("4_v0q87")
 theme_override_font_sizes/font_size = 30
 text = "Why would a skeleton keep hold of an envelope with a playing card? Could there be something written on the back? 
@@ -315,6 +312,7 @@ layout_mode = 0
 offset_top = 60.0
 offset_right = 857.0
 offset_bottom = 652.0
+metadata/_edit_lock_ = true
 
 [node name="SubViewport" type="SubViewport" parent="CanvasLayer/LetterContainer/SubViewportContainer"]
 process_mode = 3
@@ -343,17 +341,19 @@ offset_left = 40.0
 offset_top = 40.0
 offset_right = 181.0
 offset_bottom = 100.0
-theme_override_colors/font_color = Color(0, 0, 0, 1)
-theme_override_colors/font_focus_color = Color(0, 0, 0, 1)
-theme_override_colors/font_pressed_color = Color(0, 0, 0, 1)
-theme_override_colors/font_hover_color = Color(0, 0, 0, 1)
-theme_override_colors/font_hover_pressed_color = Color(0, 0, 0, 1)
+theme_override_colors/font_color = Color(1, 1, 1, 1)
 theme_override_fonts/font = ExtResource("4_v0q87")
-theme_override_font_sizes/font_size = 28
-theme_override_styles/normal = SubResource("StyleBoxTexture_u7clh")
-theme_override_styles/pressed_mirrored = SubResource("StyleBoxTexture_sfgjp")
-theme_override_styles/hover = SubResource("StyleBoxTexture_uqeau")
+theme_override_font_sizes/font_size = 30
+theme_override_styles/normal = SubResource("StyleBoxEmpty_fmnkl")
 text = "ESC"
+
+[node name="TextureRect2" type="TextureRect" parent="CanvasLayer/LetterContainer/ExitBTN"]
+layout_mode = 0
+offset_top = -18.0
+offset_right = 149.0
+offset_bottom = 131.0
+texture = ExtResource("8_r0ivh")
+expand_mode = 1
 
 [node name="CollectLetter" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource("11_fmnkl")

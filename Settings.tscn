@@ -1,32 +1,19 @@
-[gd_scene load_steps=28 format=3 uid="uid://bhwfktc4xv6gw"]
+[gd_scene load_steps=25 format=3 uid="uid://bhwfktc4xv6gw"]
 
 [ext_resource type="Script" uid="uid://gyoxwu06tw2" path="res://Scripts/settings.gd" id="1_x2hje"]
 [ext_resource type="Texture2D" uid="uid://bustj4x2edmbt" path="res://Assets/BG/RulesBG.png" id="2_gc0em"]
 [ext_resource type="FontFile" uid="uid://dir8slwrv7g00" path="res://Assets/OldeTome.ttf" id="3_71mqq"]
 [ext_resource type="Texture2D" uid="uid://bniuv44g42kkx" path="res://Assets/BG/Panels/slider_box.png" id="3_cj1lu"]
-[ext_resource type="Texture2D" uid="uid://bfe5per67cay4" path="res://Assets/Items/button/button_small1.png" id="4_1k4ii"]
+[ext_resource type="Texture2D" uid="uid://b42lhjpblww12" path="res://Assets/MapTiles/white-line/3.png" id="3_ohexs"]
+[ext_resource type="Texture2D" uid="uid://bt7ojegjnqcbx" path="res://Assets/MapTiles/white-line/4.png" id="5_1k4ii"]
 [ext_resource type="Texture2D" uid="uid://dbbgc0igxior8" path="res://Assets/BG/Panels/checkbox_check.png" id="5_3j6r5"]
-[ext_resource type="Texture2D" uid="uid://gha3ugnkhq8v" path="res://Assets/Items/button/button_smallPressed.png" id="5_82xqq"]
 [ext_resource type="Texture2D" uid="uid://4q6xxslxnpvd" path="res://Assets/checkbox_default.png" id="6_3lj6o"]
-[ext_resource type="Texture2D" uid="uid://btylnllwvnf42" path="res://Assets/Items/button/button_smallHover.png" id="6_y43lv"]
 [ext_resource type="Texture2D" uid="uid://qeltpfjsldaq" path="res://Assets/BG/Panels/confirm_bg.png" id="7_3lj6o"]
 [ext_resource type="Texture2D" uid="uid://cm8w1hnsyuj66" path="res://Assets/BG/Panels/check.png" id="8_6mhpt"]
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_3lj6o"]
-bg_color = Color(0, 0, 0, 0.6745098)
-corner_radius_top_left = 8
-corner_radius_top_right = 8
-corner_radius_bottom_right = 8
-corner_radius_bottom_left = 8
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_82xqq"]
 
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_7eiv2"]
-texture = ExtResource("4_1k4ii")
-
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_tk3m0"]
-texture = ExtResource("5_82xqq")
-
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_fdp2d"]
-texture = ExtResource("6_y43lv")
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_y43lv"]
 
 [sub_resource type="ImageTexture" id="ImageTexture_ohexs"]
 
@@ -61,8 +48,9 @@ modulate_color = Color(0.37036446, 0.3703645, 0.37036446, 1)
 script = ExtResource("1_x2hje")
 
 [node name="TextureRect" type="TextureRect" parent="."]
-offset_right = 1184.0
-offset_bottom = 685.0
+modulate = Color(0.5409905, 0.5409905, 0.5409905, 1)
+offset_right = 1155.0
+offset_bottom = 651.0
 texture = ExtResource("2_gc0em")
 expand_mode = 1
 
@@ -71,7 +59,7 @@ offset_left = 142.0
 offset_top = 108.0
 offset_right = 1028.0
 offset_bottom = 536.0
-theme_override_styles/panel = SubResource("StyleBoxFlat_3lj6o")
+theme_override_styles/panel = SubResource("StyleBoxEmpty_82xqq")
 
 [node name="BackButton" type="Button" parent="Panel"]
 layout_mode = 0
@@ -79,24 +67,26 @@ offset_left = -102.0
 offset_top = -80.0
 offset_right = 48.0
 offset_bottom = -21.0
-theme_override_colors/font_color = Color(0, 0, 0, 1)
-theme_override_colors/font_pressed_color = Color(0, 0, 0, 1)
-theme_override_colors/font_hover_color = Color(0, 0, 0, 1)
-theme_override_colors/font_hover_pressed_color = Color(0, 0, 0, 1)
 theme_override_fonts/font = ExtResource("3_71mqq")
-theme_override_font_sizes/font_size = 38
-theme_override_styles/normal = SubResource("StyleBoxTexture_7eiv2")
-theme_override_styles/pressed = SubResource("StyleBoxTexture_tk3m0")
-theme_override_styles/hover = SubResource("StyleBoxTexture_fdp2d")
+theme_override_font_sizes/font_size = 40
+theme_override_styles/normal = SubResource("StyleBoxEmpty_y43lv")
 text = "Back"
+
+[node name="TextureRect2" type="TextureRect" parent="Panel/BackButton"]
+layout_mode = 0
+offset_top = -16.0
+offset_right = 142.0
+offset_bottom = 126.0
+texture = ExtResource("3_ohexs")
+expand_mode = 1
 
 [node name="Label4" type="Label" parent="Panel"]
 layout_mode = 1
 anchors_preset = -1
-anchor_left = 0.33306375
-anchor_top = 0.90090895
-anchor_right = 0.33306375
-anchor_bottom = 0.90090895
+anchor_left = 0.33983576
+anchor_top = 0.7700678
+anchor_right = 0.33983576
+anchor_bottom = 0.7700678
 offset_left = -4.0944824
 offset_top = -383.58902
 offset_right = 300.90552
@@ -110,6 +100,17 @@ text = "Settings"
 horizontal_alignment = 1
 vertical_alignment = 1
 metadata/_edit_use_anchors_ = true
+metadata/_edit_lock_ = true
+
+[node name="TextureRect" type="TextureRect" parent="Panel/Label4"]
+layout_mode = 0
+offset_left = 8.0
+offset_top = -26.0
+offset_right = 302.0
+offset_bottom = 268.0
+texture = ExtResource("5_1k4ii")
+expand_mode = 1
+metadata/_edit_lock_ = true
 
 [node name="Label2" type="Label" parent="Panel"]
 layout_mode = 1
@@ -126,14 +127,25 @@ theme_override_fonts/font = ExtResource("3_71mqq")
 theme_override_font_sizes/font_size = 48
 text = "Music volumn"
 metadata/_edit_use_anchors_ = true
+metadata/_edit_lock_ = true
+
+[node name="TextureRect" type="TextureRect" parent="Panel/Label2"]
+layout_mode = 0
+offset_left = -16.0
+offset_top = -85.0
+offset_right = 269.0
+offset_bottom = 200.0
+texture = ExtResource("3_ohexs")
+expand_mode = 1
+metadata/_edit_lock_ = true
 
 [node name="Label5" type="Label" parent="Panel"]
 layout_mode = 1
 anchors_preset = -1
 anchor_left = -1.227991
-anchor_top = 0.30607477
+anchor_top = 0.37850466
 anchor_right = -1.1805869
-anchor_bottom = 0.30607477
+anchor_bottom = 0.37850466
 offset_left = 1098.0
 offset_top = 23.0
 offset_right = 1305.0
@@ -142,14 +154,25 @@ theme_override_fonts/font = ExtResource("3_71mqq")
 theme_override_font_sizes/font_size = 48
 text = "SFX volumn"
 metadata/_edit_use_anchors_ = true
+metadata/_edit_lock_ = true
+
+[node name="TextureRect2" type="TextureRect" parent="Panel/Label5"]
+layout_mode = 0
+offset_left = -16.0
+offset_top = -75.0
+offset_right = 269.0
+offset_bottom = 210.0
+texture = ExtResource("3_ohexs")
+expand_mode = 1
+metadata/_edit_lock_ = true
 
 [node name="Label" type="Label" parent="Panel"]
 layout_mode = 1
 anchors_preset = -1
-anchor_left = -1.2663656
-anchor_top = -0.028037382
-anchor_right = -1.2437923
-anchor_bottom = -0.028037382
+anchor_left = -1.2776524
+anchor_top = 0.1682243
+anchor_right = -1.255079
+anchor_bottom = 0.1682243
 offset_left = 1132.0
 offset_top = 232.0
 offset_right = 1265.0
@@ -159,13 +182,23 @@ theme_override_font_sizes/font_size = 48
 text = "Mute all"
 metadata/_edit_use_anchors_ = true
 
+[node name="TextureRect3" type="TextureRect" parent="Panel/Label"]
+layout_mode = 0
+offset_left = -6.0
+offset_top = -77.0
+offset_right = 279.0
+offset_bottom = 208.0
+texture = ExtResource("3_ohexs")
+expand_mode = 1
+metadata/_edit_lock_ = true
+
 [node name="Label3" type="Label" parent="Panel"]
 layout_mode = 1
 anchors_preset = -1
-anchor_left = -2.1501129
-anchor_top = 0.66588783
-anchor_right = -2.1501129
-anchor_bottom = 0.66588783
+anchor_left = -1.5327314
+anchor_top = 0.15887848
+anchor_right = -1.5327314
+anchor_bottom = 0.15887848
 offset_left = 1915.0
 offset_top = 20.000015
 offset_right = 2202.0
@@ -175,13 +208,23 @@ theme_override_font_sizes/font_size = 48
 text = "Resoluti9on"
 metadata/_edit_use_anchors_ = true
 
+[node name="TextureRect4" type="TextureRect" parent="Panel/Label3"]
+layout_mode = 0
+offset_left = -46.0
+offset_top = -85.0
+offset_right = 239.0
+offset_bottom = 200.0
+texture = ExtResource("3_ohexs")
+expand_mode = 1
+metadata/_edit_lock_ = true
+
 [node name="Label6" type="Label" parent="Panel"]
 layout_mode = 1
 anchors_preset = -1
-anchor_left = -2.1501129
-anchor_top = 0.82009345
-anchor_right = -2.1501129
-anchor_bottom = 0.82009345
+anchor_left = -1.5327314
+anchor_top = 0.385514
+anchor_right = -1.5327314
+anchor_bottom = 0.385514
 offset_left = 1915.0
 offset_top = 20.000015
 offset_right = 2202.0
@@ -190,6 +233,15 @@ theme_override_fonts/font = ExtResource("3_71mqq")
 theme_override_font_sizes/font_size = 48
 text = "Windowed"
 metadata/_edit_use_anchors_ = true
+
+[node name="TextureRect5" type="TextureRect" parent="Panel/Label6"]
+layout_mode = 0
+offset_left = -46.0
+offset_top = -75.0
+offset_right = 239.0
+offset_bottom = 210.0
+texture = ExtResource("3_ohexs")
+expand_mode = 1
 
 [node name="MasterSlider" type="HSlider" parent="Panel"]
 visible = false
@@ -212,10 +264,10 @@ metadata/_edit_use_anchors_ = true
 [node name="MuteCheckBox" type="CheckBox" parent="Panel"]
 layout_mode = 1
 anchors_preset = -1
-anchor_left = -1.0880361
-anchor_top = -0.20560747
-anchor_right = -1.0880361
-anchor_bottom = -0.20560747
+anchor_left = -1.1027088
+anchor_top = -0.014018691
+anchor_right = -1.1027088
+anchor_bottom = -0.014018691
 offset_left = 1161.0
 offset_top = 301.0
 offset_right = 1190.0
@@ -271,18 +323,18 @@ value = 50.0
 [node name="SFXSlider" type="HSlider" parent="Panel"]
 layout_mode = 0
 offset_left = 316.0
-offset_top = 154.0
+offset_top = 185.0
 offset_right = 452.0
-offset_bottom = 185.0
+offset_bottom = 216.0
 step = 2.0
 value = 50.0
 
 [node name="WindowModeDropdown" type="OptionButton" parent="Panel"]
 layout_mode = 0
-offset_left = 316.0
-offset_top = 371.0
-offset_right = 430.0
-offset_bottom = 402.0
+offset_left = 821.0
+offset_top = 185.0
+offset_right = 935.0
+offset_bottom = 216.0
 item_count = 2
 popup/item_0/text = "Windowed"
 popup/item_0/id = 0
@@ -291,10 +343,10 @@ popup/item_1/id = 1
 
 [node name="ResolutionDropdown" type="OptionButton" parent="Panel"]
 layout_mode = 0
-offset_left = 316.0
-offset_top = 305.0
-offset_right = 439.0
-offset_bottom = 336.0
+offset_left = 821.0
+offset_top = 99.0
+offset_right = 944.0
+offset_bottom = 130.0
 item_count = 4
 popup/item_0/text = "1920 x 1080"
 popup/item_0/id = 0
