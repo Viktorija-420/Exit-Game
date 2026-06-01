@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://drjtvm76bwjig"
-path="res://.godot/imported/barrel3.png-42866207efb135d9ef0657cd101791f2.ctex"
+uid="uid://dd4d6jdvhdnl0"
+path="res://.godot/imported/pixel_art_large (2).png-4d005caa54f63b0564482c2e1df31c8b.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/Items/barrel/barrel3.png"
-dest_files=["res://.godot/imported/barrel3.png-42866207efb135d9ef0657cd101791f2.ctex"]
+source_file="res://Assets/BG/pixel_art_large (2).png"
+dest_files=["res://.godot/imported/pixel_art_large (2).png-4d005caa54f63b0564482c2e1df31c8b.ctex"]
 
 [params]
 

@@ -368,13 +368,12 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 offset_left = -1448.0
 offset_top = -672.0
-offset_right = 3552.0
+offset_right = 3900.4448
 offset_bottom = 1328.0
 grow_horizontal = 2
 grow_vertical = 2
 color = Color(0, 0, 0, 1)
 metadata/_edit_use_anchors_ = true
-metadata/_edit_lock_ = true
 
 [node name="Fade" type="ColorRect" parent="."]
 anchors_preset = 15
@@ -625,7 +624,7 @@ position = Vector2(778.0002, 173.00002)
 scale = Vector2(0.445, 0.445)
 
 [node name="Key" parent="." instance=ExtResource("13_tnvhp")]
-position = Vector2(-148, 684)
+position = Vector2(-493, 683)
 scale = Vector2(0.665, 0.665)
 
 [node name="Enemy2" parent="." instance=ExtResource("14_pay3o")]
@@ -644,7 +643,7 @@ position = Vector2(-346, 11)
 metadata/_edit_lock_ = true
 
 [node name="Player" parent="." instance=ExtResource("15_0aj8w")]
-position = Vector2(2183, 574)
+position = Vector2(-549, 660)
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 

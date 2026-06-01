@@ -61,6 +61,7 @@ func show_popup() -> void:
 	tween.tween_property(pop_level, "modulate:a", 0.0, 0.6)
 	tween.tween_callback(func(): pop_level.visible = false)
 
+# Change ONLY this function inside your Level 5 script!
 func _start_level_transition() -> void:
 	print("Level 5: Transition triggered!")
 	_transitioning = true
@@ -72,11 +73,12 @@ func _start_level_transition() -> void:
 		var t = create_tween()
 		t.tween_property(fade_rect, "modulate:a", 1.0, 0.6)
 		
-		# Instead of 'await', we use a direct connection
 		t.finished.connect(func():
-			print("Level 5: Fade complete. Switching NOW.")
-			get_tree().change_scene_to_file("res://level_6.tscn")
+			print("Level 5: Fade complete. Switching to Cutscene.")
+			# --- EDITED LINE HERE ---
+			get_tree().change_scene_to_file("res://cutscene_lvl_5_to_6.tscn")
 		)
 	else:
 		print("Level 5: No fade rect found, switching immediately.")
-		get_tree().change_scene_to_file("res://level_6.tscn")
+		# --- EDITED LINE HERE ---
+		get_tree().change_scene_to_file("res://cutscene_lvl_5_to_6.tscn")
