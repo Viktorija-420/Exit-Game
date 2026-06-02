@@ -110,6 +110,7 @@ var boss_camera: Camera2D = null
 @onready var enemy_hitbox: Area2D = $skelet_enemy_hitbox
 @onready var detection_area: Area2D = $DetArea
 @onready var hearts: Node2D = $Hearts_skelet
+@onready var hurt_sound: AudioStreamPlayer2D = $Hurt
 
 # -------------------------
 # READY
@@ -760,10 +761,14 @@ func _start_damage_cooldown(from_x: float):
 	var knockback_dir = 1 if global_position.x > from_x else -1
 	velocity.x = knockback_dir * 250
 	velocity.y = 0
+	
+	if hurt_sound and not hurt_sound.playing:
+		hurt_sound.play()
 
 	if anim:
 		if anim.sprite_frames.has_animation("hurt"):
 			anim.play("hurt")
+			hurt_sound.play()
 
 	await get_tree().create_timer(0.3).timeout
 

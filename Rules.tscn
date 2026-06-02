@@ -71,10 +71,10 @@ Complete all levels to win the game."
 
 [node name="Back" type="Button" parent="Menu/Panel"]
 layout_mode = 0
-offset_left = -115.0
-offset_top = -83.0
-offset_right = 4.0
-offset_bottom = -34.0
+offset_left = -102.0
+offset_top = -80.0
+offset_right = 17.0
+offset_bottom = -31.0
 theme_override_fonts/font = ExtResource("2_ag8e4")
 theme_override_font_sizes/font_size = 40
 theme_override_styles/normal = SubResource("StyleBoxEmpty_vat8u")
@@ -82,9 +82,9 @@ text = "  Back"
 
 [node name="TextureRect" type="TextureRect" parent="Menu/Panel/Back"]
 layout_mode = 0
-offset_left = -20.0
-offset_top = -30.0
-offset_right = 157.0
-offset_bottom = 147.0
+offset_left = -8.0
+offset_top = -25.0
+offset_right = 144.0
+offset_bottom = 127.0
 texture = ExtResource("6_h8jhf")
 expand_mode = 1

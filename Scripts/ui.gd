@@ -185,7 +185,7 @@ func _on_settings_pressed() -> void:
 		# Saglabājam pašreizējā līmeņa scēnas faila ceļu un uzstādām, ka bijām pauzē
 		Global.settings_return_path = get_tree().current_scene.scene_file_path
 		Global.was_paused = true
-	get_tree().change_scene_to_file("res://settings.tscn")
+	SceneManager.change_scene("res://Settings.tscn")
 
 func _on_rules_pressed() -> void:
 	if Global and get_tree().current_scene:

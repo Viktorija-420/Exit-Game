@@ -1,4 +1,4 @@
-[gd_scene load_steps=67 format=3 uid="uid://owcdohxei1cq"]
+[gd_scene load_steps=68 format=3 uid="uid://owcdohxei1cq"]
 
 [ext_resource type="Texture2D" uid="uid://c105bdo0stgj1" path="res://Assets/Players/Enemy/skeleton/idle_front.png" id="1_sv33q"]
 [ext_resource type="Script" uid="uid://ebmf56mcj536" path="res://skeleton.gd" id="1_ymvsc"]
@@ -13,6 +13,7 @@
 [ext_resource type="Texture2D" uid="uid://e7ht6r1t1ucn" path="res://Assets/Players/PlayerAssets/heartFull.png" id="5_uaaco"]
 [ext_resource type="FontFile" uid="uid://dir8slwrv7g00" path="res://Assets/OldeTome.ttf" id="7_rwpf0"]
 [ext_resource type="Texture2D" uid="uid://04ywk1pbfqmw" path="res://Assets/Players/Enemy/skeleton/jump-ezgif.com-gif-to-sprite-converter.png" id="7_x6jny"]
+[ext_resource type="AudioStream" uid="uid://djqon1doiodv8" path="res://Assets/Sound/skeleton/Skeleton_hurt.mp3" id="14_d56fl"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ft6oh"]
 size = Vector2(22, 64)
@@ -495,6 +496,11 @@ theme_override_font_sizes/font_size = 20
 horizontal_alignment = 1
 vertical_alignment = 1
 autowrap_mode = 2
+
+[node name="Hurt" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("14_d56fl")
+attenuation = 1.5157168
+bus = &"SFX"
 
 [connection signal="body_entered" from="DetArea" to="." method="_on_det_area_body_entered"]
 [connection signal="body_exited" from="DetArea" to="." method="_on_det_area_body_exited"]

@@ -410,7 +410,8 @@ autowrap_mode = 2
 
 [node name="HitSound" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource("36_ek41f")
-volume_db = -10.011
+volume_db = -20.0
+attenuation = 2.1435473
 bus = &"SFX"
 
 [node name="WalkSound" type="AudioStreamPlayer2D" parent="."]

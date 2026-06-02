@@ -1,9 +1,9 @@
-# MusicController.gd
-extends AudioStreamPlayer2D
+extends AudioStreamPlayer
 
 func play_music(path: String):
-	var song = load(path)
-	if stream == song:
-		return # Don't restart if it's already playing
-	stream = song
+	# Only load/play if it's a new song
+	if stream != null and stream.resource_path == path:
+		return
+		
+	stream = load(path)
 	play()
