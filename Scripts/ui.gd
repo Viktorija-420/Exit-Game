@@ -7,17 +7,16 @@ const COLOR_PRESSED := Color(0.85, 0.65, 0.75, 1.0)    # Pinkish-Grey
 
 # -------------------- NODES --------------------
 
-@onready var pause_menu: Control = get_node_or_null("PauseMenu") as Control
-@onready var blur_overlay: ColorRect = get_node_or_null("PauseMenu/BlurOverlay") as ColorRect
-@onready var main_menu_button: Button = get_node_or_null("PauseMenu/Panel/MainMenuButton") as Button
-@onready var settings_button: Button = get_node_or_null("PauseMenu/Panel/SettingButton") as Button
-@onready var rules_button: Button = get_node_or_null("PauseMenu/Panel/RulesButton") as Button
-@onready var exit_button: Button = get_node_or_null("PauseMenu/Panel/ExitButton") as Button
+@onready var pause_menu: Control = get_node_or_null("UI_Root/MainContainer/PauseMenu") as Control
+@onready var blur_overlay: ColorRect = get_node_or_null("UI_Root/MainContainer/PauseMenu/BlurOverlay") as ColorRect
+@onready var main_menu_button: Button = get_node_or_null("UI_Root/MainContainer/PauseMenu/Panel/MainMenuButton") as Button
+@onready var settings_button: Button = get_node_or_null("UI_Root/MainContainer/PauseMenu/Panel/SettingButton") as Button
+@onready var rules_button: Button = get_node_or_null("UI_Root/MainContainer/PauseMenu/Panel/RulesButton") as Button
+@onready var exit_button: Button = get_node_or_null("UI_Root/MainContainer/PauseMenu/Panel/ExitButton") as Button
 
-@onready var pause_button: Button = get_node_or_null("PauseButton") as Button
-@onready var game_over_label: Label = get_node_or_null("GameOverLabel") as Label
-@onready var fade: ColorRect = get_node_or_null("Fade") as ColorRect
-@onready var charge_bar: Range = get_node_or_null("ChargeBar") as Range
+@onready var pause_button: Button = get_node_or_null("UI_Root/MainContainer/PauseButton") as Button
+@onready var game_over_label: Label = get_node_or_null("UI_Root/MainContainer/GameOverLabel") as Label
+@onready var fade: ColorRect = get_node_or_null("UI_Root/MainContainer/Fade") as ColorRect
 
 # -------------------- EXPORTS --------------------
 
@@ -33,18 +32,11 @@ var hearts: Array[TextureRect] = []
 var full_textures: Array[Texture2D] = []
 var empty_textures: Array[Texture2D] = []
 
-# -------------------- CHARGE --------------------
-
-var _charge_target: float = 0.0
-var _charge_active: bool = false
-
-# -------------------- TWEEN --------------------
-
 var _tween: Tween
 
 # -------------------- Collect --------------------
 
-@onready var collect_ui: CanvasItem = get_node_or_null("Collect")
+@onready var collect_ui: CanvasItem = get_node_or_null("UI_Root/MainContainer/Collect")
 
 func _ready() -> void:
 	# UI must keep working when the game is paused
@@ -63,11 +55,13 @@ func _ready() -> void:
 	if pause_button:
 		pause_button.process_mode = Node.PROCESS_MODE_ALWAYS
 		_setup_button_visuals(pause_button)
-		# ✅ CRITICAL: Force the pause button to render on top of all layers
 		pause_button.move_to_front()
 		_safe_connect_pressed(pause_button, _on_pause_pressed)
 		_update_pause_button_text()
-
+	
+	var resume_button = get_node_or_null("UI_Root/MainContainer/PauseMenu/Panel/ResumeButton")
+	if resume_button: _safe_connect_pressed(resume_button, _on_resume_pressed)
+	
 	# Menu buttons with style handling
 	_setup_button_visuals(main_menu_button)
 	_setup_button_visuals(settings_button)
@@ -98,31 +92,23 @@ func _ready() -> void:
 		else:
 			fade.visible = false
 
-	# -------------------- Charge Bar Setup --------------------
-	if charge_bar:
-		charge_bar.process_mode = Node.PROCESS_MODE_ALWAYS
-		charge_bar.min_value = 0.0
-		charge_bar.max_value = 1.0
-		charge_bar.value = 0.0
-		charge_bar.visible = false
-
 	# -------------------- Hearts Setup --------------------
 	hearts = [
-		_must_get_heart("HeartsHolder/Hearts/heart1"),
-		_must_get_heart("HeartsHolder/Hearts/heart2"),
-		_must_get_heart("HeartsHolder/Hearts/heart3"),
-		_must_get_heart("HeartsHolder/Hearts/heart4"),
-		_must_get_heart("HeartsHolder/Hearts/heart5"),
-		_must_get_heart("HeartsHolder/Hearts/heart6")
+		_must_get_heart("UI_Root/MainContainer/HeartsHolder/Hearts/heart1"),
+		_must_get_heart("UI_Root/MainContainer/HeartsHolder/Hearts/heart2"),
+		_must_get_heart("UI_Root/MainContainer/HeartsHolder/Hearts/heart3"),
+		_must_get_heart("UI_Root/MainContainer/HeartsHolder/Hearts/heart4"),
+		_must_get_heart("UI_Root/MainContainer/HeartsHolder/Hearts/heart5"),
+		_must_get_heart("UI_Root/MainContainer/HeartsHolder/Hearts/heart6")
 	]
 
 	var empty_hearts: Array[TextureRect] = [
-		_must_get_heart("HeartsHolder/HeartsEmpty/heart1"),
-		_must_get_heart("HeartsHolder/HeartsEmpty/heart2"),
-		_must_get_heart("HeartsHolder/HeartsEmpty/heart3"),
-		_must_get_heart("HeartsHolder/HeartsEmpty/heart4"),
-		_must_get_heart("HeartsHolder/HeartsEmpty/heart5"),
-		_must_get_heart("HeartsHolder/HeartsEmpty/heart6")
+		_must_get_heart("UI_Root/MainContainer/HeartsHolder/HeartsEmpty/heart1"),
+		_must_get_heart("UI_Root/MainContainer/HeartsHolder/HeartsEmpty/heart2"),
+		_must_get_heart("UI_Root/MainContainer/HeartsHolder/HeartsEmpty/heart3"),
+		_must_get_heart("UI_Root/MainContainer/HeartsHolder/HeartsEmpty/heart4"),
+		_must_get_heart("UI_Root/MainContainer/HeartsHolder/HeartsEmpty/heart5"),
+		_must_get_heart("UI_Root/MainContainer/HeartsHolder/HeartsEmpty/heart6")
 	]
 
 	full_textures.clear()
@@ -132,7 +118,7 @@ func _ready() -> void:
 		full_textures.append(hearts[i].texture)
 		empty_textures.append(empty_hearts[i].texture)
 
-	var empty_holder: Node = get_node_or_null("HeartsHolder/HeartsEmpty")
+	var empty_holder: Node = get_node_or_null("UI_Root/MainContainer/HeartsHolder/HeartsEmpty")
 	if empty_holder:
 		(empty_holder as CanvasItem).visible = false
 
@@ -141,9 +127,6 @@ func _ready() -> void:
 		if not Global.lives_changed.is_connected(_on_lives_changed):
 			Global.lives_changed.connect(_on_lives_changed)
 		_on_lives_changed(Global.lives)
-
-	# Connect to player signal a moment later
-	call_deferred("_connect_charge_bar_to_player")
 	
 	if collect_ui:
 		collect_ui.visible = false
@@ -159,31 +142,12 @@ func _ready() -> void:
 			pause_button.move_to_front()
 		Global.was_paused = false # Atiestatām stāvokli drošībai
 		
-		
-func _process(delta: float) -> void:
-	if charge_bar == null:
-		return
-
-	# show while charging or draining
-	if _charge_active or charge_bar.value > 0.001:
-		charge_bar.visible = true
-
-	var speed := charge_fill_speed if _charge_target > charge_bar.value else charge_drain_speed
-	charge_bar.value = move_toward(charge_bar.value, _charge_target, speed * delta)
-
-	# hide when empty and not charging
-	if not _charge_active and charge_bar.value <= 0.001:
-		charge_bar.value = 0.0
-		charge_bar.visible = false
-
-
 # -------------------- PAUSE --------------------
 
 func _on_pause_pressed() -> void:
 	var now_paused := not get_tree().paused
 	get_tree().paused = now_paused
 
-	# Safety: if fade got stuck visible for any reason, never let it block UI
 	if fade:
 		fade.visible = false
 
@@ -192,7 +156,6 @@ func _on_pause_pressed() -> void:
 
 	_update_pause_button_text()
 	
-	# ✅ Keeps the pause button physically pushed to the absolute front of the layer draw stack
 	if pause_button:
 		pause_button.move_to_front()
 
@@ -233,26 +196,6 @@ func _on_rules_pressed() -> void:
 
 func _on_exit_pressed() -> void:
 	get_tree().quit()
-
-
-# -------------------- CHARGE BAR SIGNAL --------------------
-
-func _connect_charge_bar_to_player() -> void:
-	var player: Node = _find_player()
-	if player == null:
-		return
-
-	if not player.has_signal("charge_progress_changed"):
-		return
-
-	if not player.charge_progress_changed.is_connected(_on_charge_progress_changed):
-		player.charge_progress_changed.connect(_on_charge_progress_changed)
-
-func _on_charge_progress_changed(progress: float, charging: bool) -> void:
-	_charge_target = clamp(progress, 0.0, 1.0)
-	_charge_active = charging
-	if not charging:
-		_charge_target = 0.0
 
 
 func _find_player() -> Node:
@@ -313,10 +256,10 @@ func _must_get_heart(path: String) -> TextureRect:
 func fade_in(time: float = 0.5) -> void:
 	_kill_tween()
 
-	if fade == null:
+	if not fade:
 		return
 
-	fade.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	#fade.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	fade.visible = true
 	fade.modulate.a = 1.0
 

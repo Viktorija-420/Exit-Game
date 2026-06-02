@@ -124,6 +124,8 @@ func _physics_process(delta: float): # GALVENAIS CIKLS: izpildās katru fizikas 
 
 	if not controls_enabled or not player_alive: # Pārbaude: ja spēlētājs miris vai vadība izslēgta, aptur kustību
 		velocity.x = 0
+		# Labojums: ja vadība ir izslēgta cutscene dēļ, nodrošinām, ka spēlētājs nekarājas gaisā un paliek nekustīgs
+		velocity.y = 0 
 		move_and_slide()
 		return
 
@@ -248,6 +250,10 @@ func _handle_letter_input():
 # -------------------------
 func _update_animation(): # FUNKCIJA: Animāciju stāvokļu atjaunināšana
 	if not anim: return
+
+	# Papildu drošība: ja vadība ir atslēgta, nerādam kustību animācijas
+	if not controls_enabled:
+		return
 
 	if _hurt:
 		walk_sound.stop()
@@ -474,6 +480,14 @@ func _check_void_fall():
 # -------------------------
 func show_door_cutscene(door_pos: Vector2) -> void:
 	if not cam: return
+	
+	# LABOJUMS: Nekavējoties nopauzējam spēlētāja kustību, skaņas un iestatām Idle stāvokli
+	velocity = Vector2.ZERO
+	if walk_sound: 
+		walk_sound.stop()
+	if anim: 
+		anim.play("idle")
+
 	var original_zoom = cam.zoom
 	var target_zoom = Vector2(1.4, 1.4)
 	var offset_to_door = door_pos - global_position

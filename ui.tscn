@@ -31,110 +31,120 @@ shader_parameter/mix_color = Color(0.15, 0.15, 0.15, 0.35)
 process_mode = 3
 script = ExtResource("1_ibotj")
 
-[node name="TextureRect2" type="TextureRect" parent="."]
-offset_left = 31.0
-offset_top = -55.0
-offset_right = 385.0
-offset_bottom = 244.0
-texture = ExtResource("3_waa4j")
-expand_mode = 1
+[node name="UI_Root" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+metadata/_edit_use_anchors_ = true
 
-[node name="Lives" type="Label" parent="."]
+[node name="MainContainer" type="Control" parent="UI_Root"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="HeartsHolder" type="Control" parent="UI_Root/MainContainer"]
+layout_mode = 1
+anchors_preset = 0
+offset_left = 31.0
+offset_top = 26.0
+offset_right = 389.0
+offset_bottom = 108.0
+
+[node name="HeartsEmpty" type="HBoxContainer" parent="UI_Root/MainContainer/HeartsHolder"]
+layout_mode = 0
+offset_left = 129.0
+offset_top = 12.0
+offset_right = 530.2489
+offset_bottom = 217.36418
+scale = Vector2(0.28187215, 0.17529833)
+
+[node name="heart1" type="TextureRect" parent="UI_Root/MainContainer/HeartsHolder/HeartsEmpty"]
+layout_mode = 2
+texture = ExtResource("3_y4yjw")
+
+[node name="heart2" type="TextureRect" parent="UI_Root/MainContainer/HeartsHolder/HeartsEmpty"]
+layout_mode = 2
+texture = ExtResource("3_y4yjw")
+
+[node name="heart3" type="TextureRect" parent="UI_Root/MainContainer/HeartsHolder/HeartsEmpty"]
+layout_mode = 2
+texture = ExtResource("3_y4yjw")
+
+[node name="heart4" type="TextureRect" parent="UI_Root/MainContainer/HeartsHolder/HeartsEmpty"]
+layout_mode = 2
+texture = ExtResource("3_y4yjw")
+
+[node name="heart5" type="TextureRect" parent="UI_Root/MainContainer/HeartsHolder/HeartsEmpty"]
+layout_mode = 2
+texture = ExtResource("3_y4yjw")
+
+[node name="heart6" type="TextureRect" parent="UI_Root/MainContainer/HeartsHolder/HeartsEmpty"]
+layout_mode = 2
+texture = ExtResource("3_y4yjw")
+
+[node name="Hearts" type="HBoxContainer" parent="UI_Root/MainContainer/HeartsHolder"]
+layout_mode = 0
+offset_left = 129.0
+offset_top = 12.0
+offset_right = 530.2489
+offset_bottom = 217.36418
+scale = Vector2(0.28187215, 0.17529833)
+
+[node name="heart1" type="TextureRect" parent="UI_Root/MainContainer/HeartsHolder/Hearts"]
+layout_mode = 2
+texture = ExtResource("4_waa4j")
+
+[node name="heart2" type="TextureRect" parent="UI_Root/MainContainer/HeartsHolder/Hearts"]
+layout_mode = 2
+texture = ExtResource("4_waa4j")
+
+[node name="heart3" type="TextureRect" parent="UI_Root/MainContainer/HeartsHolder/Hearts"]
+layout_mode = 2
+texture = ExtResource("4_waa4j")
+
+[node name="heart4" type="TextureRect" parent="UI_Root/MainContainer/HeartsHolder/Hearts"]
+layout_mode = 2
+texture = ExtResource("4_waa4j")
+
+[node name="heart5" type="TextureRect" parent="UI_Root/MainContainer/HeartsHolder/Hearts"]
+layout_mode = 2
+texture = ExtResource("4_waa4j")
+
+[node name="heart6" type="TextureRect" parent="UI_Root/MainContainer/HeartsHolder/Hearts"]
+layout_mode = 2
+texture = ExtResource("4_waa4j")
+
+[node name="Lives" type="Label" parent="UI_Root/MainContainer/HeartsHolder"]
+layout_mode = 1
 anchors_preset = -1
 anchor_right = 0.056423612
 anchor_bottom = 0.024691353
-offset_left = 48.0
-offset_top = 38.0
-offset_right = 88.0
-offset_bottom = 61.000004
+offset_left = 17.0
+offset_top = 12.0
+offset_right = 121.0
+offset_bottom = 51.0
 theme_override_fonts/font = ExtResource("2_n5ude")
 theme_override_font_sizes/font_size = 40
 text = "Lives: "
 metadata/_edit_use_anchors_ = true
 
-[node name="GameOverLabel" type="Label" parent="."]
-visible = false
-offset_left = 710.00006
-offset_top = 12.0
-offset_right = 978.0592
-offset_bottom = 35.0
-scale = Vector2(1.6526206, 5.7151217)
-
-[node name="HeartsHolder" type="Control" parent="."]
-layout_mode = 3
-anchors_preset = 0
-offset_left = 31.0
-offset_top = 26.0
-offset_right = 71.0
-offset_bottom = 66.0
-
-[node name="HeartsEmpty" type="HBoxContainer" parent="HeartsHolder"]
+[node name="TextureRect2" type="TextureRect" parent="UI_Root/MainContainer/HeartsHolder"]
 layout_mode = 0
-offset_left = 129.0
-offset_top = 12.0
-offset_right = 530.2489
-offset_bottom = 217.36418
-scale = Vector2(0.28187215, 0.17529833)
+offset_top = -81.0
+offset_right = 354.0
+offset_bottom = 218.0
+texture = ExtResource("3_waa4j")
+expand_mode = 1
 
-[node name="heart1" type="TextureRect" parent="HeartsHolder/HeartsEmpty"]
-layout_mode = 2
-texture = ExtResource("3_y4yjw")
+[node name="Collect" type="Area2D" parent="UI_Root/MainContainer"]
 
-[node name="heart2" type="TextureRect" parent="HeartsHolder/HeartsEmpty"]
-layout_mode = 2
-texture = ExtResource("3_y4yjw")
-
-[node name="heart3" type="TextureRect" parent="HeartsHolder/HeartsEmpty"]
-layout_mode = 2
-texture = ExtResource("3_y4yjw")
-
-[node name="heart4" type="TextureRect" parent="HeartsHolder/HeartsEmpty"]
-layout_mode = 2
-texture = ExtResource("3_y4yjw")
-
-[node name="heart5" type="TextureRect" parent="HeartsHolder/HeartsEmpty"]
-layout_mode = 2
-texture = ExtResource("3_y4yjw")
-
-[node name="heart6" type="TextureRect" parent="HeartsHolder/HeartsEmpty"]
-layout_mode = 2
-texture = ExtResource("3_y4yjw")
-
-[node name="Hearts" type="HBoxContainer" parent="HeartsHolder"]
-layout_mode = 0
-offset_left = 129.0
-offset_top = 12.0
-offset_right = 530.2489
-offset_bottom = 217.36418
-scale = Vector2(0.28187215, 0.17529833)
-
-[node name="heart1" type="TextureRect" parent="HeartsHolder/Hearts"]
-layout_mode = 2
-texture = ExtResource("4_waa4j")
-
-[node name="heart2" type="TextureRect" parent="HeartsHolder/Hearts"]
-layout_mode = 2
-texture = ExtResource("4_waa4j")
-
-[node name="heart3" type="TextureRect" parent="HeartsHolder/Hearts"]
-layout_mode = 2
-texture = ExtResource("4_waa4j")
-
-[node name="heart4" type="TextureRect" parent="HeartsHolder/Hearts"]
-layout_mode = 2
-texture = ExtResource("4_waa4j")
-
-[node name="heart5" type="TextureRect" parent="HeartsHolder/Hearts"]
-layout_mode = 2
-texture = ExtResource("4_waa4j")
-
-[node name="heart6" type="TextureRect" parent="HeartsHolder/Hearts"]
-layout_mode = 2
-texture = ExtResource("4_waa4j")
-
-[node name="Collect" type="Area2D" parent="."]
-
-[node name="Label" type="Label" parent="Collect"]
+[node name="Label" type="Label" parent="UI_Root/MainContainer/Collect"]
 offset_left = 62.0
 offset_top = 541.0
 offset_right = 416.0
@@ -143,7 +153,7 @@ theme_override_fonts/font = ExtResource("2_n5ude")
 theme_override_font_sizes/font_size = 40
 text = "Collect the item with E"
 
-[node name="TextureRect" type="TextureRect" parent="Collect"]
+[node name="TextureRect" type="TextureRect" parent="UI_Root/MainContainer/Collect"]
 offset_left = 31.0
 offset_top = 397.0
 offset_right = 431.0
@@ -151,7 +161,9 @@ offset_bottom = 797.0
 texture = ExtResource("3_waa4j")
 metadata/_edit_lock_ = true
 
-[node name="PauseButton" type="Button" parent="."]
+[node name="PauseButton" type="Button" parent="UI_Root/MainContainer"]
+layout_mode = 1
+anchors_preset = -1
 offset_left = 944.0
 offset_top = 40.0
 offset_right = 1083.0
@@ -161,7 +173,7 @@ theme_override_font_sizes/font_size = 40
 theme_override_styles/normal = SubResource("StyleBoxEmpty_irxef")
 text = "Pause"
 
-[node name="TextureRect" type="TextureRect" parent="PauseButton"]
+[node name="TextureRect" type="TextureRect" parent="UI_Root/MainContainer/PauseButton"]
 layout_mode = 0
 offset_left = -26.0
 offset_top = -28.0
@@ -170,13 +182,13 @@ offset_bottom = 155.0
 texture = ExtResource("3_waa4j")
 expand_mode = 1
 
-[node name="PauseMenu" type="Control" parent="."]
-layout_mode = 3
+[node name="PauseMenu" type="Control" parent="UI_Root/MainContainer"]
+visible = false
 anchors_preset = 0
 offset_right = 40.0
 offset_bottom = 40.0
 
-[node name="BlurOverlay" type="ColorRect" parent="PauseMenu"]
+[node name="BlurOverlay" type="ColorRect" parent="UI_Root/MainContainer/PauseMenu"]
 material = SubResource("ShaderMaterial_n5rqp")
 layout_mode = 1
 anchors_preset = 15
@@ -188,7 +200,7 @@ grow_horizontal = 2
 grow_vertical = 2
 color = Color(0, 0, 0, 1)
 
-[node name="Panel" type="Panel" parent="PauseMenu"]
+[node name="Panel" type="Panel" parent="UI_Root/MainContainer/PauseMenu"]
 layout_mode = 0
 offset_left = 151.0
 offset_top = 183.0
@@ -196,7 +208,7 @@ offset_right = 995.0
 offset_bottom = 649.0
 theme_override_styles/panel = SubResource("StyleBoxTexture_gs482")
 
-[node name="Label" type="Label" parent="PauseMenu/Panel"]
+[node name="Label" type="Label" parent="UI_Root/MainContainer/PauseMenu/Panel"]
 layout_mode = 0
 offset_left = 339.0
 offset_top = 35.0
@@ -209,7 +221,7 @@ text = "Paused"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="TextureRect3" type="TextureRect" parent="PauseMenu/Panel"]
+[node name="TextureRect3" type="TextureRect" parent="UI_Root/MainContainer/PauseMenu/Panel"]
 layout_mode = 0
 offset_left = 250.0
 offset_top = -183.0
@@ -218,7 +230,7 @@ offset_bottom = 137.0
 texture = ExtResource("7_ok7cu")
 expand_mode = 1
 
-[node name="MainMenuButton" type="Button" parent="PauseMenu/Panel"]
+[node name="MainMenuButton" type="Button" parent="UI_Root/MainContainer/PauseMenu/Panel"]
 layout_mode = 0
 offset_left = 114.0
 offset_top = 106.0
@@ -229,7 +241,7 @@ theme_override_font_sizes/font_size = 40
 theme_override_styles/normal = SubResource("StyleBoxEmpty_e2l4f")
 text = "Main Menu"
 
-[node name="TextureRect2" type="TextureRect" parent="PauseMenu/Panel/MainMenuButton"]
+[node name="TextureRect2" type="TextureRect" parent="UI_Root/MainContainer/PauseMenu/Panel/MainMenuButton"]
 layout_mode = 0
 offset_left = -38.0
 offset_top = -55.0
@@ -238,7 +250,7 @@ offset_bottom = 185.0
 texture = ExtResource("3_waa4j")
 expand_mode = 1
 
-[node name="SettingButton" type="Button" parent="PauseMenu/Panel"]
+[node name="SettingButton" type="Button" parent="UI_Root/MainContainer/PauseMenu/Panel"]
 layout_mode = 0
 offset_left = 500.0
 offset_top = 106.0
@@ -249,7 +261,7 @@ theme_override_font_sizes/font_size = 40
 theme_override_styles/normal = SubResource("StyleBoxEmpty_n5rqp")
 text = "Settings"
 
-[node name="TextureRect3" type="TextureRect" parent="PauseMenu/Panel/SettingButton"]
+[node name="TextureRect3" type="TextureRect" parent="UI_Root/MainContainer/PauseMenu/Panel/SettingButton"]
 layout_mode = 0
 offset_left = -32.0
 offset_top = -57.0
@@ -258,7 +270,7 @@ offset_bottom = 183.0
 texture = ExtResource("3_waa4j")
 expand_mode = 1
 
-[node name="RulesButton" type="Button" parent="PauseMenu/Panel"]
+[node name="RulesButton" type="Button" parent="UI_Root/MainContainer/PauseMenu/Panel"]
 layout_mode = 0
 offset_left = 114.0
 offset_top = 214.0
@@ -269,7 +281,7 @@ theme_override_font_sizes/font_size = 40
 theme_override_styles/normal = SubResource("StyleBoxEmpty_gs482")
 text = "Rules"
 
-[node name="TextureRect4" type="TextureRect" parent="PauseMenu/Panel/RulesButton"]
+[node name="TextureRect4" type="TextureRect" parent="UI_Root/MainContainer/PauseMenu/Panel/RulesButton"]
 layout_mode = 0
 offset_left = -38.0
 offset_top = -57.0
@@ -278,7 +290,7 @@ offset_bottom = 183.0
 texture = ExtResource("3_waa4j")
 expand_mode = 1
 
-[node name="ExitButton" type="Button" parent="PauseMenu/Panel"]
+[node name="ExitButton" type="Button" parent="UI_Root/MainContainer/PauseMenu/Panel"]
 layout_mode = 0
 offset_left = 500.0
 offset_top = 214.0
@@ -289,7 +301,7 @@ theme_override_font_sizes/font_size = 40
 theme_override_styles/normal = SubResource("StyleBoxEmpty_cxd00")
 text = "Exit game"
 
-[node name="TextureRect5" type="TextureRect" parent="PauseMenu/Panel/ExitButton"]
+[node name="TextureRect5" type="TextureRect" parent="UI_Root/MainContainer/PauseMenu/Panel/ExitButton"]
 layout_mode = 0
 offset_left = -32.0
 offset_top = -57.0
@@ -298,8 +310,8 @@ offset_bottom = 183.0
 texture = ExtResource("3_waa4j")
 expand_mode = 1
 
-[node name="Rules" parent="." instance=ExtResource("8_ok7cu")]
+[node name="Rules" parent="UI_Root/MainContainer" instance=ExtResource("8_ok7cu")]
 visible = false
 
-[node name="Settings" parent="." instance=ExtResource("9_irxef")]
+[node name="Settings" parent="UI_Root/MainContainer" instance=ExtResource("9_irxef")]
 visible = false

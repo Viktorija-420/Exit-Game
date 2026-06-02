@@ -738,9 +738,6 @@ position = Vector2(-597, 199)
 rotation = -0.38397244
 scale = Vector2(0.63, 0.63)
 
-[node name="Player" parent="." instance=ExtResource("10_wyb3m")]
-position = Vector2(-491, 184)
-
 [node name="KeysAnimation" type="AnimatedSprite2D" parent="."]
 self_modulate = Color(18.892157, 18.892157, 18.892157, 0.3372549)
 position = Vector2(-402.00003, 134)
@@ -758,6 +755,9 @@ offset_bottom = -7.3124847
 theme_override_fonts/font = ExtResource("20_wyb3m")
 theme_override_font_sizes/font_size = 25
 text = "Move with:"
+
+[node name="Player" parent="." instance=ExtResource("10_wyb3m")]
+position = Vector2(-491, 184)
 
 [node name="Skelet2" type="Sprite2D" parent="."]
 position = Vector2(24, 325)

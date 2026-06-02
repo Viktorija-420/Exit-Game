@@ -1,9 +1,10 @@
 extends Control
 
 # -------------------- CONFIGURATION --------------------
-@export var type_speed: float = 0.03 # Seconds per character (lower is faster)
+@export var type_speed: float = 0.03 # Seconds per character
+@export var fade_duration: float = 1.0 # Cik sekundes ilgst fade efekts
 
-# -------------------- NODES (FIXED PATHS) --------------------
+# -------------------- NODES (FIXED & NEW PATHS) --------------------
 @onready var background: TextureRect = $Background
 @onready var speaker_label: Label = $DialogueCanvas/SpeakerLabel
 @onready var text_label: Label = $DialogueCanvas/TextLabel
@@ -11,35 +12,43 @@ extends Control
 @onready var choice_button_1: Button = $DialogueCanvas/ChoiceContainer/ChoiceButton1
 @onready var choice_button_2: Button = $DialogueCanvas/ChoiceContainer/ChoiceButton2
 
+# FADE LOGS - No jauna attēla redzams, ka tas atrodas zem DialogueCanvas
+@onready var fade_rect: ColorRect = $DialogueCanvas/FadeRect
+
+# THE END MEZGLS - No jauna attēla redzams, ka tas atrodas tieši zem EndingCutscene root
+@onready var the_end_label: Label = $TheEndLabel
+
 # -------------------- ASSETS --------------------
 @export var dream_texture: Texture2D
 @export var wizard_texture: Texture2D
+@export var the_end_texture: Texture2D # Šeit ievelc savu beigu bildi!
 
 # -------------------- VARIABLES --------------------
 var current_step: int = 0
 var tween: Tween
+var is_ending_sequence: bool = false # Bloķē peles klikšķus pašās beigās
 
 func _ready() -> void:
-	# Hide choices initially
 	choice_container.visible = false
+	the_end_label.visible = false # Sākumā paslēpjam beigu uzrakstu
 	
-	# Connect button signals
+	# Sagatavojam fade logu (sākumā caurspīdīgu, bet redzamu)
+	fade_rect.visible = true
+	fade_rect.modulate.a = 0.0
+	
 	choice_button_1.pressed.connect(_on_choice_1_pressed)
 	choice_button_2.pressed.connect(_on_choice_2_pressed)
 	
-	# Start the cutscene
 	_advance_dialogue()
 
-# Detect mouse clicks or 'ui_accept' (Space/Enter) to progress text
 func _input(event: InputEvent) -> void:
-	if choice_container.visible:
-		return # Disable manual progression when choices are on screen
+	if choice_container.visible or is_ending_sequence:
+		return 
 		
 	if event.is_action_pressed("ui_accept") or (event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT):
-		# If text is still typing, skip to the end of the line instead of advancing the step
 		if tween and tween.is_running():
 			tween.kill()
-			text_label.visible_characters = -1 # Show all characters immediately
+			text_label.visible_characters = -1 
 		else:
 			_advance_dialogue()
 
@@ -68,30 +77,21 @@ func _advance_dialogue() -> void:
 			speaker_label.text = "Wizard"
 			_type_text("Uhm well about that. Tell me the code first.")
 		7:
-			# Present Choice 1
 			_show_choices("What code?", "3452")
-		
-		# --- WIZARD TALKS AFTER THE CODE REVEAL ---
 		8:
 			speaker_label.text = "Wizard"
 			_type_text("The code to get out...")
 		9:
-			# Present Choice 2
 			_show_choices("9867", "7049")
 
-# --- TYPEWRITER CORE LOGIC ---
 func _type_text(new_text: String) -> void:
-	# Kill any running tween to avoid overlapping animations
 	if tween:
 		tween.kill()
 		
 	text_label.text = new_text
-	text_label.visible_characters = 0 # Hide all text initially
+	text_label.visible_characters = 0 
 	
-	# Calculate total typing time based on character count
 	var duration = new_text.length() * type_speed
-	
-	# Create and run the tween animation
 	tween = create_tween()
 	tween.tween_property(text_label, "visible_characters", new_text.length(), duration).set_trans(Tween.TRANS_LINEAR)
 
@@ -102,7 +102,6 @@ func _show_choices(choice1_text: String, choice2_text: String) -> void:
 
 func _on_choice_1_pressed() -> void:
 	choice_container.visible = false
-	
 	if text_label.text == "Uhm well about that. Tell me the code first.":
 		_advance_dialogue()
 	elif choice_button_1.text == "9867":
@@ -110,11 +109,12 @@ func _on_choice_1_pressed() -> void:
 
 func _on_choice_2_pressed() -> void:
 	choice_container.visible = false
-	
 	if choice_button_2.text == "3452":
 		_trigger_bad_ending()
 	elif choice_button_2.text == "7049":
 		_trigger_good_ending()
+
+# -------------------- BEIGU SCENĀRIJI --------------------
 
 func _trigger_bad_ending() -> void:
 	speaker_label.text = "Wizard"
@@ -122,18 +122,56 @@ func _trigger_bad_ending() -> void:
 	
 	await get_tree().create_timer(2.5).timeout
 	
-	print("Teleporting back to Level 1...")
+	# Melns fade uz Level 1
+	var fade_tween = create_tween()
+	fade_tween.tween_property(fade_rect, "modulate:a", 1.0, fade_duration)
+	await fade_tween.finished
+	
 	get_tree().change_scene_to_file("res://Level_01.tscn")
 
+
 func _trigger_good_ending() -> void:
+	is_ending_sequence = true # Apturam spēlētāja klikšķus, lai nevar skippot beigas
+	
 	speaker_label.text = "Wizard"
 	_type_text("Looks like you have been paying attention.")
-	
 	await get_tree().create_timer(2.5).timeout
 	
 	_type_text("Fine, leave. I don't want to see you here anymore.")
-	
 	await get_tree().create_timer(3.0).timeout
 	
-	print("Game Cleared! Returning to menu.")
+	# 1. Fade OUT uz melnu ekrānu (izmantojot FadeRect, kas atrodas iekš DialogueCanvas)
+	var fade_out = create_tween()
+	fade_out.tween_property(fade_rect, "modulate:a", 1.0, fade_duration)
+	await fade_out.finished
+	
+	# 2. Kamēr viss ir melns, paslēpjam VISUS dialogu elementus
+	speaker_label.visible = false
+	text_label.visible = false
+	
+	# Paslēpjam pārējās etiķetes un dekoratīvās bildes no DialogueCanvas, lai tās nerēgojas fonā
+	if has_node("DialogueCanvas/Label"): $DialogueCanvas/Label.visible = false
+	if has_node("DialogueCanvas/WizLabel"): $DialogueCanvas/WizLabel.visible = false
+	if has_node("DialogueCanvas/PlayLabel"): $DialogueCanvas/PlayLabel.visible = false
+	if has_node("DialogueCanvas/TextureRect"): $DialogueCanvas/TextureRect.visible = false
+	if has_node("DialogueCanvas/TextureRect2"): $DialogueCanvas/TextureRect2.visible = false
+	
+	# Nomainām galveno fonu uz "The End" tekstūru un ieslēdzam "The End" uzrakstu
+	background.texture = the_end_texture 
+	the_end_label.visible = true
+	
+	# 3. Fade IN (Noņemam melnumu. Tā kā FadeRect ir DialogueCanvas bērns, tas smuki atklās jauno fonu un TheEndLabel)
+	var fade_in = create_tween()
+	fade_in.tween_property(fade_rect, "modulate:a", 0.0, fade_duration)
+	await fade_in.finished
+	
+	# 4. Spēlētājs skatās uz beigu bildi un uzrakstu 5 sekundes
+	await get_tree().create_timer(5.0).timeout
+	
+	# 5. Gala Fade OUT pirms galvenās izvēlnes
+	var final_fade = create_tween()
+	final_fade.tween_property(fade_rect, "modulate:a", 1.0, fade_duration)
+	await final_fade.finished
+	
+	print("Spēle pabeigta! Atgriežamies galvenajā izvēlnē.")
 	get_tree().change_scene_to_file("res://MainMenu.tscn")

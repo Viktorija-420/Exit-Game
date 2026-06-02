@@ -480,6 +480,24 @@ rotation = 1.4032449
 scale = Vector2(0.02697222, 0.031063214)
 texture = ExtResource("18_jcnlr")
 
+[node name="Spike1" parent="." instance=ExtResource("14_s77qv")]
+position = Vector2(645, 470)
+
+[node name="Spike2" parent="." instance=ExtResource("14_s77qv")]
+position = Vector2(676, 470)
+
+[node name="Spike3" parent="." instance=ExtResource("14_s77qv")]
+position = Vector2(707, 470)
+
+[node name="Spike5" parent="." instance=ExtResource("14_s77qv")]
+position = Vector2(189, 466)
+
+[node name="Spike7" parent="." instance=ExtResource("14_s77qv")]
+position = Vector2(-195, 199)
+
+[node name="Spike9" parent="." instance=ExtResource("14_s77qv")]
+position = Vector2(285, 198)
+
 [node name="Player" parent="." instance=ExtResource("9_ehv2h")]
 position = Vector2(-609, 180)
 
@@ -507,21 +525,3 @@ color = Color(0, 0, 0, 1)
 [node name="UI" parent="." instance=ExtResource("11_eoq84")]
 fade_in_on_start = false
 charge_fill_speed = 1.5
-
-[node name="Spike1" parent="." instance=ExtResource("14_s77qv")]
-position = Vector2(645, 470)
-
-[node name="Spike2" parent="." instance=ExtResource("14_s77qv")]
-position = Vector2(676, 470)
-
-[node name="Spike3" parent="." instance=ExtResource("14_s77qv")]
-position = Vector2(707, 470)
-
-[node name="Spike5" parent="." instance=ExtResource("14_s77qv")]
-position = Vector2(189, 466)
-
-[node name="Spike7" parent="." instance=ExtResource("14_s77qv")]
-position = Vector2(-195, 199)
-
-[node name="Spike9" parent="." instance=ExtResource("14_s77qv")]
-position = Vector2(285, 198)

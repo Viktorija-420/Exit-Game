@@ -628,8 +628,7 @@ position = Vector2(1090, -56)
 scale = Vector2(0.665, 0.665)
 
 [node name="Player" parent="." instance=ExtResource("16_3a6t8")]
-position = Vector2(11, 336)
-metadata/_edit_lock_ = true
+position = Vector2(995, -46)
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 

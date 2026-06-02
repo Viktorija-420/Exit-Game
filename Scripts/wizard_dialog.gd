@@ -13,7 +13,6 @@ extends CanvasLayer
 # -------------------------
 @onready var fade: ColorRect = $Fade
 @onready var text_label: Label = $TextLabel
-@onready var enter_label: Label = $EnterLabel
 @onready var wiz_portrait: CanvasItem = get_node_or_null("WizLabel")
 @onready var player_portrait: CanvasItem = get_node_or_null("PlayLabel")
 @onready var option_button_1: Button = $Option1
@@ -63,7 +62,6 @@ func start_dialog() -> void:
 	_dialog_active = true
 	visible = true
 	
-	enter_label.visible = false
 	text_label.text = ""
 	option_button_1.visible = false
 	option_button_2.visible = false
@@ -114,7 +112,6 @@ func _play_line(index: int) -> void:
 	if entry.has("options"):
 		dialog_bg.visible = false
 		text_label.visible = false
-		enter_label.visible = false
 		_set_speaker_portrait(speaker)
 		_show_options(entry.options)
 		return
@@ -138,7 +135,6 @@ func _set_speaker_portrait(speaker: String) -> void:
 
 func _start_typing() -> void:
 	_typing = true
-	enter_label.visible = false
 	
 	var entry = _dialog[_line_index]
 	var speaker_name = str(entry.get("name", "")).to_lower()
@@ -165,14 +161,12 @@ func _start_typing() -> void:
 	_typing = false
 	if talk_sound: talk_sound.stop()
 	_finished_line = true
-	enter_label.visible = true
 
 func _finish_typing() -> void:
 	_typing = false
 	if talk_sound: talk_sound.stop()
 	text_label.text = _full_text
 	_finished_line = true
-	enter_label.visible = true
 
 func _next_line() -> void:
 	if _dialog[_line_index].has("next"):
@@ -198,12 +192,7 @@ func _end_dialog() -> void:
 # ENTER LABEL BLINKING
 # -------------------------
 func _blink_enter_label() -> void:
-	while _dialog_active:
-		if _finished_line:
-			enter_label.visible = !enter_label.visible
-		else:
-			enter_label.visible = false
-		await get_tree().create_timer(enter_blink_speed, true, false, true).timeout
+	await get_tree().create_timer(enter_blink_speed, true, false, true).timeout
 
 # -------------------------
 # OPTIONS HANDLING

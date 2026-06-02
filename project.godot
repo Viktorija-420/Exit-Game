@@ -26,8 +26,6 @@ Settings="*res://Settings.tscn"
 [display]
 
 window/stretch/mode="canvas_items"
-window/stretch/aspect="expand"
-window/stretch/scale_mode="integer"
 mouse_cursor/custom_image="uid://do7w7nskxkstl"
 
 [global_group]

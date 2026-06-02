@@ -8,14 +8,13 @@ extends CanvasLayer
 @export var type_speed: float = 0.05
 
 @onready var story_label: Label = $StoryLabel
-@onready var press_enter: Label = $EnterLabel
 @onready var fade: ColorRect = $Fade
 
 # The dialogue breakdown line-by-line
 var dialogue_lines: Array[String] = [
 	"*noises in the tower*",
-	"Player: How long is this going to take?",
-	"Player: It smells bad in here, I need to get out."
+	"How long is this going to take?",
+	"It smells bad in here, I need to get out."
 ]
 
 var current_line_index: int = 0
@@ -31,7 +30,6 @@ func _ready() -> void:
 		fade.modulate.a = 1.0 # Start completely black
 
 	story_label.text = ""
-	press_enter.visible = false
 
 	# Fade out the black screen to reveal the cutscene background
 	var t := create_tween()
@@ -39,12 +37,6 @@ func _ready() -> void:
 	t.set_ease(Tween.EASE_IN_OUT)
 	t.tween_property(fade, "modulate:a", 0.0, fade_in_time)
 	t.tween_callback(_display_current_line)
-
-func _process(delta: float) -> void:
-	# Blink the press enter prompt when a line is done typing
-	if _finished_line:
-		_blink_time += delta
-		press_enter.visible = int(_blink_time * 1.5) % 2 == 0
 
 func _unhandled_input(event: InputEvent) -> void:
 	if not event.is_action_pressed("ui_accept"):
@@ -59,7 +51,6 @@ func _unhandled_input(event: InputEvent) -> void:
 
 func _display_current_line() -> void:
 	_finished_line = false
-	press_enter.visible = false
 	_typing = true
 	_current_full_text = dialogue_lines[current_line_index]
 	story_label.text = ""
@@ -73,13 +64,11 @@ func _display_current_line() -> void:
 
 	_typing = false
 	_finished_line = true
-	press_enter.visible = true
 
 func _finish_typewriter() -> void:
 	story_label.text = _current_full_text
 	_typing = false
 	_finished_line = true
-	press_enter.visible = true
 
 func _advance_dialogue() -> void:
 	current_line_index += 1

@@ -454,7 +454,6 @@ position = Vector2(522, 990)
 metadata/_edit_lock_ = true
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
-visible = false
 
 [node name="popLevel" type="Label" parent="CanvasLayer"]
 offset_left = 500.0
@@ -477,6 +476,5 @@ grow_vertical = 2
 color = Color(0, 0, 0, 1)
 
 [node name="UI" parent="." instance=ExtResource("17_x34a3")]
-visible = false
 fade_in_on_start = false
 charge_fill_speed = 1.5

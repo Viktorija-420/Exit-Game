@@ -58,6 +58,18 @@ horizontal_alignment = 1
 vertical_alignment = 1
 autowrap_mode = 2
 
+[node name="EnterLabel2" type="Label" parent="."]
+offset_left = 44.0
+offset_top = 392.0
+offset_right = 299.0
+offset_bottom = 455.0
+theme_override_fonts/font = ExtResource("5_vlv3a")
+theme_override_font_sizes/font_size = 50
+text = "Player"
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 2
+
 [node name="Fade" type="ColorRect" parent="."]
 visible = false
 anchors_preset = 15

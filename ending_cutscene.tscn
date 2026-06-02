@@ -1,10 +1,11 @@
-[gd_scene load_steps=14 format=3 uid="uid://dxrjsus5p3hde"]
+[gd_scene load_steps=15 format=3 uid="uid://dxrjsus5p3hde"]
 
 [ext_resource type="Script" uid="uid://crljr0vrvhuqw" path="res://ending_cutscene.gd" id="1_ic4ab"]
-[ext_resource type="Texture2D" uid="uid://drtjbebug8pty" path="res://Assets/BG/dream_ending.png" id="2_dsofk"]
+[ext_resource type="Texture2D" uid="uid://bd4y2lfs31684" path="res://Assets/BG/dream_ending_cleanup.png" id="2_g5emf"]
 [ext_resource type="Texture2D" uid="uid://bed2g4opbnmeg" path="res://Assets/Items/button/dialog_box.png" id="2_qygyp"]
 [ext_resource type="Texture2D" uid="uid://dk4ma84kuxpem" path="res://Assets/BG/Door_ending_both.png" id="3_dsofk"]
 [ext_resource type="Texture2D" uid="uid://dsesr0b8muvv4" path="res://Assets/Items/button/confirm_bg.png" id="3_tk2eg"]
+[ext_resource type="Texture2D" uid="uid://dqxsumvegv4t3" path="res://Assets/BG/The end.png" id="4_g5emf"]
 [ext_resource type="FontFile" uid="uid://dir8slwrv7g00" path="res://Assets/OldeTome.ttf" id="4_h4c4u"]
 [ext_resource type="Texture2D" uid="uid://co88a1kl17xjh" path="res://Assets/Players/PlayerAssets/Wizard/wizardDialog.png" id="5_h4c4u"]
 [ext_resource type="Texture2D" uid="uid://8icxhtay0siw" path="res://Assets/Players/PlayerAssets/knightDialog.png" id="6_6lnuf"]
@@ -23,23 +24,53 @@ anchors_preset = 0
 offset_right = 40.0
 offset_bottom = 40.0
 script = ExtResource("1_ic4ab")
-dream_texture = ExtResource("2_dsofk")
+dream_texture = ExtResource("2_g5emf")
 wizard_texture = ExtResource("3_dsofk")
+the_end_texture = ExtResource("4_g5emf")
+
+[node name="ColorRect" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = 1112.0
+offset_bottom = 614.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 1)
 
 [node name="Background" type="TextureRect" parent="."]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = -35.0
-offset_top = -75.0
-offset_right = 1231.1249
+offset_right = 1112.0
 offset_bottom = 614.0
 grow_horizontal = 2
 grow_vertical = 2
 expand_mode = 1
 
+[node name="TheEndLabel" type="Label" parent="."]
+visible = false
+layout_mode = 0
+offset_left = 431.0
+offset_top = 276.0
+offset_right = 731.0
+offset_bottom = 373.0
+theme_override_fonts/font = ExtResource("4_h4c4u")
+theme_override_font_sizes/font_size = 100
+text = "The end"
+
 [node name="DialogueCanvas" type="CanvasLayer" parent="."]
+
+[node name="FadeRect" type="ColorRect" parent="DialogueCanvas"]
+visible = false
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 1)
 
 [node name="TextureRect" type="TextureRect" parent="DialogueCanvas"]
 offset_top = 465.0
