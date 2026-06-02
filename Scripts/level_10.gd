@@ -120,8 +120,7 @@ func _start_level_transition() -> void:
 		t.tween_property(fade_rect, "modulate:a", 1.0, 0.6)
 		
 		t.finished.connect(func():
-			print("Level 10: Fade complete. Ready for next scene.")
-			#get_tree().change_scene_to_file("res://level_11.tscn")
+			get_tree().change_scene_to_file("res://ending_cutscene.tscn")
 		)
 	#else:
 		#print("Level 10: No fade rect found, switching immediately.")
