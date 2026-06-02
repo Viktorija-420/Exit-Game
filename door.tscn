@@ -5,8 +5,8 @@
 [ext_resource type="Texture2D" uid="uid://yocrtunwedb7" path="res://Assets/MapTiles/door1.png" id="3_6hwww"]
 [ext_resource type="Texture2D" uid="uid://dcey8ctubf6w5" path="res://Assets/MapTiles/door2.png" id="4_v1oua"]
 [ext_resource type="Texture2D" uid="uid://8dq61xtywlbk" path="res://Assets/MapTiles/door3.png" id="5_ptf7r"]
-[ext_resource type="AudioStream" uid="uid://d1e7k1cisbfk3" path="res://Assets/Sound/creaky_door.mp3" id="6_6hwww"]
-[ext_resource type="AudioStream" uid="uid://vd4ki3x7o7d" path="res://Assets/Sound/locked_door.mp3" id="7_v1oua"]
+[ext_resource type="AudioStream" uid="uid://d1e7k1cisbfk3" path="res://Assets/Sound/BG/creaky_door.mp3" id="6_6hwww"]
+[ext_resource type="AudioStream" uid="uid://vd4ki3x7o7d" path="res://Assets/Sound/SFX/locked_door.mp3" id="7_v1oua"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_2gcrv"]
 animations = [{
@@ -64,10 +64,10 @@ metadata/_edit_lock_ = true
 
 [node name="DoorOpen" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource("6_6hwww")
-volume_db = -10.0
+volume_db = -15.0
 bus = &"SFX"
 
 [node name="DoorLocked" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource("7_v1oua")
-volume_db = -10.0
+volume_db = -15.0
 bus = &"SFX"

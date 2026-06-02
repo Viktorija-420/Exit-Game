@@ -21,7 +21,8 @@ extends Control
 # -------------------- ASSETS --------------------
 @export var dream_texture: Texture2D
 @export var wizard_texture: Texture2D
-@export var the_end_texture: Texture2D # Šeit ievelc savu beigu bildi!
+@export var the_end_texture: Texture2D
+@onready var talk_sound: AudioStreamPlayer2D = $TalkSound
 
 # -------------------- VARIABLES --------------------
 var current_step: int = 0
@@ -29,6 +30,8 @@ var tween: Tween
 var is_ending_sequence: bool = false # Bloķē peles klikšķus pašās beigās
 
 func _ready() -> void:
+	if talk_sound:
+		talk_sound.process_mode = Node.PROCESS_MODE_ALWAYS
 	choice_container.visible = false
 	the_end_label.visible = false # Sākumā paslēpjam beigu uzrakstu
 	
@@ -91,10 +94,27 @@ func _type_text(new_text: String) -> void:
 	text_label.text = new_text
 	text_label.visible_characters = 0 
 	
-	var duration = new_text.length() * type_speed
-	tween = create_tween()
-	tween.tween_property(text_label, "visible_characters", new_text.length(), duration).set_trans(Tween.TRANS_LINEAR)
-
+	# Loop through characters to play sound
+	for i in range(new_text.length()):
+		text_label.visible_characters = i + 1
+		
+		# Play sound if character is not a space
+		if new_text[i] != " ":
+			# Optional: Adjust pitch based on the speaker
+			if speaker_label.text == "Wizard":
+				talk_sound.pitch_scale = randf_range(1.8, 1.0)
+			else:
+				talk_sound.pitch_scale = randf_range(1.1, 1.3)
+				
+			talk_sound.play()
+		
+		# Wait for the duration of the type_speed
+		await get_tree().create_timer(type_speed).timeout
+	
+	# Ensure the label is fully visible at the end
+	text_label.visible_characters = -1
+	talk_sound.stop()
+	
 func _show_choices(choice1_text: String, choice2_text: String) -> void:
 	choice_button_1.text = choice1_text
 	choice_button_2.text = choice2_text

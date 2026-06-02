@@ -93,7 +93,7 @@ func _on_rules_pressed() -> void:
 func _on_settings_pressed() -> void:
 	Global.settings_return_path = "res://MainMenu.tscn"
 	Global.was_paused = false
-	get_tree().change_scene_to_file("res://Settings.tscn")
+	get_tree().change_scene_to_file("res://settings.tscn")
 
 func _on_quit_pressed() -> void:
 	get_tree().quit()

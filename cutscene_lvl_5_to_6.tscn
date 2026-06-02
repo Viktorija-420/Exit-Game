@@ -1,10 +1,11 @@
-[gd_scene load_steps=6 format=3 uid="uid://bb1ldc7vwre75"]
+[gd_scene load_steps=7 format=3 uid="uid://bb1ldc7vwre75"]
 
 [ext_resource type="Script" uid="uid://dnnkgvgk4s8x2" path="res://cutscene_lvl_5_to_6.gd" id="1_tohvn"]
 [ext_resource type="Texture2D" uid="uid://bfmk31hci405m" path="res://Assets/BG/pixel_art_large (3).png" id="2_tohvn"]
 [ext_resource type="Texture2D" uid="uid://bed2g4opbnmeg" path="res://Assets/Items/button/dialog_box.png" id="3_h1fjw"]
 [ext_resource type="Texture2D" uid="uid://dsesr0b8muvv4" path="res://Assets/Items/button/confirm_bg.png" id="4_df838"]
 [ext_resource type="FontFile" uid="uid://dir8slwrv7g00" path="res://Assets/OldeTome.ttf" id="5_vlv3a"]
+[ext_resource type="AudioStream" uid="uid://bk1foqejljd43" path="res://Assets/Sound/BG/mightuser-sound-of-dripping-water-from-stalactites-in-a-cave-hd-262342.mp3" id="6_h1fjw"]
 
 [node name="Cutscene_Lvl5_to_6" type="CanvasLayer"]
 script = ExtResource("1_tohvn")
@@ -78,3 +79,8 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 color = Color(0, 0, 0, 1)
+
+[node name="Waterdrop" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("6_h1fjw")
+volume_db = 5.0
+bus = &"SFX"

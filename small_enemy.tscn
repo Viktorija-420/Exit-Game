@@ -8,7 +8,7 @@
 [ext_resource type="Texture2D" uid="uid://ynpaqa8tdcx8" path="res://Assets/Players/BatEnemy/piskel_bat5.png" id="6_4iajm"]
 [ext_resource type="Texture2D" uid="uid://bun4eix6c1dkw" path="res://Assets/Players/BatEnemy/piskel_bat6.png" id="7_q8f7s"]
 [ext_resource type="Texture2D" uid="uid://e7ht6r1t1ucn" path="res://Assets/Players/PlayerAssets/heartFull.png" id="8_h4okp"]
-[ext_resource type="AudioStream" uid="uid://c307t4cs5pc5m" path="res://Assets/Sound/squeak.mp3" id="9_we8ff"]
+[ext_resource type="AudioStream" uid="uid://c307t4cs5pc5m" path="res://Assets/Sound/SFX/squeak.mp3" id="9_we8ff"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_hiam1"]
 animations = [{

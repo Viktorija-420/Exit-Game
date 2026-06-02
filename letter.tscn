@@ -9,8 +9,8 @@
 [ext_resource type="Texture2D" uid="uid://cpa81pw6ss17j" path="res://Assets/Items/mouse/mouseSprite.png" id="5_45yc0"]
 [ext_resource type="Texture2D" uid="uid://bt7ojegjnqcbx" path="res://Assets/MapTiles/white-line/4.png" id="6_fmnkl"]
 [ext_resource type="Texture2D" uid="uid://b42lhjpblww12" path="res://Assets/MapTiles/white-line/3.png" id="8_r0ivh"]
-[ext_resource type="AudioStream" uid="uid://du8k8m34teni0" path="res://Assets/Sound/PaperCollect.mp3" id="11_fmnkl"]
-[ext_resource type="AudioStream" uid="uid://mj00j6jbtx4b" path="res://Assets/Sound/Typing.mp3" id="12_u7clh"]
+[ext_resource type="AudioStream" uid="uid://du8k8m34teni0" path="res://Assets/Sound/SFX/PaperCollect.mp3" id="11_fmnkl"]
+[ext_resource type="AudioStream" uid="uid://mj00j6jbtx4b" path="res://Assets/Sound/SFX/Typing.mp3" id="12_u7clh"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_5gbsb"]
 size = Vector2(71.5, 48)

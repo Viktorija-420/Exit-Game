@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://cl2qqrwkmecow"]
 
-[ext_resource type="AudioStream" uid="uid://d7l4pnt23pg1" path="res://Assets/Sound/clavier-music-ambient-music-329699.ogg" id="1_auuaj"]
+[ext_resource type="AudioStream" uid="uid://d7l4pnt23pg1" path="res://Assets/Sound/BG/clavier-music-ambient-music-329699.ogg" id="1_auuaj"]
 [ext_resource type="Script" uid="uid://cldpytr3lmyg8" path="res://Scripts/audio_stream_player_2d.gd" id="2_443ge"]
 
 [node name="BGmusic" type="AudioStreamPlayer"]

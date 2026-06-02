@@ -8,8 +8,8 @@
 [ext_resource type="Texture2D" uid="uid://bfe5per67cay4" path="res://Assets/Items/button/button_small1.png" id="5_1nw6g"]
 [ext_resource type="Texture2D" uid="uid://gha3ugnkhq8v" path="res://Assets/Items/button/button_smallPressed.png" id="6_orub1"]
 [ext_resource type="Texture2D" uid="uid://btylnllwvnf42" path="res://Assets/Items/button/button_smallHover.png" id="7_ptpf1"]
-[ext_resource type="AudioStream" uid="uid://mj00j6jbtx4b" path="res://Assets/Sound/Typing.mp3" id="8_fm1if"]
-[ext_resource type="AudioStream" uid="uid://du8k8m34teni0" path="res://Assets/Sound/PaperCollect.mp3" id="9_i68bc"]
+[ext_resource type="AudioStream" uid="uid://mj00j6jbtx4b" path="res://Assets/Sound/SFX/Typing.mp3" id="8_fm1if"]
+[ext_resource type="AudioStream" uid="uid://du8k8m34teni0" path="res://Assets/Sound/SFX/PaperCollect.mp3" id="9_i68bc"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_fue27"]
 atlas = ExtResource("3_sln71")

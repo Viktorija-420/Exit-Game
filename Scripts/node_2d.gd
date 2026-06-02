@@ -1,7 +1,7 @@
 extends Node
 
 # Preload skaņu, lai tā vienmēr būtu atmiņā
-var button_click_sound = preload("res://Assets/Sound/button_bGApOblm.mp3")
+var button_click_sound = preload("res://Assets/Sound/SFX/button_bGApOblm.mp3")
 
 func _ready() -> void:
 	process_mode = Node.PROCESS_MODE_ALWAYS

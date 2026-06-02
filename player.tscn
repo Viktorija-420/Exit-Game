@@ -35,12 +35,12 @@
 [ext_resource type="Texture2D" uid="uid://ktklwb8nty0t" path="res://Assets/Items/pixil-frame-0 (1).png" id="31_634y6"]
 [ext_resource type="Texture2D" uid="uid://drq78ui5ehat5" path="res://Assets/Items/whitecircle.png" id="32_efrwb"]
 [ext_resource type="FontFile" uid="uid://dir8slwrv7g00" path="res://Assets/OldeTome.ttf" id="35_hl5qd"]
-[ext_resource type="AudioStream" uid="uid://bt7nyf5ylehpl" path="res://Assets/Sound/SwordSwing.mp3" id="36_ek41f"]
-[ext_resource type="AudioStream" uid="uid://dr3ecviwcyxnf" path="res://Assets/Sound/Walk.mp3" id="37_khis8"]
-[ext_resource type="AudioStream" uid="uid://dvqqeatnknobx" path="res://Assets/Sound/action_jump.mp3" id="38_331ug"]
-[ext_resource type="AudioStream" uid="uid://bojqngctybxx" path="res://Assets/Sound/land.mp3" id="39_331ug"]
-[ext_resource type="AudioStream" uid="uid://bj7w82tcgtm5i" path="res://Assets/Sound/umph_zqa4Xk0k.mp3" id="40_331ug"]
-[ext_resource type="AudioStream" uid="uid://b4acxfxcrcr2n" path="res://Assets/Sound/block.mp3" id="41_ny14h"]
+[ext_resource type="AudioStream" uid="uid://bt7nyf5ylehpl" path="res://Assets/Sound/SFX/SwordSwing.mp3" id="36_ek41f"]
+[ext_resource type="AudioStream" uid="uid://dr3ecviwcyxnf" path="res://Assets/Sound/SFX/Walk.mp3" id="37_khis8"]
+[ext_resource type="AudioStream" uid="uid://dvqqeatnknobx" path="res://Assets/Sound/SFX/action_jump.mp3" id="38_331ug"]
+[ext_resource type="AudioStream" uid="uid://bojqngctybxx" path="res://Assets/Sound/SFX/land.mp3" id="39_331ug"]
+[ext_resource type="AudioStream" uid="uid://bj7w82tcgtm5i" path="res://Assets/Sound/SFX/umph_zqa4Xk0k.mp3" id="40_331ug"]
+[ext_resource type="AudioStream" uid="uid://b4acxfxcrcr2n" path="res://Assets/Sound/SFX/block.mp3" id="41_ny14h"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_efrwb"]
 atlas = ExtResource("12_j5n4i")

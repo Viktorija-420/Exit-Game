@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=3 uid="uid://dxrjsus5p3hde"]
+[gd_scene load_steps=16 format=3 uid="uid://dxrjsus5p3hde"]
 
 [ext_resource type="Script" uid="uid://crljr0vrvhuqw" path="res://ending_cutscene.gd" id="1_ic4ab"]
 [ext_resource type="Texture2D" uid="uid://bd4y2lfs31684" path="res://Assets/BG/dream_ending_cleanup.png" id="2_g5emf"]
@@ -11,6 +11,7 @@
 [ext_resource type="Texture2D" uid="uid://8icxhtay0siw" path="res://Assets/Players/PlayerAssets/knightDialog.png" id="6_6lnuf"]
 [ext_resource type="Texture2D" uid="uid://d0j0tp2rkjikq" path="res://Assets/BG/Untitled design (1).png" id="9_dsofk"]
 [ext_resource type="FontFile" uid="uid://pvrnpf7ff56p" path="res://Assets/Nosifer-Regular.ttf" id="10_g5emf"]
+[ext_resource type="AudioStream" uid="uid://cysmvmufvagwo" path="res://Assets/Sound/SFX/Talking.mp3" id="12_evgmb"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_dsofk"]
 
@@ -173,3 +174,9 @@ theme_override_font_sizes/font_size = 20
 theme_override_styles/normal = SubResource("StyleBoxEmpty_tdqso")
 text = "4564"
 autowrap_mode = 2
+
+[node name="TalkSound" type="AudioStreamPlayer2D" parent="."]
+process_mode = 3
+stream = ExtResource("12_evgmb")
+max_polyphony = 4
+bus = &"SFX"

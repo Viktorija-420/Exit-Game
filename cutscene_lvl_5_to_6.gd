@@ -10,6 +10,8 @@ extends CanvasLayer
 @onready var story_label: Label = $StoryLabel
 @onready var fade: ColorRect = $Fade
 
+@onready var waterdrop_player: AudioStreamPlayer2D = $Waterdrop
+
 # The dialogue breakdown line-by-line
 var dialogue_lines: Array[String] = [
 	"*noises in the tower*",
@@ -25,6 +27,9 @@ var _finished_line := false
 var _transitioning := false
 
 func _ready() -> void:
+	
+	waterdrop_player.play()
+	
 	if fade:
 		fade.visible = true
 		fade.modulate.a = 1.0 # Start completely black

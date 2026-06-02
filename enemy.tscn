@@ -9,7 +9,7 @@
 [ext_resource type="Texture2D" uid="uid://r7yghpbvc5c3" path="res://Assets/Players/Enemy/idle1.png" id="5_pwjut"]
 [ext_resource type="Texture2D" uid="uid://crvo8ri10l2yh" path="res://Assets/Players/Enemy/idle2.png" id="6_n0g06"]
 [ext_resource type="Texture2D" uid="uid://dix32aay2bq2p" path="res://Assets/Players/Enemy/walkSide1.png" id="7_ar8e5"]
-[ext_resource type="AudioStream" uid="uid://dlta2hgt5gdl0" path="res://Assets/Sound/MonsterWREW.mp3" id="10_dxifv"]
+[ext_resource type="AudioStream" uid="uid://dlta2hgt5gdl0" path="res://Assets/Sound/SFX/MonsterWREW.mp3" id="10_dxifv"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_doop2"]
 animations = [{
