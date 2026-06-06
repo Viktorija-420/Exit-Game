@@ -57,17 +57,18 @@ text = "Rules"
 
 [node name="RuleText" type="Label" parent="Menu/Panel"]
 layout_mode = 0
-offset_left = 40.0
-offset_top = 133.0
-offset_right = 871.0
-offset_bottom = 409.0
+offset_left = 17.0
+offset_top = 118.0
+offset_right = 885.0
+offset_bottom = 410.0
+theme_override_colors/font_color = Color(1, 1, 0.84313726, 1)
 theme_override_fonts/font = ExtResource("2_ag8e4")
-theme_override_font_sizes/font_size = 48
-text = "Reach the exit door to complete each level.
-Avoid obstacles – touching them costs one life.
-If you lose all lives, the game is over.
-Each level becomes more difficult.
-Complete all levels to win the game."
+theme_override_font_sizes/font_size = 33
+text = "To win the game, you must successfully navigate through all levels and reach the Exit Door at the end of each level.
+However, the challenge increases with every new level as you face faster, trickier layouts.
+You must carefully avoid both hazardous obstacles and roaming enemies, as colliding with either will cost you one life.
+Keep an eye on your health, if you lose all your lives, the level restarts!"
+autowrap_mode = 2
 
 [node name="Back" type="Button" parent="Menu/Panel"]
 layout_mode = 0

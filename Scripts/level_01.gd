@@ -4,7 +4,7 @@ extends Node2D
 @onready var collect_label: Label = $CanvasLayer/popLevel
 @onready var door: Area2D = $Door
 @onready var keys_anim: AnimatedSprite2D = $KeysAnimation
-@onready var fade_rect: ColorRect = $CanvasLayer/Fade   # <-- ADD THIS NODE\
+@onready var fade_rect: ColorRect = $CanvasLayer/Fade
 @export var fade_time: float = 0.3
 
 # -------------------- EXPORTS --------------------
@@ -38,6 +38,8 @@ func show_popup() -> void:
 	collect_label.modulate.a = 0.0
 
 	var tween = create_tween()
+	tween.set_pause_mode(Tween.TWEEN_PAUSE_PROCESS)
+	
 	tween.tween_property(collect_label, "modulate:a", 1.0, fade_in_time)
 	tween.tween_interval(visible_time)
 	tween.tween_property(collect_label, "modulate:a", 0.0, fade_out_time)
@@ -52,6 +54,7 @@ func show_popup() -> void:
 		keys_anim.play("Keys")
 
 		var key_tween = create_tween()
+		key_tween.set_pause_mode(Tween.TWEEN_PAUSE_PROCESS)
 		key_tween.tween_interval(fade_in_time + visible_time)
 		key_tween.tween_property(keys_anim, "modulate:a", 0.0, 0.6)
 		key_tween.tween_callback(func() -> void:

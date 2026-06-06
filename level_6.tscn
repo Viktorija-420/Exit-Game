@@ -1,4 +1,4 @@
-[gd_scene load_steps=21 format=3 uid="uid://clsiicadferye"]
+[gd_scene load_steps=22 format=3 uid="uid://clsiicadferye"]
 
 [ext_resource type="Script" uid="uid://bmx1y27dkdjho" path="res://Scripts/level_6.gd" id="1_0jxqs"]
 [ext_resource type="Texture2D" uid="uid://3odl545e1xpn" path="res://Assets/MapTiles/dungeon.png" id="2_eu30q"]
@@ -9,6 +9,7 @@
 [ext_resource type="PackedScene" uid="uid://du0hwb0eypl2b" path="res://torch.tscn" id="9_6dh2k"]
 [ext_resource type="PackedScene" uid="uid://c5e6vacdoq3wc" path="res://start_door.tscn" id="10_ylvhy"]
 [ext_resource type="PackedScene" uid="uid://by34ttobbn6b6" path="res://door.tscn" id="11_ds035"]
+[ext_resource type="PackedScene" uid="uid://cvmqthsogd2xy" path="res://enemy.tscn" id="11_dxhc4"]
 [ext_resource type="PackedScene" uid="uid://ctf1opklifh2j" path="res://spike_1.tscn" id="12_rbqkx"]
 [ext_resource type="PackedScene" uid="uid://l6cnneiy5m02" path="res://key.tscn" id="14_nk7lp"]
 [ext_resource type="PackedScene" uid="uid://bni1x4r8t3keq" path="res://player.tscn" id="16_3a6t8"]
@@ -557,17 +558,11 @@ position = Vector2(-1005, 979)
 [node name="Spike11" parent="." instance=ExtResource("12_rbqkx")]
 position = Vector2(-856, 979)
 
-[node name="Spike12" parent="." instance=ExtResource("12_rbqkx")]
-position = Vector2(-585, 979)
-
 [node name="Spike14" parent="." instance=ExtResource("12_rbqkx")]
 position = Vector2(-166, 979)
 
 [node name="Spike15" parent="." instance=ExtResource("12_rbqkx")]
 position = Vector2(-107, 979)
-
-[node name="Spike18" parent="." instance=ExtResource("12_rbqkx")]
-position = Vector2(-224, 768)
 
 [node name="Spike19" parent="." instance=ExtResource("12_rbqkx")]
 position = Vector2(74, 948)
@@ -577,9 +572,6 @@ position = Vector2(764, 919)
 
 [node name="Spike21" parent="." instance=ExtResource("12_rbqkx")]
 position = Vector2(1366, 857)
-
-[node name="Spike23" parent="." instance=ExtResource("12_rbqkx")]
-position = Vector2(1995, 648)
 
 [node name="Spike24" parent="." instance=ExtResource("12_rbqkx")]
 position = Vector2(1486, 557)
@@ -623,12 +615,27 @@ position = Vector2(-136, 979)
 [node name="Spike13" parent="." instance=ExtResource("12_rbqkx")]
 position = Vector2(-825, 979)
 
+[node name="Enemy2" parent="." instance=ExtResource("11_dxhc4")]
+position = Vector2(938, 302)
+
+[node name="Enemy3" parent="." instance=ExtResource("11_dxhc4")]
+position = Vector2(1801, 545)
+
+[node name="Enemy4" parent="." instance=ExtResource("11_dxhc4")]
+position = Vector2(-900, 40)
+
+[node name="Enemy5" parent="." instance=ExtResource("11_dxhc4")]
+position = Vector2(136, -24)
+
+[node name="Enemy6" parent="." instance=ExtResource("11_dxhc4")]
+position = Vector2(-1407, 966)
+
 [node name="Key" parent="." instance=ExtResource("14_nk7lp")]
 position = Vector2(1090, -56)
 scale = Vector2(0.665, 0.665)
 
 [node name="Player" parent="." instance=ExtResource("16_3a6t8")]
-position = Vector2(-181, 316)
+position = Vector2(-166, 337)
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 

@@ -159,6 +159,16 @@ func _on_pause_pressed() -> void:
 	if pause_button:
 		pause_button.move_to_front()
 
+func _unhandled_input(event: InputEvent) -> void:
+	if event.is_action_pressed("ui_cancel"):
+		# Use get_viewport().set_input_as_handled() to prevent other nodes 
+		# from reacting to this specific ESC press.
+		get_viewport().set_input_as_handled()
+		
+		# Call your existing pause toggle function
+		_on_pause_pressed()
+		
+		
 func _on_resume_pressed() -> void:
 	get_tree().paused = false
 

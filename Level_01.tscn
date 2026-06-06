@@ -716,6 +716,7 @@ scale = Vector2(0.67, 0.67)
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
 [node name="popLevel" type="Label" parent="CanvasLayer"]
+process_mode = 3
 offset_left = 500.0
 offset_top = 29.0
 offset_right = 645.0

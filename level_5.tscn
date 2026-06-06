@@ -624,7 +624,7 @@ position = Vector2(778.0002, 173.00002)
 scale = Vector2(0.445, 0.445)
 
 [node name="Key" parent="." instance=ExtResource("13_tnvhp")]
-position = Vector2(-136, 695)
+position = Vector2(-139, 691)
 scale = Vector2(0.665, 0.665)
 
 [node name="Enemy2" parent="." instance=ExtResource("14_pay3o")]
@@ -643,7 +643,7 @@ position = Vector2(-346, 11)
 metadata/_edit_lock_ = true
 
 [node name="Player" parent="." instance=ExtResource("15_0aj8w")]
-position = Vector2(2211, 554)
+position = Vector2(2035, 573)
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
