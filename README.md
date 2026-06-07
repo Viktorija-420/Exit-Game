@@ -12,7 +12,6 @@
 
 ## Spēles procesa demonstrācija (Screenshots & Gameplay)
 
-### Spēles process
 <img width="800" height="449" alt="ezgif com-video-to-gif-converter" src="https://github.com/user-attachments/assets/5a983fdc-0ca1-4595-ba06-e28191704cad" />
 
 ### 🖼️ Ekrānuzņēmumi (Screenshots)
