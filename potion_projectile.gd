@@ -7,15 +7,13 @@ extends Area2D
 @export var potion_gravity: float = 700.0      
 @export var initial_throw_force: float = -250.0 
 
-# Track vertical movement velocity
 var velocity_y: float = 0.0
-
-# This variable is set dynamically by the skeleton when it instantiates the scene!
 var direction: int = 1
 var shooter: Node2D = null
 
 @onready var sprite: Sprite2D = $Sprite2D
 @onready var splash_particles: CPUParticles2D = $SplashParticles
+@onready var break_sound: AudioStreamPlayer2D = $Break
 
 func set_shooter(node: Node2D):
 	shooter = node
@@ -56,12 +54,16 @@ func _on_body_entered(body: Node2D):
 func _shatter_potion():
 	if splash_particles:
 		var global_pos = splash_particles.global_position
-		if splash_particles.get_parent():
-			splash_particles.get_parent().remove_child(splash_particles)
+		remove_child(splash_particles)
 		get_parent().add_child(splash_particles)
 		splash_particles.global_position = global_pos
-		
 		splash_particles.emitting = true
 		get_tree().create_timer(splash_particles.lifetime).timeout.connect(splash_particles.queue_free)
-		
+	
+	# Play break sound before freeing
+	if break_sound:
+		break_sound.reparent(get_parent())
+		break_sound.play()
+		get_tree().create_timer(break_sound.stream.get_length()).timeout.connect(break_sound.queue_free)
+	
 	queue_free()

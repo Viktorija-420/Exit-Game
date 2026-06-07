@@ -1,7 +1,8 @@
-[gd_scene load_steps=4 format=3 uid="uid://ndk7lfaty40h"]
+[gd_scene load_steps=5 format=3 uid="uid://ndk7lfaty40h"]
 
 [ext_resource type="Texture2D" uid="uid://4lbu41v4cvxh" path="res://Assets/Items/potion/pt1.png" id="1_0py50"]
 [ext_resource type="Script" uid="uid://b08dq1buvg8vw" path="res://potion_projectile.gd" id="1_2kc2x"]
+[ext_resource type="AudioStream" uid="uid://4hi33qsim1cq" path="res://Assets/Sound/SFX/freesound-community-glass-bottle-shatter-84593_LGRoTNzU.mp3" id="3_3e2fm"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_2kc2x"]
 radius = 12.0
@@ -31,3 +32,7 @@ gravity = Vector2(0, 500)
 initial_velocity_min = 100.0
 initial_velocity_max = 150.0
 color = Color(0.694115, 0.14019912, 0.1666224, 1)
+
+[node name="Break" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("3_3e2fm")
+volume_db = 5.0
