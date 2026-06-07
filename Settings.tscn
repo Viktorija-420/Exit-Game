@@ -1,15 +1,12 @@
-[gd_scene load_steps=25 format=3 uid="uid://bhwfktc4xv6gw"]
+[gd_scene load_steps=16 format=3 uid="uid://bhwfktc4xv6gw"]
 
 [ext_resource type="Script" uid="uid://gyoxwu06tw2" path="res://Scripts/settings.gd" id="1_x2hje"]
 [ext_resource type="Texture2D" uid="uid://bustj4x2edmbt" path="res://Assets/BG/RulesBG.png" id="2_gc0em"]
 [ext_resource type="FontFile" uid="uid://dir8slwrv7g00" path="res://Assets/OldeTome.ttf" id="3_71mqq"]
-[ext_resource type="Texture2D" uid="uid://bniuv44g42kkx" path="res://Assets/BG/Panels/slider_box.png" id="3_cj1lu"]
 [ext_resource type="Texture2D" uid="uid://b42lhjpblww12" path="res://Assets/MapTiles/white-line/3.png" id="3_ohexs"]
 [ext_resource type="Texture2D" uid="uid://bt7ojegjnqcbx" path="res://Assets/MapTiles/white-line/4.png" id="5_1k4ii"]
 [ext_resource type="Texture2D" uid="uid://dbbgc0igxior8" path="res://Assets/BG/Panels/checkbox_check.png" id="5_3j6r5"]
 [ext_resource type="Texture2D" uid="uid://4q6xxslxnpvd" path="res://Assets/checkbox_default.png" id="6_3lj6o"]
-[ext_resource type="Texture2D" uid="uid://qeltpfjsldaq" path="res://Assets/BG/Panels/confirm_bg.png" id="7_3lj6o"]
-[ext_resource type="Texture2D" uid="uid://cm8w1hnsyuj66" path="res://Assets/BG/Panels/check.png" id="8_6mhpt"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_82xqq"]
 
@@ -26,23 +23,6 @@
 [sub_resource type="ImageTexture" id="ImageTexture_7eiv2"]
 
 [sub_resource type="ImageTexture" id="ImageTexture_tk3m0"]
-
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_ohexs"]
-texture = ExtResource("7_3lj6o")
-
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_3lj6o"]
-texture = ExtResource("7_3lj6o")
-modulate_color = Color(0.99997205, 0.089436226, 0.2440652, 1)
-
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_6mhpt"]
-texture = ExtResource("7_3lj6o")
-modulate_color = Color(0.37036446, 0.3703645, 0.37036446, 1)
-
-[sub_resource type="ImageTexture" id="ImageTexture_3lj6o"]
-
-[sub_resource type="ImageTexture" id="ImageTexture_6mhpt"]
-
-[sub_resource type="ImageTexture" id="ImageTexture_fdp2d"]
 
 [node name="Settings" type="Node2D"]
 script = ExtResource("1_x2hje")
@@ -243,24 +223,6 @@ offset_bottom = 210.0
 texture = ExtResource("3_ohexs")
 expand_mode = 1
 
-[node name="MasterSlider" type="HSlider" parent="Panel"]
-visible = false
-layout_mode = 1
-anchors_preset = -1
-anchor_left = -1.2765237
-anchor_top = 1.2920561
-anchor_right = -1.1104761
-anchor_bottom = 1.3058908
-offset_left = 997.0
-offset_top = -53.0
-offset_right = 1005.0
-offset_bottom = -29.0
-scale = Vector2(1.27, 1.27)
-theme_override_icons/grabber = ExtResource("3_cj1lu")
-theme_override_icons/grabber_highlight = ExtResource("3_cj1lu")
-theme_override_icons/grabber_disabled = ExtResource("3_cj1lu")
-metadata/_edit_use_anchors_ = true
-
 [node name="MuteCheckBox" type="CheckBox" parent="Panel"]
 layout_mode = 1
 anchors_preset = -1
@@ -281,35 +243,6 @@ theme_override_icons/checked_disabled = SubResource("ImageTexture_82xqq")
 theme_override_icons/unchecked_disabled = SubResource("ImageTexture_y43lv")
 theme_override_icons/radio_checked_disabled = SubResource("ImageTexture_7eiv2")
 theme_override_icons/radio_unchecked_disabled = SubResource("ImageTexture_tk3m0")
-metadata/_edit_use_anchors_ = true
-
-[node name="QualityDropdown" type="OptionButton" parent="Panel"]
-visible = false
-layout_mode = 1
-anchors_preset = -1
-anchor_left = -3.3819385
-anchor_top = 1.2171643
-anchor_right = -3.3819385
-anchor_bottom = 1.2171643
-offset_left = 3044.3975
-offset_top = -20.946259
-offset_right = 3324.3975
-offset_bottom = 36.05374
-theme_override_font_sizes/font_size = 28
-theme_override_styles/normal = SubResource("StyleBoxTexture_ohexs")
-theme_override_styles/pressed = SubResource("StyleBoxTexture_3lj6o")
-theme_override_styles/hover = SubResource("StyleBoxTexture_6mhpt")
-theme_override_icons/arrow = ExtResource("8_6mhpt")
-item_count = 3
-popup/item_0/text = "Low"
-popup/item_0/icon = SubResource("ImageTexture_3lj6o")
-popup/item_0/id = 0
-popup/item_1/text = "Normal"
-popup/item_1/icon = SubResource("ImageTexture_6mhpt")
-popup/item_1/id = 1
-popup/item_2/text = "High"
-popup/item_2/icon = SubResource("ImageTexture_fdp2d")
-popup/item_2/id = 2
 metadata/_edit_use_anchors_ = true
 
 [node name="MusicSlider" type="HSlider" parent="Panel"]
@@ -358,9 +291,7 @@ popup/item_3/text = "1024 x 576"
 popup/item_3/id = 3
 
 [connection signal="pressed" from="Panel/BackButton" to="." method="_on_back_button_pressed"]
-[connection signal="value_changed" from="Panel/MasterSlider" to="." method="_on_h_slider_value_changed"]
 [connection signal="toggled" from="Panel/MuteCheckBox" to="." method="_on_check_box_toggled"]
-[connection signal="item_selected" from="Panel/QualityDropdown" to="." method="_on_quality_dropdown_item_selected"]
 [connection signal="value_changed" from="Panel/MusicSlider" to="." method="_on_music_slider_value_changed"]
 [connection signal="value_changed" from="Panel/SFXSlider" to="." method="_on_sfx_slider_value_changed"]
 [connection signal="item_selected" from="Panel/WindowModeDropdown" to="." method="_on_window_mode_dropdown_item_selected"]

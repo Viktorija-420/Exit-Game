@@ -21,7 +21,6 @@ Global="*res://Scripts/Global.gd"
 SceneManager="*res://Scripts/SceneManager.gd"
 Music="*res://BGMusic.tscn"
 GlobalAudio="*res://button.tscn"
-Settings="*res://Settings.tscn"
 
 [display]
 

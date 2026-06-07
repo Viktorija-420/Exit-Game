@@ -29,6 +29,9 @@ func apply_burst(burst_vel: Vector2):
 	_is_bursting = false
 
 func _physics_process(delta):
+	if player and not is_instance_valid(player):
+		player = null
+		return
 	# Count down grace period
 	if _grace_timer > 0:
 		_grace_timer -= delta
@@ -57,12 +60,6 @@ func _physics_process(delta):
 
 	$Anim.flip_h = velocity.x < 0
 	move_and_slide()
-
-	# Damage player on contact (outside grace period)
-	if _grace_timer <= 0 and player and not _is_dead:
-		if global_position.distance_to(player.global_position) < 20:
-			if player.has_method("take_damage"):
-				player.take_damage(1, global_position.x)
 
 # Called by the player's hitbox on left-click — one hit kills
 func take_damage():

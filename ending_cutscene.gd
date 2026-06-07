@@ -18,16 +18,16 @@ extends Control
 # THE END MEZGLS - No jauna attēla redzams, ka tas atrodas tieši zem EndingCutscene root
 @onready var the_end_label: Label = $TheEndLabel
 
-# -------------------- ASSETS --------------------
 @export var dream_texture: Texture2D
 @export var wizard_texture: Texture2D
 @export var the_end_texture: Texture2D
 @onready var talk_sound: AudioStreamPlayer2D = $TalkSound
 
-# -------------------- VARIABLES --------------------
 var current_step: int = 0
 var tween: Tween
 var is_ending_sequence: bool = false # Bloķē peles klikšķus pašās beigās
+
+var _choice_step: int = 0
 
 func _ready() -> void:
 	if talk_sound:
@@ -119,22 +119,25 @@ func _show_choices(choice1_text: String, choice2_text: String) -> void:
 	choice_button_1.text = choice1_text
 	choice_button_2.text = choice2_text
 	choice_container.visible = true
+	_choice_step = current_step
 
 func _on_choice_1_pressed() -> void:
 	choice_container.visible = false
-	if text_label.text == "Uhm well about that. Tell me the code first.":
+	if _choice_step == 7:
+		# "What code?" — wrong, continue dialogue
 		_advance_dialogue()
-	elif choice_button_1.text == "9867":
+	elif _choice_step == 9:
+		# "9867" — wrong answer
 		_trigger_bad_ending()
 
 func _on_choice_2_pressed() -> void:
 	choice_container.visible = false
-	if choice_button_2.text == "3452":
+	if _choice_step == 7:
+		# "3452" — wrong answer
 		_trigger_bad_ending()
-	elif choice_button_2.text == "7049":
+	elif _choice_step == 9:
+		# "7049" — correct answer
 		_trigger_good_ending()
-
-# -------------------- BEIGU SCENĀRIJI --------------------
 
 func _trigger_bad_ending() -> void:
 	speaker_label.text = "Wizard"

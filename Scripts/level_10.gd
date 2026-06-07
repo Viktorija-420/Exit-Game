@@ -1,6 +1,5 @@
 extends Node2D
 
-# -------------------- NODES --------------------
 @onready var fade_rect: ColorRect = $CanvasLayer/Fade
 @onready var pop_level: Label = $CanvasLayer/popLevel
 @onready var door: Area2D = $Door 
@@ -9,10 +8,8 @@ extends Node2D
 var _transitioning: bool = false
 var intro_played: bool = false
 
-# -------------------- SETTINGS --------------------
 @export var level_fade_time: float = 0.8
 
-# -------------------- READY --------------------
 func _ready() -> void:
 	Global.has_key = false 
 	_fade_in_level()

@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=3 uid="uid://d31bn50tffcc2"]
+[gd_scene load_steps=18 format=3 uid="uid://d31bn50tffcc2"]
 
 [ext_resource type="Script" uid="uid://bjiaeadbwvdeh" path="res://Scripts/ui.gd" id="1_ibotj"]
 [ext_resource type="FontFile" uid="uid://dir8slwrv7g00" path="res://Assets/OldeTome.ttf" id="2_n5ude"]
@@ -9,6 +9,7 @@
 [ext_resource type="PackedScene" uid="uid://bqck50ag1kimw" path="res://Rules.tscn" id="8_ok7cu"]
 [ext_resource type="Shader" uid="uid://cltsrbsrvicbr" path="res://ui.gdshader" id="9_e2l4f"]
 [ext_resource type="PackedScene" uid="uid://bhwfktc4xv6gw" path="res://settings.tscn" id="9_irxef"]
+[ext_resource type="Texture2D" uid="uid://c3lvtadhavwmt" path="res://Assets/BG/The end (1).png" id="10_irxef"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_irxef"]
 
@@ -315,3 +316,25 @@ visible = false
 
 [node name="Settings" parent="UI_Root/MainContainer" instance=ExtResource("9_irxef")]
 visible = false
+
+[node name="YouDiedRect" type="TextureRect" parent="UI_Root/MainContainer"]
+visible = false
+modulate = Color(0.25288856, 0, 0.035256714, 1)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("10_irxef")
+expand_mode = 1
+
+[node name="Label" type="Label" parent="UI_Root/MainContainer/YouDiedRect"]
+layout_mode = 0
+offset_left = 401.0
+offset_top = 262.0
+offset_right = 794.0
+offset_bottom = 377.0
+theme_override_fonts/font = ExtResource("2_n5ude")
+theme_override_font_sizes/font_size = 120
+text = "You died"

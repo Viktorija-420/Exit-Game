@@ -31,7 +31,6 @@ func _ready() -> void:
 	if door:
 		door.body_entered.connect(_on_door_entered)
 
-# -------------------- POPUP PANEL & KEYS --------------------
 func show_popup() -> void:
 	# Show panel
 	collect_label.visible = true

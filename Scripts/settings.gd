@@ -145,6 +145,13 @@ func load_settings_to_ui():
 
 func _on_back_button_pressed() -> void:
 	save_settings()
+	# Check if we are an overlay inside the UI CanvasLayer
+	if get_parent() and get_parent() != get_tree().root:
+		for node in get_tree().get_nodes_in_group("ui"):
+			if node.has_method("_remove_settings_overlay"):
+				node._remove_settings_overlay()
+		return
+	# Standalone scene (opened from main menu) — go back normally
 	var destination = Global.settings_return_path if Global.settings_return_path != "" else main_menu_scene
 	if ResourceLoader.exists(destination):
 		get_tree().change_scene_to_file(destination)

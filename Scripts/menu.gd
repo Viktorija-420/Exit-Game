@@ -2,7 +2,7 @@ extends Control
 
 @export_file("*.tscn") var first_level_scene := "res://Level_01.tscn"
 @export_file("*.tscn") var rules_scene := "res://Rules.tscn"
-@export_file("*.tscn") var settings_scene := "res://Settings.tscn"
+@export_file("*.tscn") var settings_scene := "res://settings.tscn"
 
 @onready var play_button: Button = get_node_or_null("Menu/MenuButtons/PlayButton") as Button
 @onready var rules_button: Button = get_node_or_null("Menu/MenuButtons/RulesButton") as Button

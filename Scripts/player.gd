@@ -1,34 +1,24 @@
 extends CharacterBody2D
 
-# -------------------------
-# VARIABLES & STATE
-# -------------------------
 var player_alive: bool = true
-var _attacking: bool = false # Norāda, vai spēlētājs pašlaik veic uzbrukumu
-var _hurt: bool = false # Norāda, vai spēlētājs pašlaik saņem triecienu/ir savainots
+var _attacking: bool = false
+var _hurt: bool = false
 var _hurt_timer: float = 0.0
-var _shielding: bool = false # Norāda, vai spēlētājs ir aizsardzības pozīcijā (izmanto vairogu)
+var _shielding: bool = false
 var _normal_scale: Vector2
 var controls_enabled: bool = true
 
 var current_letter: Node = null
-
 var _damage_dealt_this_attack: bool = false
 
-# -------------------------
-# NODES
-# -------------------------
 @onready var anim: AnimatedSprite2D = $Anim
 @onready var cam: Camera2D = $Camera2D
 @onready var door_label: Label = $DoorLabel
 
-# -------------------------
-# SETTINGS
-# -------------------------
 @export_group("Movement")
-@export var speed: float = 200.0 # Spēlētāja bāzes kustības ātrums
-@export var jump_force: float = -400.0 # Lēciena spēks (negatīvs, jo Y ass iet uz leju)
-@export var gravity: float = 1200.0 # Gravitācijas spēks, kas velk spēlētāju uz leju
+@export var speed: float = 200.0
+@export var jump_force: float = -400.0
+@export var gravity: float = 1200.0
 
 @export_group("Hurt & Jolt Settings")
 @export var hurt_fall_time: float = 0.25
@@ -37,11 +27,8 @@ var _damage_dealt_this_attack: bool = false
 @export var hurt_throb_scale: float = 1.18
 @export var hurt_throb_time: float = 0.10
 
-# -------------------------
-# CAMERA
-# -------------------------
 @export_group("Camera Shake")
-@export var shake_strength: float = 15.0 
+@export var shake_strength: float = 15.0
 @export var shake_decay: float = 8.0
 @export var shake_noise_speed: float = 25.0
 var _shake_amount: float = 0.0
@@ -50,34 +37,21 @@ var _noise_time: float = 0.0
 @export_group("Camera Follow")
 @export var look_ahead_distance: float = 80.0
 @export var look_ahead_speed: float = 3.0
-
 var _look_ahead: float = 0.0
 var _was_on_floor: bool = false
 
 @export var landing_shake_strength: float = 6.0
 @export var landing_velocity_threshold: float = 250.0
 
-# -------------------------
-# SHIELD
-# -------------------------
 @export_group("Shield Settings")
 @export var shield_action: StringName = &"Shield"
 @export var shield_speed_mult: float = 0.55
 
-# -------------------------
-# DUST
-# -------------------------
 @onready var dust: GPUParticles2D = $Dust
 @onready var landing_dust: GPUParticles2D = $LandingDUst
 
-# -------------------------
-# VOID
-# -------------------------
 @export var void_y_level: float = 1000.0
 
-# -------------------------
-# SOUND
-# -------------------------
 @onready var hit_sound: AudioStreamPlayer2D = $HitSound
 @onready var walk_sound: AudioStreamPlayer2D = $WalkSound
 @onready var jump_grunt: AudioStreamPlayer2D = $JumpGrunt
@@ -85,101 +59,86 @@ var _was_on_floor: bool = false
 @onready var hurt_sound: AudioStreamPlayer2D = $Hurt
 @onready var block_sound: AudioStreamPlayer2D = $Block
 
-
-# Slowness effect
 var slowness_timer: float = 0.0
 var original_speed: float = 0.0
 
-# -------------------------
-# READY
-# -------------------------
-func _ready(): # Sākotnējā sagatavošanās funkcija, kas izpildās, kad objekts tiek ielādēts spēlē
+var _invincible: bool = false
+var _invincibility_time: float = 1.0
+
+func _ready():
 	add_to_group("player")
+
+	if Global:
+		Global.lives = Global.max_lives
+		if Global.has_signal("lives_changed"):
+			Global.lives_changed.emit(Global.lives)
+
 	if anim:
 		_normal_scale = anim.scale
 		anim.play("idle")
 		if not anim.animation_finished.is_connected(_on_anim_animation_finished):
 			anim.animation_finished.connect(_on_anim_animation_finished)
 
-# -------------------------
-# MAIN LOOP
-# -------------------------
-func _physics_process(delta: float): # GALVENAIS CIKLS: izpildās katru fizikas kadru (kadra atjaunināšanas cikls)
+func _physics_process(delta: float):
 	if controls_enabled:
 		_update_camera_shake(delta)
 		_update_camera_follow(delta)
-		
-	if slowness_timer > 0: # Pārbaude/atskaite lēnuma efekta laika skaitītājam
+
+	if slowness_timer > 0:
 		slowness_timer -= delta
 		if slowness_timer <= 0:
-			# Restore speed
 			if original_speed != 0.0:
 				speed = original_speed
-			# Reset colour
 			if has_node("Sprite2D"):
 				get_node("Sprite2D").modulate = Color.WHITE
 			elif has_node("Anim"):
 				get_node("Anim").modulate = Color.WHITE
 			print("Slowness ended. Speed restored to: ", speed)
 
-	if not controls_enabled or not player_alive: # Pārbaude: ja spēlētājs miris vai vadība izslēgta, aptur kustību
+	if not controls_enabled or not player_alive:
 		velocity.x = 0
-		# Labojums: ja vadība ir izslēgta cutscene dēļ, nodrošinām, ka spēlētājs nekarājas gaisā un paliek nekustīgs
-		velocity.y = 0 
+		velocity.y = 0
 		move_and_slide()
 		return
 
-	_apply_gravity(delta) # Katru kadru pielieto gravitāciju
+	_apply_gravity(delta)
 
-	if _hurt: # Pārbaude: ja spēlētājs ir savainots, apstrādā trieciena stāvokli
+	if _hurt:
 		_process_hurt(delta)
-	else: # Ja viss kārtībā, apstrādā spēlētāja ievadi (vairogs, uzbrukums, kustība, lēciens, interakcija)
+	else:
 		_shielding = Input.is_action_pressed(shield_action) and not _attacking
 		_handle_attack_input()
-		_handle_movement() # Funkcija, kas nosaka horizontālo kustību
-		_handle_jump() # Funkcija, kas nosaka lēkšanu
+		_handle_movement()
+		_handle_jump()
 		_handle_letter_input()
 
-	move_and_slide() # Iebūvētā Godot funkcija, kas fiziski pārvieto tēlu pa pasauli pēc veiktajiem aprēķiniem
-	_update_animation() # Katru kadru atjaunina vizuālās animācijas
+	move_and_slide()
+	_update_animation()
 	_check_landing()
 	_update_dust()
 	_check_void_fall()
 
-	# Every frame during an attack: scan all overlapping bodies/areas for a hit.
-	# This catches enemies already inside the hitbox when the attack starts,
-	# which signals alone would miss entirely.
 	if _attacking and not _damage_dealt_this_attack:
 		_scan_attack_hits()
 
-# -------------------------
-# MOVEMENT
-# -------------------------
-func _handle_movement(): # SPĒLĒTĀJA KUSTĪBAS FUNKCIJA (horizontālā pārvietošanās)
-	# Aprēķina virzienu: Right(1) mīnuss Left(1). Ja nekas nav nospiests, dir = 0.
+func _handle_movement():
 	var dir := Input.get_action_strength("Right") - Input.get_action_strength("Left")
-	# Ja spēlētājs aizsargājas ar vairogu, ātrums tiek samazināts
 	var move_speed := speed * (shield_speed_mult if _shielding else 1.0)
 	if not _hurt:
-		velocity.x = dir * move_speed # Piešķir spēlētāja X ass ātrumu
+		velocity.x = dir * move_speed
 	if abs(velocity.x) > 1:
-		anim.flip_h = velocity.x < 0 # Pagriež tēla bildi pa kreisi vai pa labi atkarībā no kustības virziena
+		anim.flip_h = velocity.x < 0
 
-func _handle_jump(): # SPĒLĒTĀJA LĒCIENA FUNKCIJA
-	# Pārbauda, vai nospiesta lēkšanas poga, vai tēls atrodas uz grīdas un nav savainots
+func _handle_jump():
 	if Input.is_action_just_pressed("Up") and is_on_floor() and not _hurt:
-		velocity.y = jump_force # Piešķir spēku uz augšu (Y ass)
+		velocity.y = jump_force
 		jump_grunt.play()
 
-func _apply_gravity(delta: float): # GRAVITĀCIJAS PIELIETOŠANAS FUNKCIJA
-	# Ja spēlētājs nav uz zemes vai ir savainots, viņu velk uz leju
+func _apply_gravity(delta: float):
 	if not is_on_floor() or _hurt:
-		velocity.y += gravity * delta # Pakāpeniski palielina lejupejošo ātrumu
+		velocity.y += gravity * delta
 
-# -------------------------
-# ATTACK INPUT
-# -------------------------
-func _handle_attack_input(): # UZBRUKUMA IEVADES FUNKCIJA
+func _handle_attack_input():
 	if Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT) and not _attacking and not _shielding and not _hurt:
 		_attacking = true
 		_damage_dealt_this_attack = false
@@ -189,23 +148,17 @@ func _handle_attack_input(): # UZBRUKUMA IEVADES FUNKCIJA
 		if has_node("Player_hitbox"):
 			$Player_hitbox.monitoring = true
 
-# -------------------------
-# ACTIVE HIT SCAN
-# Runs every frame during the attack window.
-# Catches enemies already overlapping when the click happens,
-# and enemies entered before the body_entered signal could fire.
-# -------------------------
-func _scan_attack_hits(): # FUNKCIJA: Uzbrukuma trāpījumu skenēšana (pārbauda pretiniekus zonā)
+func _scan_attack_hits():
 	if not has_node("Player_hitbox"):
 		return
 	var hitbox: Area2D = $Player_hitbox
 
-	for body in hitbox.get_overlapping_bodies(): # CIKLS: Iet cauri fiziskajiem ķermeņiem, kas pārklājas ar uzbrukuma zonu
+	for body in hitbox.get_overlapping_bodies():
 		if _damage_dealt_this_attack:
 			return
 		_try_hit_body(body)
 
-	for area in hitbox.get_overlapping_areas(): # CIKLS: Iet cauri visām zonām, kas pārklājas ar uzbrukuma zonu
+	for area in hitbox.get_overlapping_areas():
 		if _damage_dealt_this_attack:
 			return
 		_try_hit_area(area)
@@ -213,20 +166,14 @@ func _scan_attack_hits(): # FUNKCIJA: Uzbrukuma trāpījumu skenēšana (pārbau
 func _try_hit_body(body: Node):
 	if body == self:
 		return
-
-	# One-hit kill small enemies / bats
 	if body.has_method("is_bat"):
 		body.take_damage()
 		_damage_dealt_this_attack = true
 		return
-
-	# Standard big enemy: take_damage(amount, from_x)
 	if body.has_method("take_damage") and not body.has_method("boss_enemy"):
 		body.take_damage(1, global_position.x)
 		_damage_dealt_this_attack = true
 		return
-
-	# Fallback
 	if body.has_method("hit_enemy"):
 		body.hit_enemy()
 		_damage_dealt_this_attack = true
@@ -238,51 +185,38 @@ func _try_hit_area(area: Area2D):
 			skeleton.take_damage(1, global_position.x)
 			_damage_dealt_this_attack = true
 
-# -------------------------
-# LETTER INPUT
-# -------------------------
 func _handle_letter_input():
 	if current_letter and Input.is_action_just_pressed("interact"):
 		current_letter.pickup()
 
-# -------------------------
-# ANIMATION
-# -------------------------
-func _update_animation(): # FUNKCIJA: Animāciju stāvokļu atjaunināšana
+func _update_animation():
 	if not anim: return
-
-	# Papildu drošība: ja vadība ir atslēgta, nerādam kustību animācijas
 	if not controls_enabled:
 		return
-
 	if _hurt:
 		walk_sound.stop()
 		anim.play("hurt")
 		return
-
 	if _attacking:
 		walk_sound.stop()
 		return
-
 	if _shielding and is_on_floor():
 		if abs(velocity.x) > 1:
 			anim.play("shield")
 		else:
 			anim.play("shieldNoWalk")
 		return
-
-	if not is_on_floor(): # Ja neatrodas uz grīdas, izvēlas lēkšanas vai krišanas animāciju
+	if not is_on_floor():
 		if velocity.y < 0:
 			anim.play("jump")
 		else:
 			anim.play("fall")
 		return
-
-	if abs(velocity.x) > 1: # Ja kustas pa horizontāli uz grīdas, ieslēdz iešanas animāciju
+	if abs(velocity.x) > 1:
 		anim.play("walk")
 		if not walk_sound.playing:
 			walk_sound.play()
-	else: # Ja stāv uz vietas, ieslēdz miera stāvokļa animāciju
+	else:
 		anim.play("idle")
 		walk_sound.stop()
 
@@ -294,11 +228,14 @@ func _on_anim_animation_finished():
 		if has_node("Player_hitbox"):
 			$Player_hitbox.monitoring = false
 
-# -------------------------
-# TAKING DAMAGE
-# -------------------------
-func take_damage(amount: int, from_x: float): # FUNKCIJA: Dzīvības zaudēšanas / bojājumu saņemšanas apstrāde
-	if _hurt or not player_alive:
+# -------------------------------------------------------
+# DAMAGE ENTRY POINT
+# All hits from enemies should call this. It now routes
+# through hurt_and_reset so the YouDied screen always fires
+# via die() when lives reach 0.
+# -------------------------------------------------------
+func take_damage(amount: int, from_x: float):
+	if _hurt or not player_alive or _invincible:
 		return
 	if _shielding:
 		if block_sound and not block_sound.playing:
@@ -308,7 +245,7 @@ func take_damage(amount: int, from_x: float): # FUNKCIJA: Dzīvības zaudēšana
 	hurt_and_reset(from_x)
 
 func hurt_and_reset(from_x: float):
-	if _hurt or not player_alive:
+	if _hurt or not player_alive or _invincible:
 		return
 
 	if hurt_sound:
@@ -318,15 +255,15 @@ func hurt_and_reset(from_x: float):
 	Global.lose_life(1)
 
 	if Global.lives <= 0:
-		die()
+		await die()
 		return
 
 	_hurt = true
+	_invincible = true
 	_hurt_timer = hurt_fall_time
 	_attacking = false
 	_shielding = false
 
-	# Aprēķina atsitiena virzienu (knockback) prom no saņemtā trieciena avota X koordinātas
 	var dir = -1 if global_position.x > from_x else 1
 	velocity.x = dir * hurt_push_x
 	velocity.y = hurt_knockup
@@ -335,8 +272,14 @@ func hurt_and_reset(from_x: float):
 		anim.play("hurt")
 
 	_start_throb()
+	_start_invincibility()
 
-func _process_hurt(delta: float): # FUNKCIJA: Savainojuma/atsitiena laika un berzes apstrāde fizikas ciklā
+func _start_invincibility():
+	await get_tree().create_timer(_invincibility_time).timeout
+	if is_instance_valid(self):
+		_invincible = false
+		
+func _process_hurt(delta: float):
 	_hurt_timer -= delta
 
 	var knockback_friction := 1200.0
@@ -348,22 +291,56 @@ func _process_hurt(delta: float): # FUNKCIJA: Savainojuma/atsitiena laika un ber
 	velocity.y += gravity * delta
 	move_and_slide()
 
-	if _hurt_timer <= 0 and is_on_floor(): # Kad savainojuma laiks beidzies un tēls ir uz zemes, atgriežas normālā stāvoklī
+	if _hurt_timer <= 0 and is_on_floor():
 		_hurt = false
 		anim.play("idle")
 		anim.scale = _normal_scale
 
-# -------------------------
-# DEATH
-# -------------------------
-func die(): # FUNKCIJA: Spēlētāja nāves apstrāde
-	player_alive = false
-	start_camera_shake(25.0)
-	Global.restart_current_level()
+func die():
+	if not player_alive:
+		return
 
-# -------------------------
-# CAMERA EFFECTS
-# -------------------------
+	player_alive = false
+	controls_enabled = false
+	start_camera_shake(25.0)
+
+	if walk_sound: walk_sound.stop()
+	if anim: anim.play("idle")
+
+	var ui_node: Node = null
+	var scene = get_tree().current_scene
+	if scene:
+		ui_node = scene.get_node_or_null("UI")
+	if not ui_node or not ui_node.has_method("show_you_died"):
+		for node in get_tree().get_nodes_in_group("ui"):
+			if node.has_method("show_you_died"):
+				ui_node = node
+				break
+	if not ui_node or not ui_node.has_method("show_you_died"):
+		if scene:
+			ui_node = _find_node_with_method(scene, "show_you_died")
+
+	if ui_node and ui_node.has_method("show_you_died"):
+		await ui_node.show_you_died()
+	else:
+		await get_tree().create_timer(1.8).timeout
+
+	# Fade to black before restarting so there's no hard cut
+	if ui_node and ui_node.has_method("fade_out"):
+		await ui_node.fade_out(0.4)
+
+	Global.restart_current_level()
+	
+# Recursively find a node that has a given method
+func _find_node_with_method(node: Node, method_name: String) -> Node:
+	if node.has_method(method_name):
+		return node
+	for child in node.get_children():
+		var found = _find_node_with_method(child, method_name)
+		if found:
+			return found
+	return null
+
 func start_camera_shake(amount: float = shake_strength):
 	_shake_amount = amount
 
@@ -398,9 +375,6 @@ func _start_throb():
 	tween.tween_property(anim, "scale", _normal_scale * hurt_throb_scale, hurt_throb_time)
 	tween.tween_property(anim, "scale", _normal_scale, hurt_throb_time)
 
-# -------------------------
-# HITBOX SIGNALS — secondary safety net alongside _scan_attack_hits
-# -------------------------
 func _on_player_hitbox_body_entered(body):
 	if not _attacking or _damage_dealt_this_attack:
 		return
@@ -411,10 +385,6 @@ func _on_player_hitbox_area_entered(area: Area2D):
 		return
 	_try_hit_area(area)
 
-# -------------------------
-# PROXIMITY DETECTION — letters and doors
-# Connect a separate always-on Area2D (e.g. PlayerDetect) to these.
-# -------------------------
 func _on_player_detect_body_entered(body):
 	if body.has_method("letter"):
 		current_letter = body
@@ -437,9 +407,6 @@ func _on_player_detect_body_exited(body):
 	if body.is_in_group("door"):
 		door_label.visible = false
 
-# -------------------------
-# LETTER PICKUP
-# -------------------------
 func show_letter_detail():
 	var letter_ui = preload("res://letter_close_up.tscn").instantiate()
 	get_tree().current_scene.add_child(letter_ui)
@@ -450,9 +417,6 @@ func pickup_letter():
 	current_letter = null
 	show_letter_detail()
 
-# -------------------------
-# DUST
-# -------------------------
 func _update_dust():
 	if not dust: return
 	var moving = is_on_floor() and abs(velocity.x) > 20
@@ -473,20 +437,14 @@ func _update_dust():
 
 func _check_void_fall():
 	if global_position.y > void_y_level and player_alive:
-		die()
+		await die()
 
-# -------------------------
-# DOOR CUTSCENE
-# -------------------------
 func show_door_cutscene(door_pos: Vector2) -> void:
 	if not cam: return
-	
-	# LABOJUMS: Nekavējoties nopauzējam spēlētāja kustību, skaņas un iestatām Idle stāvokli
+
 	velocity = Vector2.ZERO
-	if walk_sound: 
-		walk_sound.stop()
-	if anim: 
-		anim.play("idle")
+	if walk_sound: walk_sound.stop()
+	if anim: anim.play("idle")
 
 	var original_zoom = cam.zoom
 	var target_zoom = Vector2(1.4, 1.4)
@@ -498,7 +456,7 @@ func show_door_cutscene(door_pos: Vector2) -> void:
 	tween.tween_property(cam, "zoom", target_zoom, 1.5)
 	await tween.finished
 
-	for door in get_tree().get_nodes_in_group("door"): # CIKLS: Atrod un atver durvis scēnas laikā
+	for door in get_tree().get_nodes_in_group("door"):
 		if door.global_position.distance_to(door_pos) < 10:
 			if door.has_method("play_open_animation"):
 				door.play_open_animation()
@@ -512,14 +470,10 @@ func show_door_cutscene(door_pos: Vector2) -> void:
 
 func apply_slowness(amount: float, duration: float):
 	print("apply_slowness called! amount=", amount, " duration=", duration)
-	# Store original speed only once
 	if original_speed == 0.0:
 		original_speed = speed
-	# Apply slow
 	speed = original_speed * amount
-	# Set timer
 	slowness_timer = duration
-	# Change colour
 	if has_node("Sprite2D"):
 		get_node("Sprite2D").modulate = Color(0.4, 0.6, 1.0, 1.0)
 	elif has_node("Anim"):
