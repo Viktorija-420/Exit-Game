@@ -1,25 +1,21 @@
 extends Node2D
 
-# --- Exported variables ---
 @export var dialog_scene: PackedScene
 @export var idle_time_before_comment: float = 6.0
-@export var cloud_duration: float = 4.0  # How long the cloud shows
+@export var cloud_duration: float = 4.0  # Cik ilgi mākonis rādās
 
-# --- Onready nodes ---
 @onready var area: Area2D = $InteractionArea
 @onready var prompt: Label = $PromptLabel
 @onready var grumpy_cloud: AnimatedSprite2D = $GrumpyCloud
 
-# --- Internal state ---
 var player_in_range: bool = false
 var dialog_open: bool = false
 var idle_timer: float = 0.0
 var idle_comment_triggered: bool = false
 var cloud_timer: float = 0.0
 var cloud_visible: bool = false
-var has_talked: bool = false  # Track if player has already talked
+var has_talked: bool = false  # Seko līdzi, vai spēlētājs jau ir runājis
 
-# --- Idle comments ---
 var idle_comments := [
 	"Are you just gonna stand there or actually say something?",
 	"Hello? I can see you, you know.",
@@ -28,7 +24,6 @@ var idle_comments := [
 	"Don't make me wait all day..."
 ]
 
-# --- Ready ---
 func _ready() -> void:
 	randomize()
 	prompt.visible = false
@@ -40,7 +35,6 @@ func _ready() -> void:
 
 	_floating_cloud()
 
-# --- Process ---
 func _process(delta: float) -> void:
 	if player_in_range and not dialog_open and not has_talked:
 		idle_timer += delta
@@ -59,7 +53,6 @@ func _process(delta: float) -> void:
 		else:
 			_open_dialog()
 
-# --- Area signals ---
 func _on_body_entered(body: Node2D) -> void:
 	if body.is_in_group("player"):
 		player_in_range = true
@@ -79,7 +72,6 @@ func _on_body_exited(body: Node2D) -> void:
 		grumpy_cloud.visible = false
 		cloud_visible = false
 
-# --- Idle comment ---
 func _show_idle_comment() -> void:
 	idle_comment_triggered = true
 	var comment = idle_comments[randi() % idle_comments.size()]
@@ -89,7 +81,6 @@ func _show_idle_comment() -> void:
 	cloud_visible = true
 	cloud_timer = 0.0
 
-# --- Dialog ---
 func _open_dialog() -> void:
 	if dialog_scene == null:
 		return
@@ -111,14 +102,13 @@ func _open_dialog() -> void:
 	if dialog.has_method("start_dialog"):
 		dialog.start_dialog()
 
-	# Mark that the player has talked
+	# Atzīmē, ka spēlētājs ir parunājis
 	has_talked = true
-	# Hide prompt and cloud forever
+	# Paslēpj norādi un mākoni uz visiem laikiem
 	prompt.visible = false
 	grumpy_cloud.visible = false
 	cloud_visible = false
-
-# --- Show "no more to tell" message temporarily ---
+	
 func _show_no_more_to_tell() -> void:
 	prompt.text = "I don't have anything to tell you anymore."
 	prompt.visible = true
@@ -127,7 +117,7 @@ func _show_no_more_to_tell() -> void:
 	cloud_visible = true
 	cloud_timer = 0.0
 
-	# Temporary display
+	# Pagaidu attēlošana
 	await get_tree().create_timer(2.0).timeout
 	
 	if player_in_range:
@@ -135,7 +125,6 @@ func _show_no_more_to_tell() -> void:
 		grumpy_cloud.visible = false
 		cloud_visible = false
 
-# --- Animations ---
 func _floating_cloud() -> void:
 	if grumpy_cloud:
 		var tween = create_tween()

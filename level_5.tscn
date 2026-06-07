@@ -532,12 +532,10 @@ position = Vector2(-119, 630)
 scale = Vector2(0.67, 0.67)
 
 [node name="StartDoor" parent="." instance=ExtResource("9_1bbjl")]
-position = Vector2(2107, 554)
-scale = Vector2(1.41, 1.41)
+position = Vector2(2115, 554)
 
 [node name="Door" parent="." instance=ExtResource("10_su4cu")]
-position = Vector2(-720, 659)
-scale = Vector2(0.665, 0.665)
+position = Vector2(-736.00006, 644)
 
 [node name="Spike2" parent="." instance=ExtResource("11_7se5y")]
 position = Vector2(164, 560)
@@ -643,7 +641,7 @@ position = Vector2(-346, 11)
 metadata/_edit_lock_ = true
 
 [node name="Player" parent="." instance=ExtResource("15_0aj8w")]
-position = Vector2(2035, 573)
+position = Vector2(2035, 576)
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 

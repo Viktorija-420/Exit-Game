@@ -21,12 +21,12 @@ func _on_play_pressed() -> void:
 	_change_scene(first_level_scene)
 
 func _on_rules_pressed() -> void:
-	# Tell the Rules scene to return to the Main Menu when 'Back' is pressed
+	# Pasakām noteikumu (Rules) scēnai atgriezties uz galveno izvēlni, kad tiek nospiests 'Back'
 	Global.settings_return_path = "res://MainMenu.tscn"
 	_change_scene(rules_scene)
 
 func _on_settings_pressed() -> void:
-	# Tell the Settings scene to return to the Main Menu when 'Back' is pressed
+	# Pasakām iestatījumu (Settings) scēnai atgriezties uz galveno izvēlni, kad tiek nospiests 'Back'
 	Global.settings_return_path = "res://MainMenu.tscn"
 	_change_scene(settings_scene)
 

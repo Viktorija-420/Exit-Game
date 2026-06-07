@@ -2,14 +2,12 @@ extends Node2D
 
 @export_file("*.tscn") var main_menu_scene := "res://MainMenu.tscn"
 
-# --- Custom Button Colors & Visual States ---
 const COLOR_NORMAL := Color(1.0, 1.0, 1.0, 1.0)
 const COLOR_HOVER  := Color(0.75, 0.75, 0.75, 1.0)
 const COLOR_PRESSED := Color(0.85, 0.65, 0.75, 1.0)
 
 var config = ConfigFile.new()
 
-# --- Initialization ---
 func _ready() -> void:
 	process_mode = Node.PROCESS_MODE_ALWAYS
 
@@ -27,7 +25,6 @@ func _ready() -> void:
 	load_settings_to_ui()
 	print("--- Settings UI Synchronized with Config ---")
 
-## Helper function for button visuals
 func _setup_button_visuals(btn: Button) -> void:
 	btn.flat = true
 	btn.focus_mode = Control.FOCUS_NONE
@@ -57,7 +54,6 @@ func _setup_button_visuals(btn: Button) -> void:
 		btn.self_modulate = target_color
 	)
 
-# --- Audio Logic ---
 func _on_master_slider_value_changed(value: float) -> void:
 	var master_bus = AudioServer.get_bus_index("Master")
 	AudioServer.set_bus_volume_db(master_bus, linear_to_db(value))
@@ -78,12 +74,10 @@ func _on_check_box_toggled(toggled_on: bool) -> void:
 	AudioServer.set_bus_mute(master_bus, toggled_on)
 	save_settings()
 
-# --- Video Quality Logic ---
 func _on_quality_dropdown_item_selected(index: int) -> void:
 	Global.apply_video_settings(index)
 	save_settings()
 
-# --- Window & Resolution Logic ---
 func _on_window_mode_dropdown_item_selected(index: int) -> void:
 	Global.apply_window_mode(index)
 	
@@ -102,7 +96,6 @@ func _on_resolution_dropdown_item_selected(index: int) -> void:
 	Global.apply_resolution(index)
 	save_settings()
 
-# --- Save/Load UI Sync ---
 func save_settings():
 	var master_bus = AudioServer.get_bus_index("Master")
 	var music_bus = AudioServer.get_bus_index("Music")

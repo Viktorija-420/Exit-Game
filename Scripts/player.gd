@@ -228,12 +228,6 @@ func _on_anim_animation_finished():
 		if has_node("Player_hitbox"):
 			$Player_hitbox.monitoring = false
 
-# -------------------------------------------------------
-# DAMAGE ENTRY POINT
-# All hits from enemies should call this. It now routes
-# through hurt_and_reset so the YouDied screen always fires
-# via die() when lives reach 0.
-# -------------------------------------------------------
 func take_damage(amount: int, from_x: float):
 	if _hurt or not player_alive or _invincible:
 		return
@@ -325,13 +319,13 @@ func die():
 	else:
 		await get_tree().create_timer(1.8).timeout
 
-	# Fade to black before restarting so there's no hard cut
+	# Veicam fade efektu uz melnu ekrānu pirms restartēšanas, lai nebūtu asa pāreja
 	if ui_node and ui_node.has_method("fade_out"):
 		await ui_node.fade_out(0.4)
 
 	Global.restart_current_level()
 	
-# Recursively find a node that has a given method
+# Rekursīvi meklē mezglu, kuram ir padotā metode
 func _find_node_with_method(node: Node, method_name: String) -> Node:
 	if node.has_method(method_name):
 		return node

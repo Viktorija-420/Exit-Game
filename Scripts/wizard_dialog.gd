@@ -1,16 +1,10 @@
 extends CanvasLayer
 
-# -------------------------
-# EXPORTS
-# -------------------------
 @export var fade_in_time: float = 0.6
 @export var fade_out_time: float = 0.6
 @export var type_speed: float = 0.04
 @export var enter_blink_speed: float = 0.8
 
-# -------------------------
-# NODES
-# -------------------------
 @onready var fade: ColorRect = $Fade
 @onready var text_label: Label = $TextLabel
 @onready var wiz_portrait: CanvasItem = get_node_or_null("WizLabel")
@@ -20,9 +14,6 @@ extends CanvasLayer
 @onready var dialog_bg: TextureRect = $Dialog
 @onready var talk_sound: AudioStreamPlayer2D = $TalkSound
 
-# -------------------------
-# DIALOG DATA & STATE
-# -------------------------
 var _dialog := [
 	{"name": "Player", "text": "...Hello?"},
 	{"name": "Wizard", "text": "Careful where you step."},
@@ -51,9 +42,6 @@ func _ready() -> void:
 	if talk_sound:
 		talk_sound.process_mode = Node.PROCESS_MODE_ALWAYS
 
-# -------------------------
-# PUBLIC METHODS
-# -------------------------
 func start_dialog() -> void:
 	get_tree().paused = true
 	if Global.has_method("set_music_paused"):
@@ -84,9 +72,6 @@ func start_dialog() -> void:
 	t.tween_property(fade, "modulate:a", 0.0, fade_in_time)
 	t.tween_callback(func(): _play_line(_line_index))
 
-# -------------------------
-# INPUT HANDLING
-# -------------------------
 func _unhandled_input(event: InputEvent) -> void:
 	if not _dialog_active: return
 	if option_button_1.visible: return
@@ -97,9 +82,6 @@ func _unhandled_input(event: InputEvent) -> void:
 		elif _finished_line:
 			_next_line()
 
-# -------------------------
-# DIALOG FLOW
-# -------------------------
 func _play_line(index: int) -> void:
 	if index >= _dialog.size():
 		_end_dialog()
@@ -188,15 +170,9 @@ func _end_dialog() -> void:
 	if player and player.has_method("set_controls_enabled"):
 		player.set_controls_enabled(true)
 
-# -------------------------
-# ENTER LABEL BLINKING
-# -------------------------
 func _blink_enter_label() -> void:
 	await get_tree().create_timer(enter_blink_speed, true, false, true).timeout
 
-# -------------------------
-# OPTIONS HANDLING
-# -------------------------
 func _show_options(options: Array) -> void:
 	option_button_1.visible = true
 	option_button_2.visible = true

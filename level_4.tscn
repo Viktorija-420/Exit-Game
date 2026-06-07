@@ -480,12 +480,10 @@ position = Vector2(2267, 520)
 scale = Vector2(0.67, 0.67)
 
 [node name="StartDoor" parent="." instance=ExtResource("8_s24i2")]
-position = Vector2(-1426, 555)
-scale = Vector2(1.41, 1.41)
+position = Vector2(-1425, 552)
 
 [node name="Door" parent="." instance=ExtResource("7_80qnk")]
-position = Vector2(2107, 568)
-scale = Vector2(0.665, 0.665)
+position = Vector2(2115, 554)
 
 [node name="Spike2" parent="." instance=ExtResource("11_j0u7p")]
 position = Vector2(-133, 317)
@@ -534,7 +532,7 @@ position = Vector2(-180, 304)
 position = Vector2(1832, 98)
 
 [node name="Player" parent="." instance=ExtResource("6_cicwn")]
-position = Vector2(-1282, 568)
+position = Vector2(-1282, 576)
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 

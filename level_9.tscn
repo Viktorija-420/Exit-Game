@@ -362,9 +362,9 @@ anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 offset_left = -2490.0
-offset_top = -699.0
+offset_top = -697.0
 offset_right = 3510.0
-offset_bottom = 1308.405
+offset_bottom = 1310.405
 grow_horizontal = 2
 grow_vertical = 2
 color = Color(0, 0, 0, 1)
@@ -503,12 +503,10 @@ position = Vector2(1408.9999, 542)
 scale = Vector2(0.67, 0.67)
 
 [node name="StartDoor" parent="." instance=ExtResource("9_f38xa")]
-position = Vector2(-858, 825)
-scale = Vector2(1.41, 1.41)
+position = Vector2(-855.00006, 823)
 
 [node name="Door" parent="." instance=ExtResource("10_qovbf")]
-position = Vector2(1261, 568)
-scale = Vector2(0.665, 0.665)
+position = Vector2(1246, 554)
 
 [node name="Key" parent="." instance=ExtResource("13_3hg4y")]
 position = Vector2(-57.000122, 422)
@@ -543,8 +541,7 @@ position = Vector2(2075, 133)
 position = Vector2(1472, 641)
 
 [node name="Player" parent="." instance=ExtResource("15_qyokq")]
-position = Vector2(-786, 843)
-metadata/_edit_lock_ = true
+position = Vector2(-786, 847)
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 

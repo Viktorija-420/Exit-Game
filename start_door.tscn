@@ -35,6 +35,8 @@ size = Vector2(54, 53)
 script = ExtResource("1_uypw0")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+position = Vector2(-4.7683716e-07, 9.536743e-07)
+scale = Vector2(1.5, 1.5)
 sprite_frames = SubResource("SpriteFrames_8mg0v")
 animation = &"StartDoorClose"
 frame = 3

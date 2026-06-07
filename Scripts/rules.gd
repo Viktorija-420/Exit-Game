@@ -2,10 +2,9 @@ extends Node2D
 
 @export_file("*.tscn") var main_menu_scene := "res://MainMenu.tscn"
 
-# --- Custom Button Colors & Visual States ---
-const COLOR_NORMAL := Color(1.0, 1.0, 1.0, 1.0)       # Default baltā krāsa
-const COLOR_HOVER  := Color(0.75, 0.75, 0.75, 1.0)    # Pelēcīgs uzbīdot peli
-const COLOR_PRESSED := Color(0.85, 0.65, 0.75, 1.0)    # Rozīgi-pelēks nospiežot
+const COLOR_NORMAL := Color(1.0, 1.0, 1.0, 1.0)
+const COLOR_HOVER  := Color(0.75, 0.75, 0.75, 1.0)
+const COLOR_PRESSED := Color(0.85, 0.65, 0.75, 1.0)
 
 @onready var back_button: Button = get_node_or_null("Menu/Panel/Back") as Button
 

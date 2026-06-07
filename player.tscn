@@ -414,16 +414,16 @@ bus = &"SFX"
 
 [node name="JumpGrunt" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource("38_331ug")
+volume_db = -5.0
 bus = &"SFX"
 
 [node name="LandSound" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource("39_331ug")
-volume_db = -10.0
+volume_db = -25.0
 bus = &"SFX"
 
 [node name="Hurt" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource("40_331ug")
-volume_db = 3.0
 bus = &"SFX"
 
 [node name="Block" type="AudioStreamPlayer2D" parent="."]

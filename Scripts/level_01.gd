@@ -1,24 +1,19 @@
 extends Node2D
 
-# -------------------- NODES --------------------
 @onready var collect_label: Label = $CanvasLayer/popLevel
 @onready var door: Area2D = $Door
 @onready var keys_anim: AnimatedSprite2D = $KeysAnimation
 @onready var fade_rect: ColorRect = $CanvasLayer/Fade
 @export var fade_time: float = 0.3
 
-# -------------------- EXPORTS --------------------
 @export_file("res://level_2.tscn") var level2_scene: String
-
 
 @export var fade_in_time: float = 0.6
 @export var visible_time: float = 3.0
 @export var fade_out_time: float = 0.6
 
-# -------------------- STATE --------------------
 var _transitioning: bool = false
 
-# -------------------- READY --------------------
 func _ready() -> void:
 	show_popup()
 	
@@ -32,7 +27,7 @@ func _ready() -> void:
 		door.body_entered.connect(_on_door_entered)
 
 func show_popup() -> void:
-	# Show panel
+	# Parādīt paneli
 	collect_label.visible = true
 	collect_label.modulate.a = 0.0
 
@@ -46,7 +41,7 @@ func show_popup() -> void:
 		collect_label.visible = false
 	)
 
-	# Show keys animation
+	# Parādīt atslēgu animāciju
 	if keys_anim:
 		keys_anim.visible = true
 		keys_anim.modulate.a = 1.0
@@ -60,7 +55,6 @@ func show_popup() -> void:
 			keys_anim.visible = false
 		)
 
-# -------------------- DOOR ENTER --------------------
 func _on_door_entered(body: Node2D) -> void:
 	if _transitioning:
 		return
@@ -69,7 +63,6 @@ func _on_door_entered(body: Node2D) -> void:
 		_transitioning = true
 		_start_level2_transition()
 
-# -------------------- FADE & LEVEL TRANSITION --------------------
 func _start_level2_transition() -> void:
 	var fade_node: ColorRect = null
 	var ui_nodes = get_tree().get_nodes_in_group("UI") if get_tree() else []

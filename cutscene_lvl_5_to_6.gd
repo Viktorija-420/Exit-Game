@@ -1,6 +1,5 @@
 extends CanvasLayer
 
-# Where to go when the monologue ends
 @export_file("*.tscn") var next_level_scene: String = "res://level_6.tscn"
 
 @export var fade_in_time: float = 0.6
@@ -12,7 +11,7 @@ extends CanvasLayer
 
 @onready var waterdrop_player: AudioStreamPlayer2D = $Waterdrop
 
-# The dialogue breakdown line-by-line
+# Dialogs
 var dialogue_lines: Array[String] = [
 	"*noises in the tower*",
 	"How long is this going to take?",
@@ -32,11 +31,10 @@ func _ready() -> void:
 	
 	if fade:
 		fade.visible = true
-		fade.modulate.a = 1.0 # Start completely black
+		fade.modulate.a = 1.0
 
 	story_label.text = ""
 
-	# Fade out the black screen to reveal the cutscene background
 	var t := create_tween()
 	t.set_trans(Tween.TRANS_SINE)
 	t.set_ease(Tween.EASE_IN_OUT)
@@ -48,10 +46,8 @@ func _unhandled_input(event: InputEvent) -> void:
 		return
 
 	if _typing:
-		# Skip typing animation and show full line immediately
 		_finish_typewriter()
 	elif _finished_line:
-		# Move to next line or exit scene if dialogue is over
 		_advance_dialogue()
 
 func _display_current_line() -> void:
@@ -60,7 +56,7 @@ func _display_current_line() -> void:
 	_current_full_text = dialogue_lines[current_line_index]
 	story_label.text = ""
 	
-	# Typewriter effect loop
+	# Rkatīšanas efekts
 	for i in range(_current_full_text.length()):
 		if not _typing:
 			return
@@ -78,11 +74,9 @@ func _finish_typewriter() -> void:
 func _advance_dialogue() -> void:
 	current_line_index += 1
 	
-	# If there are more lines, type the next one
 	if current_line_index < dialogue_lines.size():
 		_display_current_line()
 	else:
-		# All lines are read, proceed to Level 6
 		_exit_cutscene()
 
 func _exit_cutscene() -> void:

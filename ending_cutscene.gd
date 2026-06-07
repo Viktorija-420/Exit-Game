@@ -1,10 +1,8 @@
 extends Control
 
-# -------------------- CONFIGURATION --------------------
-@export var type_speed: float = 0.03 # Seconds per character
+@export var type_speed: float = 0.03 # Sekundes uz vienu rakstzīmi
 @export var fade_duration: float = 1.0 # Cik sekundes ilgst fade efekts
 
-# -------------------- NODES (FIXED & NEW PATHS) --------------------
 @onready var background: TextureRect = $Background
 @onready var speaker_label: Label = $DialogueCanvas/SpeakerLabel
 @onready var text_label: Label = $DialogueCanvas/TextLabel
@@ -94,13 +92,13 @@ func _type_text(new_text: String) -> void:
 	text_label.text = new_text
 	text_label.visible_characters = 0 
 	
-	# Loop through characters to play sound
+	# Cikls cauri rakstzīmēm, lai atskaņotu skaņu
 	for i in range(new_text.length()):
 		text_label.visible_characters = i + 1
 		
-		# Play sound if character is not a space
+		# Atskaņot skaņu, ja rakstzīme nav tukšums (atstarpe)
 		if new_text[i] != " ":
-			# Optional: Adjust pitch based on the speaker
+			# Pēc izvēles: Pielāgot skaņas augstumu atkarībā no runātāja
 			if speaker_label.text == "Wizard":
 				talk_sound.pitch_scale = randf_range(1.8, 1.0)
 			else:
@@ -108,10 +106,10 @@ func _type_text(new_text: String) -> void:
 				
 			talk_sound.play()
 		
-		# Wait for the duration of the type_speed
+		# Gaidīt tik ilgi, cik norādīts type_speed mainīgajā
 		await get_tree().create_timer(type_speed).timeout
 	
-	# Ensure the label is fully visible at the end
+	# Pārliecināmies, ka beigās teksts ir pilnībā redzams
 	text_label.visible_characters = -1
 	talk_sound.stop()
 	
@@ -124,19 +122,19 @@ func _show_choices(choice1_text: String, choice2_text: String) -> void:
 func _on_choice_1_pressed() -> void:
 	choice_container.visible = false
 	if _choice_step == 7:
-		# "What code?" — wrong, continue dialogue
+		# "What code?" — nepareizi, turpinām dialogu
 		_advance_dialogue()
 	elif _choice_step == 9:
-		# "9867" — wrong answer
+		# "9867" — nepareiza atbilde
 		_trigger_bad_ending()
 
 func _on_choice_2_pressed() -> void:
 	choice_container.visible = false
 	if _choice_step == 7:
-		# "3452" — wrong answer
+		# "3452" — nepareiza atbilde
 		_trigger_bad_ending()
 	elif _choice_step == 9:
-		# "7049" — correct answer
+		# "7049" — pareiza atbilde
 		_trigger_good_ending()
 
 func _trigger_bad_ending() -> void:

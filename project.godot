@@ -30,6 +30,7 @@ mouse_cursor/custom_image="uid://do7w7nskxkstl"
 [global_group]
 
 skeleton_boss=""
+enemy=""
 
 [input]
 

@@ -15,7 +15,7 @@ var _glow_time: float = 0.0
 
 func _ready() -> void: # Sākotnējā sagatavošanās funkcija potion objektam
 	if local_label: 
-		local_label.visible = false # Sākumā paslēpj vietējo tekstu virs pudeles
+		local_label.visible = true # Sākumā paslēpj vietējo tekstu virs pudeles
 	
 	body_entered.connect(_on_body_entered) # Savieno signālus
 	body_exited.connect(_on_body_exited)

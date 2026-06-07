@@ -4,24 +4,24 @@ const COLOR_NORMAL  := Color(1.0,  1.0,  1.0,  1.0)
 const COLOR_HOVER   := Color(0.75, 0.75, 0.75, 1.0)
 const COLOR_PRESSED := Color(0.85, 0.65, 0.75, 1.0)
 
-@onready var pause_menu:       Control    = get_node_or_null("UI_Root/MainContainer/PauseMenu") as Control
-@onready var blur_overlay:     ColorRect  = get_node_or_null("UI_Root/MainContainer/PauseMenu/BlurOverlay") as ColorRect
-@onready var main_menu_button: Button     = get_node_or_null("UI_Root/MainContainer/PauseMenu/Panel/MainMenuButton") as Button
-@onready var settings_button:  Button     = get_node_or_null("UI_Root/MainContainer/PauseMenu/Panel/SettingButton") as Button
-@onready var rules_button:     Button     = get_node_or_null("UI_Root/MainContainer/PauseMenu/Panel/RulesButton") as Button
-@onready var exit_button:      Button     = get_node_or_null("UI_Root/MainContainer/PauseMenu/Panel/ExitButton") as Button
-@onready var pause_button:     Button     = get_node_or_null("UI_Root/MainContainer/PauseButton") as Button
-@onready var fade:             ColorRect  = get_node_or_null("UI_Root/MainContainer/Fade") as ColorRect
-@onready var you_died_rect:    TextureRect = get_node_or_null("UI_Root/MainContainer/YouDiedRect") as TextureRect
+@onready var pause_menu: Control = get_node_or_null("UI_Root/MainContainer/PauseMenu") as Control
+@onready var blur_overlay: ColorRect = get_node_or_null("UI_Root/MainContainer/PauseMenu/BlurOverlay") as ColorRect
+@onready var main_menu_button: Button = get_node_or_null("UI_Root/MainContainer/PauseMenu/Panel/MainMenuButton") as Button
+@onready var settings_button: Button = get_node_or_null("UI_Root/MainContainer/PauseMenu/Panel/SettingButton") as Button
+@onready var rules_button:Button = get_node_or_null("UI_Root/MainContainer/PauseMenu/Panel/RulesButton") as Button
+@onready var exit_button: Button = get_node_or_null("UI_Root/MainContainer/PauseMenu/Panel/ExitButton") as Button
+@onready var pause_button: Button = get_node_or_null("UI_Root/MainContainer/PauseButton") as Button
+@onready var fade: ColorRect = get_node_or_null("UI_Root/MainContainer/Fade") as ColorRect
+@onready var you_died_rect: TextureRect = get_node_or_null("UI_Root/MainContainer/YouDiedRect") as TextureRect
 
-@export var fade_in_on_start:  bool  = true
-@export var fade_in_time:      float = 0.6
+@export var fade_in_on_start: bool  = true
+@export var fade_in_time: float = 0.6
 @export var charge_fill_speed: float = 3.5
-@export var charge_drain_speed:float = 5.0
+@export var charge_drain_speed: float = 5.0
 
-var hearts:        Array[TextureRect] = []
-var full_textures:  Array[Texture2D]  = []
-var empty_textures: Array[Texture2D]  = []
+var hearts: Array[TextureRect] = []
+var full_textures: Array[Texture2D] = []
+var empty_textures: Array[Texture2D] = []
 
 var _tween: Tween
 @onready var collect_ui: CanvasItem = get_node_or_null("UI_Root/MainContainer/Collect")
@@ -57,7 +57,6 @@ func _ready() -> void:
 	_safe_connect_pressed(rules_button, _on_rules_pressed)
 	_safe_connect_pressed(exit_button, _on_exit_pressed)
 
-	# ---- Fade ----
 	if fade:
 		fade.set_anchors_preset(Control.PRESET_FULL_RECT)
 		fade.z_index = 999
@@ -70,14 +69,12 @@ func _ready() -> void:
 		else:
 			fade.visible = false
 
-	# ---- YouDiedRect — hide on start, highest z so it's never covered ----
 	if you_died_rect:
 		you_died_rect.process_mode = Node.PROCESS_MODE_ALWAYS
 		you_died_rect.visible = false
 		you_died_rect.modulate.a = 0.0
-		you_died_rect.z_index = 1000   # above everything including fade
+		you_died_rect.z_index = 1000
 
-	# ---- Hearts ----
 	hearts = [
 		_must_get_heart("UI_Root/MainContainer/HeartsHolder/Hearts/heart1"),
 		_must_get_heart("UI_Root/MainContainer/HeartsHolder/Hearts/heart2"),
@@ -106,7 +103,6 @@ func _ready() -> void:
 	if empty_holder:
 		(empty_holder as CanvasItem).visible = false
 
-	# ---- Lives signal ----
 	if Global and Global.has_signal("lives_changed"):
 		if not Global.lives_changed.is_connected(_on_lives_changed):
 			Global.lives_changed.connect(_on_lives_changed)
@@ -115,7 +111,6 @@ func _ready() -> void:
 	if collect_ui:
 		collect_ui.visible = false
 
-	# ---- Restore pause state after returning from Settings / Rules ----
 	if Global and Global.was_paused:
 		get_tree().paused = true
 		if pause_menu:
@@ -124,8 +119,6 @@ func _ready() -> void:
 		if pause_button:
 			pause_button.move_to_front()
 		Global.was_paused = false
-
-# ---- Pause ----
 
 func _on_pause_pressed() -> void:
 	var now_paused := not get_tree().paused
@@ -202,8 +195,6 @@ func _find_node_with_signal(node: Node, sig: String) -> Node:
 		if found: return found
 	return null
 
-# ---- Hearts ----
-
 func _on_lives_changed(lives_value: int) -> void:
 	var ui_capacity: int = hearts.size()
 	var maxl: int = int(clamp(Global.max_lives, 0, ui_capacity))
@@ -216,8 +207,6 @@ func _on_lives_changed(lives_value: int) -> void:
 
 func _must_get_heart(path: String) -> TextureRect:
 	return get_node_or_null(path) as TextureRect
-
-# ---- Fade ----
 
 func fade_in(time: float = 0.5) -> void:
 	_kill_tween()
@@ -235,8 +224,6 @@ func _kill_tween() -> void:
 	if _tween: _tween.kill()
 	_tween = null
 
-# ---- Helpers ----
-
 func _safe_connect_pressed(btn: Button, callable: Callable) -> void:
 	if btn == null: return
 	btn.process_mode = Node.PROCESS_MODE_ALWAYS
@@ -249,10 +236,10 @@ func _setup_button_visuals(btn: Button) -> void:
 	btn.focus_mode = Control.FOCUS_NONE
 	btn.alignment = HORIZONTAL_ALIGNMENT_CENTER
 	btn.clip_text = false
-	btn.add_theme_stylebox_override("normal",  StyleBoxEmpty.new())
-	btn.add_theme_stylebox_override("hover",   StyleBoxEmpty.new())
+	btn.add_theme_stylebox_override("normal", StyleBoxEmpty.new())
+	btn.add_theme_stylebox_override("hover", StyleBoxEmpty.new())
 	btn.add_theme_stylebox_override("pressed", StyleBoxEmpty.new())
-	btn.add_theme_stylebox_override("focus",   StyleBoxEmpty.new())
+	btn.add_theme_stylebox_override("focus", StyleBoxEmpty.new())
 
 	var tex_rect: TextureRect = null
 	if btn.get_child_count() > 0:

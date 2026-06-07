@@ -33,7 +33,7 @@ func _physics_process(delta: float):
 	global_position.y += velocity_y * delta
 
 func _on_body_entered(body: Node2D):
-	# Ignore collisions with the skeleton who threw this potion
+	# Ignorējam sadursmes ar skeletu, kurš meta šo poti
 	if body == shooter:
 		return
 
@@ -60,7 +60,7 @@ func _shatter_potion():
 		splash_particles.emitting = true
 		get_tree().create_timer(splash_particles.lifetime).timeout.connect(splash_particles.queue_free)
 	
-	# Play break sound before freeing
+	# Atskaņojam saplīšanas skaņu pirms objekta atbrīvošanas (free)
 	if break_sound:
 		break_sound.reparent(get_parent())
 		break_sound.play()

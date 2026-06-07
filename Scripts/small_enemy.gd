@@ -11,8 +11,8 @@ var _hover_offset = Vector2.ZERO
 var _time_passed = 0.0
 var _is_dead = false
 
-# How long after spawning the bat is immune (so the burst doesn't immediately
-# trigger the player's hitbox overlap before the bat flies away)
+# Cik ilgi pēc parādīšanās sikspārnis ir neievainojams (lai grūdiens
+# neizsauktu tūlītēju pārklāšanos ar spēlētāja hitbox, pirms sikspārnis aizlido)
 @export var spawn_grace_period: float = 0.3
 var _grace_timer: float = 0.0
 
@@ -32,7 +32,7 @@ func _physics_process(delta):
 	if player and not is_instance_valid(player):
 		player = null
 		return
-	# Count down grace period
+	# Skaita uz leju žēlastības periodu
 	if _grace_timer > 0:
 		_grace_timer -= delta
 
@@ -61,7 +61,7 @@ func _physics_process(delta):
 	$Anim.flip_h = velocity.x < 0
 	move_and_slide()
 
-# Called by the player's hitbox on left-click — one hit kills
+# Izauc spēlētāja hitbox ar kreiso klikšķi — viens sitiens nogalina
 func take_damage():
 	if _is_dead:
 		return
@@ -69,7 +69,7 @@ func take_damage():
 	squeak.play()
 	_is_dead = true
 
-	# Stop colliding with the player but keep floor collision
+	# Pārtrauc sadursmes ar spēlētāju, bet saglabā sadursmi ar grīdu
 	collision_layer = 0
 	collision_mask = 1
 
@@ -81,5 +81,5 @@ func take_damage():
 	velocity = Vector2(randf_range(-80, 80), -250)
 	rotation = PI
 
-# Lets the player script identify this as a bat / small enemy
+# Ļauj spēlētāja skriptam identificēt šo kā sikspārni / mazo pretinieku
 func is_bat(): return true

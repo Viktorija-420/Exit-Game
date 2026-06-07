@@ -393,6 +393,9 @@ layer_3/name = "Layer3"
 position = Vector2(605, 86.17)
 scale = Vector2(0.665, 0.665)
 
+[node name="Door" parent="." instance=ExtResource("10_eut6j")]
+position = Vector2(1032, 434.00003)
+
 [node name="HealthPickup2" parent="." instance=ExtResource("7_x3x8n")]
 position = Vector2(258, 447)
 scale = Vector2(0.36180001, 0.36180001)
@@ -422,12 +425,7 @@ position = Vector2(1060, 343)
 scale = Vector2(0.67, 0.67)
 
 [node name="StartDoor" parent="." instance=ExtResource("9_ida6o")]
-position = Vector2(101, 436)
-scale = Vector2(1.41, 1.41)
-
-[node name="Door" parent="." instance=ExtResource("10_eut6j")]
-position = Vector2(1018, 448)
-scale = Vector2(0.665, 0.665)
+position = Vector2(133, 434.00012)
 
 [node name="Skeleton" parent="." instance=ExtResource("15_1jiv0")]
 position = Vector2(595, 417)
@@ -438,13 +436,12 @@ metadata/_edit_lock_ = true
 [node name="Player" parent="." instance=ExtResource("15_6bdll")]
 light_mask = 3
 visibility_layer = 3
-position = Vector2(178, 450)
+position = Vector2(203, 457)
 hurt_fall_time = 0.25
 hurt_knockup = -200.0
 hurt_push_x = 250.0
 hurt_throb_time = 0.1
 look_ahead_speed = 3.0
-metadata/_edit_lock_ = true
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 

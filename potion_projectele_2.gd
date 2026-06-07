@@ -39,7 +39,7 @@ func _on_body_entered(body: Node2D):
 		if body.has_method("apply_slowness"):
 			body.apply_slowness(slowness_amount, slow_duration)
 		else:
-			print("ERROR: Player does not have apply_slowness method")
+			print("KĻŪDA: Spēlētājam nav apply_slowness metodes")
 		_shatter_potion()
 	elif not body.is_in_group("enemy"):
 		_shatter_potion()
@@ -53,7 +53,7 @@ func _shatter_potion():
 		splash_particles.emitting = true
 		get_tree().create_timer(splash_particles.lifetime).timeout.connect(splash_particles.queue_free)
 	
-	# Play break sound before freeing
+	# Atskaņojam saplīšanas skaņu pirms objekta atbrīvošanas (free)
 	if break_sound:
 		break_sound.reparent(get_parent())
 		break_sound.play()

@@ -1,6 +1,3 @@
-# ============================================================
-# Global.gd  —  full fixed file (no logic changes)
-# ============================================================
 extends Node
 
 var player_current_attack = false
@@ -52,7 +49,7 @@ func reset_run() -> void:
 func restart_current_level() -> void:
 	lives = max_lives
 	has_key = false
-	settings_return_path = ""  # clear it so settings never loads as fallback
+	settings_return_path = ""  # notīra to, lai iestatījumi nekad neielādētos kā rezerves variants
 	lives_changed.emit(lives)
 	get_tree().call_deferred("reload_current_scene")
 
@@ -77,13 +74,13 @@ func apply_saved_settings_globally() -> void:
 		apply_resolution(2)
 		return
 
-	var m_vol   = config.get_value("audio", "master_vol",   0.5)
-	var mus_vol = config.get_value("audio", "music_vol",    0.5)
-	var s_vol   = config.get_value("audio", "sfx_vol",      0.5)
-	var is_muted= config.get_value("audio", "mute",         false)
-	var qual    = config.get_value("video", "quality_index", 1)
-	var win     = config.get_value("video", "window_mode",   0)
-	var res     = config.get_value("video", "res_index",     2)
+	var m_vol = config.get_value("audio", "master_vol", 0.5)
+	var mus_vol = config.get_value("audio", "music_vol", 0.5)
+	var s_vol = config.get_value("audio", "sfx_vol", 0.5)
+	var is_muted= config.get_value("audio", "mute", false)
+	var qual = config.get_value("video", "quality_index", 1)
+	var win = config.get_value("video", "window_mode", 0)
+	var res = config.get_value("video", "res_index", 2)
 
 	apply_audio_values(m_vol, mus_vol, s_vol, is_muted)
 	apply_window_mode(win)
@@ -93,11 +90,11 @@ func apply_saved_settings_globally() -> void:
 
 func apply_audio_values(m, mus, s, mute):
 	var master_bus = AudioServer.get_bus_index("Master")
-	var music_bus  = AudioServer.get_bus_index("Music")
-	var sfx_bus    = AudioServer.get_bus_index("SFX")
+	var music_bus = AudioServer.get_bus_index("Music")
+	var sfx_bus = AudioServer.get_bus_index("SFX")
 	if master_bus != -1: AudioServer.set_bus_volume_db(master_bus, linear_to_db(m))
-	if music_bus  != -1: AudioServer.set_bus_volume_db(music_bus,  linear_to_db(mus))
-	if sfx_bus    != -1: AudioServer.set_bus_volume_db(sfx_bus,    linear_to_db(s))
+	if music_bus != -1: AudioServer.set_bus_volume_db(music_bus, linear_to_db(mus))
+	if sfx_bus != -1: AudioServer.set_bus_volume_db(sfx_bus, linear_to_db(s))
 	if master_bus != -1: AudioServer.set_bus_mute(master_bus, mute)
 
 func apply_video_settings(index: int):

@@ -1,6 +1,5 @@
 extends Area2D
 
-# --- Custom Button Colors & Visual States ---
 const COLOR_NORMAL := Color(1.0, 1.0, 1.0, 1.0)       # Default white/unmodulated
 const COLOR_HOVER  := Color(0.75, 0.75, 0.75, 1.0)    # Greyish
 const COLOR_PRESSED := Color(0.85, 0.65, 0.75, 1.0)    # Pinkish-Grey
@@ -253,9 +252,7 @@ func collect() -> void: # Izsauc, ja objekts tiek pilnībā izdzēsts
 
 	queue_free()
 
-# -------------------- HELPERS & VISUAL STYLING --------------------
-
-## Handles texture styling, eliminates theme border clips, and binds mouse interactions
+# Handles texture styling, eliminates theme border clips, and binds mouse interactions
 func _setup_button_visuals(btn: Button) -> void:
 	if btn == null: return
 

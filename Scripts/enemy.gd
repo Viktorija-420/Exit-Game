@@ -43,7 +43,7 @@ func _on_hurtbox_area_entered(area: Area2D):
 		take_damage(1, player_node.global_position.x)
 
 func _physics_process(delta: float) -> void:
-	# Clear stale player reference if player was destroyed
+	# Notīra novecojušu spēlētāja referenci, ja spēlētājs tika iznīcināts
 	if player and not is_instance_valid(player):
 		player = null
 		player_chase = false
@@ -176,7 +176,7 @@ func _on_detection_area_body_exited(body):
 
 func _on_enemy_hitbox_body_entered(body):
 	if body.is_in_group("player") and is_harmful:
-		# Safety check: make sure player is still alive and valid
+		# Drošības pārbaude: pārliecināmies, ka spēlētājs joprojām ir dzīvs un eksistē
 		if is_instance_valid(body) and body.has_method("take_damage") and body.player_alive:
 			body.take_damage(1, global_position.x)
 

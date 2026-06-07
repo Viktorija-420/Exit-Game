@@ -110,9 +110,9 @@ shape = SubResource("CircleShape2D_e1ltt")
 position = Vector2(-1.5, -1.5)
 shape = SubResource("RectangleShape2D_dxifv")
 
-[node name="EnemyAttack" type="AudioStreamPlayer2D" parent="."]
+[node name="EnemyAttack" type="AudioStreamPlayer2D" parent="." groups=["enemy"]]
 stream = ExtResource("10_dxifv")
-volume_db = -5.005
+volume_db = -10.0
 bus = &"SFX"
 
 [connection signal="body_entered" from="DetectionArea" to="." method="_on_detection_area_body_entered"]

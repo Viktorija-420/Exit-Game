@@ -1,7 +1,6 @@
 extends Area2D
 
-# --- NOŅEMTS VECAIS collect_label_path ---
-@export var blink_speed: float = 2.0      # atslēgas mirgošanas ātrums
+@export var blink_speed: float = 2.0 # atslēgas mirgošanas ātrums
 @export var light_on_energy: float = 2.5
 @export var light_off_energy: float = 0.0
 
@@ -44,14 +43,14 @@ func _on_body_entered(body: Node2D) -> void: # Fiksē spēlētāja ieiešanu ats
 		player_near = true # Pietiekami tuvu, lai paņemtu atslēgu
 		var ui = _get_ui_node()
 		if ui:
-			ui.show_collect_label(true) # <--- Izmantojam tava CanvasLayer funkciju!
+			ui.show_collect_label(true) # Izmantojam tava CanvasLayer funkciju!
 
 func _on_body_exited(body: Node2D) -> void: # Fiksē spēlētāja iziešanu no atslēgas zonas
 	if body.is_in_group("player"):
 		player_near = false
 		var ui = _get_ui_node()
 		if ui:
-			ui.show_collect_label(false) # <--- Paslēpjam caur CanvasLayer
+			ui.show_collect_label(false) # Paslēpjam caur CanvasLayer
 
 func collect() -> void: # Atslēgas savākšana un durvju cutscene
 	if _collected: # Drošības barjera atkārtotiem izsaukumiem

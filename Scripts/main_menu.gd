@@ -3,10 +3,9 @@ extends Node2D
 @export_file("*.tscn") var intro_scene: String = "res://intro.tscn"
 @export var fade_time: float = 0.6
 
-# Define your custom colors
-const COLOR_NORMAL := Color(1.0, 1.0, 1.0, 1.0)       # Default white/unmodulated
-const COLOR_HOVER  := Color(0.75, 0.75, 0.75, 1.0)    # Greyish
-const COLOR_PRESSED := Color(0.85, 0.65, 0.75, 1.0)    # Pinkish-Grey
+const COLOR_NORMAL := Color(1.0, 1.0, 1.0, 1.0)
+const COLOR_HOVER  := Color(0.75, 0.75, 0.75, 1.0)
+const COLOR_PRESSED := Color(0.85, 0.65, 0.75, 1.0)
 
 @onready var play_button: Button = $Menu/PlayButton
 @onready var rules_button: Button = $Menu/RulesButton
@@ -17,13 +16,13 @@ const COLOR_PRESSED := Color(0.85, 0.65, 0.75, 1.0)    # Pinkish-Grey
 var _transitioning := false
 
 func _ready() -> void:
-	# Core button functionality
+	# Pogu pamatfunkcionalitāte
 	play_button.pressed.connect(_on_play_pressed)
 	rules_button.pressed.connect(_on_rules_pressed)
 	settings_button.pressed.connect(_on_settings_pressed)
 	quit_button.pressed.connect(_on_quit_pressed)
 
-	# Set up custom visual states for each button
+	# Iestatām pielāgotus vizuālos stāvokļus katrai pogai
 	_setup_button_visuals(play_button)
 	_setup_button_visuals(rules_button)
 	_setup_button_visuals(settings_button)
@@ -34,23 +33,22 @@ func _ready() -> void:
 		fade.color = Color.BLACK
 		fade.modulate.a = 0.0
 
-## Helper function to connect hover/press visual feedback and clear default styles
 func _setup_button_visuals(btn: Button) -> void:
-	# 1. Remove default Godot button theme visuals (makes the button background transparent)
+	# 1. Noņemam Godot noklusējuma pogas tēmas vizuālos elementus (padara pogas fonu caurspīdīgu)
 	btn.flat = true
 	
-	# Also clear focus outlines so they don't appear when clicked
+	# Tāpat notīrām fokusa kontūras, lai tās neparādītos, kad tiek uzklikšķināts
 	btn.focus_mode = Control.FOCUS_NONE
 
-	# 2. Safely grab the child TextureRect
+	# 2. Droši paņemam bērna mezglu TextureRect
 	var tex_rect := btn.get_child(0) as TextureRect
 	if not tex_rect:
 		return
 
-	# Track state locally per-button to avoid viewport lookups
+	# Izsekojam stāvokli lokāli katrai pogai, lai izvairītos no viewport vaicājumiem
 	var is_hovered := false
 
-	# 3. Connect mouse hover and click interactions to modulate BOTH the Button and TextureRect
+	# 3. Savienojam peles uzvirzīšanas un klikšķu interakcijas, lai modulētu GAN Button, GAN TextureRect
 	btn.mouse_entered.connect(func(): 
 		is_hovered = true
 		tex_rect.modulate = COLOR_HOVER
@@ -66,7 +64,7 @@ func _setup_button_visuals(btn: Button) -> void:
 		btn.self_modulate = COLOR_PRESSED
 	)
 	btn.button_up.connect(func(): 
-		# Safe hover state restoration for both elements
+		# Droša uzvirzīšanas stāvokļa atjaunošana abiem elementiem
 		var target_color := COLOR_HOVER if is_hovered else COLOR_NORMAL
 		tex_rect.modulate = target_color
 		btn.self_modulate = target_color

@@ -1,22 +1,16 @@
 extends Node2D
 
-# -------------------- NODES --------------------
 @onready var fade_rect: ColorRect = $CanvasLayer/Fade
 @onready var pop_level: Label = $CanvasLayer/popLevel
-@onready var door: Area2D = $Door # Make sure you have an Area2D named 'Door' in Level 2!
+@onready var door: Area2D = $Door
 var _transitioning: bool = false
 
-# -------------------- SETTINGS --------------------
 @export var level_fade_time: float = 0.8
 
-# -------------------- READY --------------------
 func _ready() -> void:
-	# 1. Reset the game state for the new level
 	Global.has_key = false 
 	
-	# 2. Clear the black screen left over from Level 2
 	_fade_in_level()
-	# 3. Show the level name
 	show_popup()
 	
 	if door:
@@ -27,7 +21,7 @@ func _fade_in_level() -> void:
 		return
 		
 	fade_rect.visible = true
-	fade_rect.modulate.a = 1.0 # Start fully black
+	fade_rect.modulate.a = 1.0
 	
 	var tween = create_tween()
 	tween.tween_property(fade_rect, "modulate:a", 0.0, level_fade_time)
@@ -72,7 +66,6 @@ func _start_level_transition() -> void:
 		var t = create_tween()
 		t.tween_property(fade_rect, "modulate:a", 1.0, 0.6)
 		
-		# Instead of 'await', we use a direct connection
 		t.finished.connect(func():
 			print("Level 9: Fade complete. Switching NOW.")
 			get_tree().change_scene_to_file("res://level_10.tscn")

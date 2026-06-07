@@ -51,7 +51,7 @@ size = Vector2(32, 68.5)
 script = ExtResource("1_y5njw")
 
 [node name="Sprite2D" type="AnimatedSprite2D" parent="."]
-scale = Vector2(1.592, 1.5)
+scale = Vector2(1.5, 1.5)
 sprite_frames = SubResource("SpriteFrames_2gcrv")
 animation = &"DoorAnim"
 frame = 3

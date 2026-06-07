@@ -1,14 +1,8 @@
 extends CharacterBody2D
 
-# -------------------------
-# STATES
-# -------------------------
 enum State { INTRO, PATROL, CHASE, THROW, DEFENSE, RETREAT, STATIONARY_PHASE, FINAL_PHASE }
 var current_state: State = State.INTRO
 
-# -------------------------
-# VARIABLES & SETTINGS
-# -------------------------
 @export_group("Stats & Health")
 @export var max_health: int = 9
 var current_health: int = max_health
@@ -40,6 +34,7 @@ var _is_jolting: bool = false
 
 @export_group("Projectiles")
 @export var potion_1_scene: PackedScene
+@export_group("Projectiles")
 @export var potion_2_scene: PackedScene
 
 @export_group("Smart Aim Settings")
@@ -61,26 +56,26 @@ var _is_jolting: bool = false
 @export_group("Phase 2 Settings")
 @export var phase_throw_cooldown: float = 0.45
 
-# Phase 2 camera zoom settings
+# Otrās fāzes kameras tālummaiņas iestatījumi
 @export_group("Phase 2 Camera")
 @export var phase_2_zoom_out: Vector2 = Vector2(0.7, 0.7)
 @export var phase_2_zoom_speed: float = 2.5
 @export var phase_2_camera_offset: Vector2 = Vector2.ZERO
 
-# Final Phase (health <= 2)
+# Fināla fāze (health <= 2)
 @export_group("Final Phase")
 @export var ghost_enemy_scene: PackedScene
-@export var final_center_position: Vector2 = Vector2(585, 420)   # middle of the map
+@export var final_center_position: Vector2 = Vector2(585, 420)   # kartes vidusdaļa
 var is_final_phase_triggered: bool = false
 var is_final_phase_active: bool = false
 var spawned_ghosts: Array = []
 var ghosts_alive: int = 0
 var final_phase_ghosts_defeated: bool = false
 
-# Key drop
+# Atslēgas nomešana
 @export_group("Key Drop")
-@export var key_scene: PackedScene   # Assign the key scene in the inspector
-var key_dropped: bool = false        # Prevent multiple drops
+@export var key_scene: PackedScene   # Piešķir atslēgas scēnu inspektorā
+var key_dropped: bool = false        # Novērš atkārtotu nomešanu
 
 var is_harmful: bool = false
 var direction: int = -1
@@ -89,12 +84,12 @@ var is_intro_done: bool = false
 var attack_loop_active: bool = false
 var _skip_intro: bool = false
 
-# Phase 2 tracking variables
+# Otrās fāzes izsekošanas mainīgie
 var is_in_stationary_phase: bool = false
 var current_phase_side: String = "left"
 var hit_received_during_phase: bool = false
 
-# Phase 2 camera tracking
+# Otrās fāzes kameras izsekošana
 var _phase2_camera_anchor: Node2D = null
 var _phase2_zoom_tween: Tween = null
 var _player_camera: Camera2D = null
@@ -102,9 +97,6 @@ var _player_camera: Camera2D = null
 var target_player: CharacterBody2D = null
 var boss_camera: Camera2D = null
 
-# -------------------------
-# NODES
-# -------------------------
 @onready var anim: AnimatedSprite2D = $Anim
 @onready var dialogue_label: Label = $DialogueLabel
 @onready var enemy_hitbox: Area2D = $skelet_enemy_hitbox
@@ -112,9 +104,6 @@ var boss_camera: Camera2D = null
 @onready var hearts: Node2D = $Hearts_skelet
 @onready var hurt_sound: AudioStreamPlayer2D = $Hurt
 
-# -------------------------
-# READY
-# -------------------------
 func _ready():
 	start_x = global_position.x
 	current_health = max_health
@@ -142,9 +131,7 @@ func _ready():
 	if hearts:
 		hearts.visible = false
 
-# -------------------------
-# COMPONENT SETUP
-# -------------------------
+# KOMPONENTU IESTATĪŠANA
 func _setup_internal_boss_camera():
 	boss_camera = Camera2D.new()
 	boss_camera.enabled = true
@@ -164,18 +151,14 @@ func _teardown_phase2_camera_anchor():
 		_phase2_camera_anchor.queue_free()
 		_phase2_camera_anchor = null
 
-# -------------------------
-# INPUT TRACKING
-# -------------------------
+# IEVADES IZSEKOŠANA
 func _unhandled_input(event: InputEvent) -> void:
 	if current_state == State.INTRO and not is_intro_done:
 		if event.is_action_pressed("ui_accept"):
 			_skip_intro = true
 			get_viewport().set_input_as_handled()
 
-# -------------------------
-# MAIN LOOP
-# -------------------------
+# GALVENAIS CIKLS
 func _physics_process(delta: float):
 	if not is_on_floor() and current_state != State.STATIONARY_PHASE and current_state != State.FINAL_PHASE:
 		velocity.y += gravity_scale * delta
@@ -224,12 +207,10 @@ func _physics_process(delta: float):
 			move_and_slide()
 
 		State.INTRO, State.STATIONARY_PHASE, State.FINAL_PHASE:
-			# No movement during these states
+			# Kustības nav šo stāvokļu laikā
 			pass
 
-# -------------------------
-# CINEMATIC INTRO
-# -------------------------
+# KINEMATISKAIS IEVADS
 func play_boss_intro() -> void:
 	is_intro_done = false
 	_skip_intro = false
@@ -297,9 +278,7 @@ func _trigger_boss_camera_shake(intensity: float):
 	if players.size() > 0:
 		players[0].start_camera_shake(intensity)
 
-# -------------------------
-# MOVEMENT AI
-# -------------------------
+# KUSTĪBA
 func _handle_boss_patrol_boundaries():
 	var distance_from_start = global_position.x - start_x
 	if direction == 1 and distance_from_start >= (movement_range / 2.0):
@@ -326,9 +305,7 @@ func _update_boss_sprite_direction():
 		return
 	anim.flip_h = (direction == 1)
 
-# -------------------------
-# PHASE 2 CAMERA HELPERS
-# -------------------------
+# OTRĀS FĀZES KAMERAS PALĪGI
 func _enter_phase2_camera_mode():
 	_setup_phase2_camera_anchor()
 	if not _phase2_camera_anchor or not is_instance_valid(_phase2_camera_anchor):
@@ -373,9 +350,7 @@ func _exit_phase2_camera_mode():
 
 	_teardown_phase2_camera_anchor()
 
-# -------------------------
-# PLAYER FREEZE HELPERS (Phase 2 jumps & Final Phase)
-# -------------------------
+# SPĒLĒTĀJA IESALDĒŠANAS PALĪGI (Otrās fāzes lēcieni un fināla fāze)
 func _freeze_player_movement(freeze: bool):
 	if not target_player:
 		return
@@ -387,9 +362,7 @@ func _freeze_player_movement(freeze: bool):
 		target_player.set_physics_process(true)
 		target_player.set_process_unhandled_input(true)
 
-# -------------------------
-# SAFE AWAIT HELPERS
-# -------------------------
+# DROŠIE AWAIT PALĪGI
 func _safe_await_frame() -> bool:
 	if not is_inside_tree():
 		return false
@@ -402,9 +375,7 @@ func _safe_await_timer(duration: float) -> bool:
 	await get_tree().create_timer(duration).timeout
 	return is_inside_tree()
 
-# -------------------------
-# PHASE 2: STATIONARY POSITIONING & BARRAGE
-# -------------------------
+# OTRĀ FĀZE: STACIONĀRĀ POZĪCIJA UN KRUSA AR POTĒM
 func _run_stationary_potion_phase():
 	if is_in_stationary_phase:
 		return
@@ -486,11 +457,11 @@ func _run_stationary_potion_phase():
 
 		if current_health <= 0 or is_final_phase_triggered: break
 
-	# Camera stays in Phase 2 mode – do NOT exit here
+	# Kamera paliek Otrās fāzes režīmā – šeit NEIZIET
 	is_in_stationary_phase = false
 
 	if is_final_phase_triggered:
-		# Final phase already handles the rest
+		# Fināla fāze pati visu nokārtos
 		return
 
 	if target_player:
@@ -507,9 +478,7 @@ func _restore_default_player_camera_context():
 		if player_camera and player_camera.is_inside_tree():
 			player_camera.make_current()
 
-# -------------------------
-# PERFECT ORDERED COMBAT LOOP
-# -------------------------
+# IDEĀLI SAKĀRTOTAIS KAUJAS CIKLS
 func _start_boss_combat_loop():
 	if attack_loop_active or is_in_stationary_phase: return
 	attack_loop_active = true
@@ -525,7 +494,6 @@ func _start_boss_combat_loop():
 		if current_health <= phase_trigger_health or is_final_phase_triggered:
 			break
 
-		# --- CHASE ---
 		current_state = State.CHASE
 		var timer = 0.0
 		var close_range_triggered = false
@@ -545,7 +513,6 @@ func _start_boss_combat_loop():
 		if not target_player or not is_intro_done or current_health <= phase_trigger_health or is_final_phase_triggered: break
 		if _is_jolting: continue
 
-		# --- ATTACK ---
 		if close_range_triggered:
 			current_state = State.RETREAT
 			var retreat_direction = 1 if (global_position.x - target_player.global_position.x) > 0 else -1
@@ -607,7 +574,7 @@ func _start_boss_combat_loop():
 		if not target_player or not is_intro_done or current_health <= phase_trigger_health or is_final_phase_triggered: break
 		if _is_jolting: continue
 
-		# --- DEFENSE ---
+		# aizsardzība
 		current_state = State.DEFENSE
 		var def_timer = 0.0
 		while def_timer < defense_duration:
@@ -622,9 +589,7 @@ func _start_boss_combat_loop():
 	elif is_intro_done and not target_player:
 		current_state = State.PATROL
 
-# -------------------------
-# SMART AIM PROJECTILE (with ceiling clamp)
-# -------------------------
+# VIEDĀ MĒRĶĒŠANA ŠĀVIENIEM (ar griestu ierobežotāju)
 func _spawn_boss_smart_projectile(range_modifier: float = 0.0):
 	var available_projectiles = []
 	if potion_1_scene: available_projectiles.append(potion_1_scene)
@@ -674,9 +639,7 @@ func _spawn_boss_smart_projectile(range_modifier: float = 0.0):
 
 	get_parent().add_child(projectile)
 
-# -------------------------
-# SAFE ANIMATION HANDLER
-# -------------------------
+# DROŠS ANIMĀCIJU APSTRĀDĀTĀJS
 func _safely_play_boss_animation(anim_name: String):
 	if not anim: return
 	if _is_jolting and anim_name != "hurt" and anim_name != "jump":
@@ -696,9 +659,7 @@ func _safely_play_boss_animation(anim_name: String):
 
 	anim.play(anim_name)
 
-# -------------------------
-# SIGNALS & DETECTION
-# -------------------------
+# SIGNĀLI UN DETEKTĒŠANA
 func _on_det_area_body_entered(body: Node2D):
 	if body.is_in_group("player"):
 		target_player = body
@@ -723,9 +684,7 @@ func _on_enemy_hitbox_area_entered(area: Area2D):
 		var player_node = area.get_parent()
 		take_damage(1, player_node.global_position.x)
 
-# -------------------------
-# DAMAGE & COMBAT LOGIC
-# -------------------------
+# BOJĀJUMU UN KAUJAS LOĢIKA
 func take_damage(amount: int, from_x: float):
 	if current_state == State.INTRO or current_health <= 0 or not can_take_damage:
 		return
@@ -733,10 +692,10 @@ func take_damage(amount: int, from_x: float):
 	current_health -= amount
 	update_hearts()
 
-	# Trigger final phase when health becomes 2 or lower
+	# Aktivizē pēdējo fāzi, kad health ir 2 vai mazāk
 	if current_health <= 2 and not is_final_phase_triggered and is_intro_done:
 		_start_final_phase()
-		return   # Damage handling stops here, final phase takes over
+		return   # Bojājumu apstrāde apstājas, fināla fāze pārņem vadību
 
 	if is_in_stationary_phase:
 		hit_received_during_phase = true
@@ -789,43 +748,41 @@ func _start_damage_cooldown(from_x: float):
 				else:
 					current_state = State.PATROL
 
-# -------------------------
-# FINAL PHASE (health <= 2)
-# -------------------------
+# FINĀLA FĀZE (health <= 2)
 func _start_final_phase():
 	if is_final_phase_triggered or not is_intro_done:
 		return
 	is_final_phase_triggered = true
 	is_final_phase_active = true
-	can_take_damage = false          # Boss cannot be damaged during this sequence
+	can_take_damage = false          # Boss nevar saņemt bojājumus šīs sekvences laikā
 	attack_loop_active = false
 	final_phase_ghosts_defeated = false
 
-	# Make player pass through skeleton (like ghosts pass through players)
+	# Ļauj spēlētājam iziet cauri skeletam (tāpat kā spoki iet cauri spēlētājiem)
 	if target_player:
 		add_collision_exception_with(target_player)
 
-	# Interrupt any ongoing stationary phase, but KEEP the phase‑2 camera active
+	# Pārtrauc jebkādu aktīvu stacionāro fāzi, bet PATUR otrās fāzes kameru aktīvu
 	is_in_stationary_phase = false
 
 	current_state = State.FINAL_PHASE
 	velocity = Vector2.ZERO
 	_safely_play_boss_animation("idle_front")
 
-	# Dialogue sequence (camera stays zoomed out)
+	# Dialogu sekvence (kamera paliek attālināta)
 	await _final_phase_dialogue()
 	if not is_inside_tree(): return
 
-	# Jump to the center (player movement frozen during jump)
+	# Lēciens uz centru (spēlētāja kustība iesaldēta lēciena laikā)
 	_freeze_player_movement(true)
 	await _jump_to_position(final_center_position)
 	_freeze_player_movement(false)
 	if not is_inside_tree(): return
 
-	# Spawn three ghost enemies
+	# Izsauc trīs spoku pretiniekus
 	_spawn_ghosts()
 
-	# Boss stays idle, invincible until all ghosts are dead.
+	# Boss paliek idle, neievainojams, kamēr visi spoki ir miruši.
 	current_state = State.FINAL_PHASE
 	_safely_play_boss_animation("idle_front")
 
@@ -886,7 +843,7 @@ func _spawn_ghosts():
 		ghost.global_position = global_position + offset
 		get_parent().add_child(ghost)
 		
-		# Ghost should pass through player and skeleton boss
+		# Spokam vajadzētu iet cauri spēlētājam un skeleta bosam
 		if target_player:
 			ghost.add_collision_exception_with(target_player)
 		ghost.add_collision_exception_with(self)
@@ -922,19 +879,13 @@ func _final_phase_post_ghosts_dialogue():
 	
 	dialogue_label.text = ""
 	
-	# Boss becomes vulnerable – player can now land the killing blow
+	# Boss kļūst ievainojams – spēlētājs tagad var izdarīt pēdējo sitienu
 	can_take_damage = true
 	
-	# Keep the boss idle and invincible otherwise (no movement, no attacks)
+	# Patur bosu idle un neievainojamu (nav kustību, nav uzbrukumu)
 	current_state = State.FINAL_PHASE
 	_safely_play_boss_animation("idle_front")
 
-# -------------------------
-# DEATH
-# -------------------------
-# -------------------------
-# DEATH
-# -------------------------
 func _die():
 	if not is_inside_tree():
 		return
@@ -952,7 +903,6 @@ func _die():
 	_exit_phase2_camera_mode()
 	_restore_default_player_camera_context()
 
-	# --- Drop the key (robust version) ---
 	if not key_dropped:
 		key_dropped = true
 		if key_scene == null:
@@ -960,16 +910,16 @@ func _die():
 		else:
 			var key = key_scene.instantiate()
 			get_parent().add_child(key)
-			key.global_position = Vector2(595, 88)   # <-- START POSITION
+			key.global_position = Vector2(595, 88)
 			if key is RigidBody2D:
 				key.gravity_scale = 1.0
 				key.linear_velocity = Vector2(0, 50)
 			else:
 				var tween = create_tween()
-				tween.tween_property(key, "global_position:y", 1100, 1.0)  # <-- END Y & DURATION
+				tween.tween_property(key, "global_position:y", 1100, 1.0)
 				await get_tree().create_timer(0.1).timeout
 
-		# --- Death animation and removal ---
+		# --- Nāves animācija un aizvākšana ---
 		if anim and anim.sprite_frames.has_animation("dead"):
 			anim.play("dead")
 			await anim.animation_finished
@@ -980,10 +930,6 @@ func _die():
 	if is_inside_tree():
 		queue_free()
 		
-		
-# -------------------------
-# INTERACTION FALLBACKSa
-# -------------------------
 func boss_enemy():
 	return true
 

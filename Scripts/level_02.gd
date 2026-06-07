@@ -2,9 +2,9 @@ extends Node2D
 
 @onready var pop_level: Label = $CanvasLayer/popLevel
 @onready var fade_rect: ColorRect = $CanvasLayer/Fade
-@onready var door: Area2D = $Door # Make sure you have an Area2D named 'Door' in Level 2!
+@onready var door: Area2D = $Door
 
-@export_file("res://level_3.tscn") var level3_scene: String # Path to your Level 3
+@export_file("res://level_3.tscn") var level3_scene: String
 
 @export var fade_in_time: float = 0.6
 @export var visible_time: float = 1.5
@@ -13,11 +13,10 @@ extends Node2D
 var _transitioning: bool = false
 
 func _ready() -> void:
-	Global.has_key = false # Reset key for the new level
+	Global.has_key = false
 	_fade_in_level()
 	show_popup()
 	
-	# Connect the door signal
 	if door:
 		door.body_entered.connect(_on_door_entered)
 
@@ -41,12 +40,12 @@ func show_popup() -> void:
 	tween.tween_callback(func(): pop_level.visible = false)
 
 func _on_door_entered(body: Node2D) -> void:
-	print("Something touched the door: ", body.name) # Debug 1
+	print("Something touched the door: ", body.name)
 	
 	if _transitioning: return
 
 	if body.is_in_group("player"):
-		print("Player is at the door! Has key: ", Global.has_key) # Debug 2
+		print("Player is at the door! Has key: ", Global.has_key)
 		if Global.has_key:
 			_transitioning = true
 			_start_level_transition()
@@ -64,7 +63,6 @@ func _start_level_transition() -> void:
 		var t = create_tween()
 		t.tween_property(fade_rect, "modulate:a", 1.0, 0.6)
 		
-		# Instead of 'await', we use a direct connection
 		t.finished.connect(func():
 			print("Level 2: Fade complete. Switching NOW.")
 			get_tree().change_scene_to_file("res://level_3.tscn")

@@ -527,12 +527,10 @@ position = Vector2(1713, 21)
 scale = Vector2(0.67, 0.67)
 
 [node name="StartDoor" parent="." instance=ExtResource("10_ylvhy")]
-position = Vector2(-107, 316)
-scale = Vector2(1.41, 1.41)
+position = Vector2(-105, 314)
 
 [node name="Door" parent="." instance=ExtResource("11_ds035")]
-position = Vector2(1800, 58)
-scale = Vector2(0.665, 0.665)
+position = Vector2(1813.0001, 44.000004)
 
 [node name="Spike2" parent="." instance=ExtResource("12_rbqkx")]
 position = Vector2(-915, 499)

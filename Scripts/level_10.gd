@@ -18,7 +18,7 @@ func _ready() -> void:
 	if door:
 		door.body_entered.connect(_on_door_entered)
 		
-	# FIXED PATH: Look inside the Skeleton node for the BossTrigger!
+	# Meklējam BossTrigger iekš Skeleton mezgla!
 	if skeleton_boss and skeleton_boss.has_node("BossTrigger"):
 		var trigger = skeleton_boss.get_node("BossTrigger")
 		trigger.body_entered.connect(_on_boss_trigger_body_entered)
@@ -35,14 +35,14 @@ func _fade_in_level() -> void:
 	await tween.finished
 	fade_rect.visible = false
 
-# -------------------- BOSS TRIGGER CUTSCENE --------------------
+# BOSA SPRŪDA (TRIGGER) SAKĀRTOJUMS / CUTSCENE
 func _on_boss_trigger_body_entered(body: Node2D) -> void:
 	if body.is_in_group("player") and not intro_played and skeleton_boss:
 		intro_played = true
 		_run_boss_cutscene(body)
 
 func _run_boss_cutscene(player: CharacterBody2D):
-	# 1. Freeze the player completely
+	# 1. Pilnībā iesaldējam spēlētāju
 	player.controls_enabled = false
 	player.velocity = Vector2.ZERO
 	
@@ -52,38 +52,38 @@ func _run_boss_cutscene(player: CharacterBody2D):
 	var original_zoom = cam.zoom
 	var target_zoom = Vector2(1.3, 1.3)
 	
-	# Calculate exact relative camera positioning
+	# Aprēķinām precīzu relatīvo kameras pozīciju
 	var offset_to_boss = skeleton_boss.global_position - player.global_position
 	offset_to_boss.y -= 40 
 	
-	# 2. Smoothly slide camera over to the Boss
+	# 2. Plūstoši pārvietojam kameru uz Bosu
 	var tween = create_tween().set_parallel(true).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
 	tween.tween_property(cam, "offset", offset_to_boss, 1.5)
 	tween.tween_property(cam, "zoom", target_zoom, 1.5)
 	
 	await tween.finished
 	
-	# 3. Start the dialogue sequence
+	# 3. Sākam dialoga secību
 	skeleton_boss.play_boss_intro()
 	
-	# 4. Wait safely inside a loop until the skeleton finishes talking
+	# 4. Droši gaidām ciklā, kamēr skelets pabeidz runāt
 	while not skeleton_boss.is_intro_done:
 		await get_tree().process_frame
 	
-	# 5. Extra dramatic pause after the big scream shake finishes
+	# 5. Papildu dramatiska pauze pēc tam, kad lielā kliegšanas ekrāna shake ir beigusies
 	await get_tree().create_timer(0.5).timeout
 	
-	# 6. Smoothly return camera focus to the player
+	# 6. Plūstoši atgriežam kameras fokusu uz spēlētāju
 	var back_tween = create_tween().set_parallel(true).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
 	back_tween.tween_property(cam, "offset", Vector2.ZERO, 1.2)
 	back_tween.tween_property(cam, "zoom", original_zoom, 1.2)
 	
 	await back_tween.finished
 	
-	# 7. Release control locks! Fight begins!
+	# 7. Noņemam kontroles bloķēšanu! Cīņa sākas!
 	player.controls_enabled = true
 
-# -------------------- LEVEL TRANSITION --------------------
+# LĪMEŅA PĀREJA
 func _on_door_entered(body: Node2D) -> void:
 	if _transitioning: return
 
